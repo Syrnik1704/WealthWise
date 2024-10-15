@@ -8,7 +8,7 @@ echo "spring.jpa.show-sql=true" >> application.properties
 echo "spring.datasource.username=$POSTGRES_USER" >> application.properties
 echo "spring.datasource.password=$POSTGRES_PASSWORD" >> application.properties
 
-echo "server.port=8808" >> application.properties
+echo "server.port=8080" >> application.properties
 
 
 echo "spring.datasource.driver-class-name=org.postgresql.Driver" >> application.properties
