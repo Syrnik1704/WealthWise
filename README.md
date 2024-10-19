@@ -33,3 +33,24 @@
 
 ## Wymagania
  Dodanie opcji -d do docker-compose up uruchomi proces w trybie detach (proces bedzie działał w tle)
+
+## Requesty do postmana 
+/auth/register (POST)
+body:
+{
+    "name": "Jan",
+    "surname": "Kowalski",
+    "birthDay": "29-05-2000",
+    "email": "example12@test.com",
+    "password": "Password1",
+    "confirmPassword": "Password1"
+}
+
+/auth/login (POST)
+body:
+{
+    "email": "example12@test.com",
+    "password": "Password1"
+}
+
+ 
