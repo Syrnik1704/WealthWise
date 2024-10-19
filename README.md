@@ -57,4 +57,13 @@ body:
 }
 ```
 
- 
+## Swagger
+working endpoint:
+```bash
+http://localhost:8080/v3/api-docs
+```
+with swagger-ui there were problems and not resolved yet but api-docs should be enough to work with postman and make frontend
+```bash
+http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/swagger-ui.html
+```
