@@ -37,6 +37,7 @@
 ## Requesty do postmana 
 /auth/register (POST)
 body:
+```bash
 {
     "name": "Jan",
     "surname": "Kowalski",
@@ -45,12 +46,15 @@ body:
     "password": "Password1",
     "confirmPassword": "Password1"
 }
+```
 
 /auth/login (POST)
 body:
+```bash
 {
     "email": "example12@test.com",
     "password": "Password1"
 }
+```
 
  
