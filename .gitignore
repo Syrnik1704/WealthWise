@@ -32,3 +32,15 @@ build/
 ### VS Code ###
 .vscode/
 
+#### FE ####
+
+# Node
+FE/node_modules
+FE/npm-debug.log
+FE/yarn-error.log
+
+# Compiled output
+FE/dist
+FE/tmp
+FE/out-tsc
+FE/bazel-out
