@@ -84,6 +84,7 @@ public class AuthenticationService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             saveTokenAccess(tokenAccess);
             saveTokenRefresh(tokenRefresh);
+            userEntityRepository.changeStatusOfUser(userDTO.email());
             return new ResponseEntity<>(new AuthenticationResponse(tokenAccess, tokenRefresh), HttpStatus.OK);
         }catch(AuthenticationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);

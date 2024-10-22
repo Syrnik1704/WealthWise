@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+
 @Service
 public class LogoutService implements LogoutHandler {
 
@@ -24,56 +26,81 @@ public class LogoutService implements LogoutHandler {
     Logger logger = LoggerFactory.getLogger(LogoutService.class);
     private final UserServiceDetails userServiceDetails;
     private final JWTokenAccessRepository jwtTokenAccessRepository;
-
     private final JWTokenRefreshRepository jwtTokenRefreshRepository;
-
 
     public LogoutService(JWTUtil jwtUtil, UserServiceDetails userServiceDetails,
                          JWTokenAccessRepository jwtTokenAccessRepository,
-                            JWTokenRefreshRepository jwtTokenRefreshRepository) {
+                         JWTokenRefreshRepository jwtTokenRefreshRepository) {
         this.jwtUtil = jwtUtil;
         this.userServiceDetails = userServiceDetails;
         this.jwtTokenAccessRepository = jwtTokenAccessRepository;
         this.jwtTokenRefreshRepository = jwtTokenRefreshRepository;
     }
 
-
     @Override
     public void logout(HttpServletRequest request,
                        HttpServletResponse response,
                        Authentication authentication) {
-        try{
+        try {
             final String authHeader = request.getHeader("Authorization");
 
-            if(authHeader == null ||!authHeader.startsWith("Bearer ")) {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Zwraca 400 jeśli token nie istnieje
+                response.getWriter().write("Authorization header missing or not valid.");
                 return;
             }
 
-            String jwt= authHeader.substring(7);
-            String email = jwtUtil.getSubject(jwt);//email in our case
-            logger.warn("logout - email "+email);
+            String jwt = authHeader.substring(7);
+            String email = jwtUtil.getSubject(jwt); // email extracted from JWT
+            logger.warn("logout - email " + email);
+            if (email != null) {
+                // Sprawdź, czy tokeny istnieją w bazie
+                AccessToken accessToken = jwtTokenAccessRepository.findBySubject(email);
+                RefreshToken refreshToken = jwtTokenRefreshRepository.findBySubject(email);
 
-            if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                // Jeśli tokenów nie ma, oznacza to, że użytkownik został już wylogowany
+                if (accessToken == null && refreshToken == null) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Zwraca 400 jeśli tokeny nie istnieją
+                    response.getWriter().write("User is already logged out or token not found.");
+                    return;
+                }
 
-                UserEntity userEntity = (UserEntity) userServiceDetails.loadUserByUsername(email);
-                logger.warn("logout - userEntity "+userEntity);
+                // Sprawdzenie, czy access token jest ważny
+                if (jwtUtil.isAccessTokenValid(jwt)) {
+                    // Usuwanie tokenów z bazy danych
+                    if (refreshToken != null) {
+                        jwtTokenRefreshRepository.delete(refreshToken);
+                        logger.info("Refresh token deleted for user: " + email);
+                    }
 
-                if(jwtUtil.isAccessTokenValid(jwt)) {
+                    if (accessToken != null) {
+                        jwtTokenAccessRepository.delete(accessToken);
+                        logger.info("Access token deleted for user: " + email);
+                    }
 
-                    RefreshToken refreshToken = jwtTokenRefreshRepository.findBySubject(email);
-                    jwtTokenRefreshRepository.delete(refreshToken);
-
-                    AccessToken accessToken = jwtTokenAccessRepository.findBySubject(email);
-                    jwtTokenAccessRepository.delete(accessToken);
-
+                    // Czyszczenie SecurityContext i zwrot statusu 200
                     SecurityContextHolder.clearContext();
-
-                }}
-        }catch (Exception e){
-            logger.warn("logout - exception "+e.getMessage());
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write("User has been logged out successfully.");
+                } else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Zwraca 401 dla niepoprawnego tokena
+                    response.getWriter().write("Invalid or expired access token.");
+                }
+            } else {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Zwraca 401 jeśli nie ma zalogowanego użytkownika
+                response.getWriter().write("User is not logged in or token is invalid.");
+            }
+        } catch (Exception e) {
+            logger.error("logout - exception: ", e); // Pełny stack trace dla diagnostyki
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // Zwraca 500 dla wewnętrznych błędów serwera
+            try {
+                response.getWriter().write("An error occurred during logout.");
+            } catch (IOException ioException) {
+                logger.error("Error writing response: ", ioException);
+            }
+        } finally {
+            // Zawsze czyści kontekst, nawet jeśli wystąpił wyjątek
+            SecurityContextHolder.clearContext();
         }
-
     }
-
-
 }

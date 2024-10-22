@@ -51,7 +51,7 @@ public class RegistrationService {
 
 
         UserEntity userEntity = new UserEntity(
-            request.email(), passwordEncoder.encode(request.confirmPassword()), request.name(), request.surname(),request.birthDay(), Role.USER
+            request.email(), passwordEncoder.encode(request.confirmPassword()), request.name(), request.surname(),request.birthDay(), false,false,Role.USER
         );
 
         userDAO.save(userEntity);
