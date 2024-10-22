@@ -44,3 +44,5 @@ FE/dist
 FE/tmp
 FE/out-tsc
 FE/bazel-out
+
+FE/.angular/cache
