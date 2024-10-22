@@ -5,6 +5,7 @@ import com.example.wealthwise_api.DTO.ChangePasswordRequest;
 import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Services.ChangePasswordService;
 import com.example.wealthwise_api.Services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,9 @@ public class UserController {
         return changePasswordService.changePassword(request);
     }
 
-    @PostMapping(value="/getDataUser", produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<?> getData(@RequestBody TokenRequest tokenRequest){
-        return  userService.getDataUser(tokenRequest);
+    @GetMapping(value="/getDataUser", produces = MediaType.APPLICATION_JSON_VALUE )
+    public ResponseEntity<?> getData(HttpServletRequest request){
+        return  userService.getDataUser(request);
     }
 
     @PostMapping(value="/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE )

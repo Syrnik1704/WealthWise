@@ -10,6 +10,7 @@ import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Entity.Assets;
 import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,13 +88,14 @@ public class AssetService {
     }
 
 
-    public ResponseEntity<?> getAllAssetsList(TokenRequest tokenRequest){
-     try{
-            if(tokenRequest.token() == null || tokenRequest.token().equals("")){
+    public ResponseEntity<?> getAllAssetsList(HttpServletRequest request){
+        String token = request.getHeader("Authorization").split("Bearer ")[1];
+        try{
+            if(token == null || token.equals("")){
                 return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getSubject(token);
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal == null){
