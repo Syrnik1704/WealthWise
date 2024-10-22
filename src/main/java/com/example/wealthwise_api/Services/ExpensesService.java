@@ -13,6 +13,7 @@ import com.example.wealthwise_api.Util.JWTUtil;
 import com.example.wealthwise_api.dtoMapper.ExpensesMapper;
 import com.example.wealthwise_api.dtoMapper.MonthlySummaryMapper;
 import jakarta.persistence.Tuple;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -97,13 +98,14 @@ public class ExpensesService {
         }
     }
 
-    public ResponseEntity<?> getFewLastExpenses(TokenRequest tokenRequest){
+    public ResponseEntity<?> getFewLastExpenses(HttpServletRequest request){
+        String token = request.getHeader("Authorization").split("Bearer ")[1];
         try {
-            if(tokenRequest.token()==null || tokenRequest.token().equals("")) {
+            if(token==null || token.equals("")) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getSubject(token);
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal==null) {
@@ -133,13 +135,14 @@ public class ExpensesService {
         }
     }
 
-    public ResponseEntity<?> getExpensesForEachCategoryByMonth(TokenRequest tokenRequest){
+    public ResponseEntity<?> getExpensesForEachCategoryByMonth(HttpServletRequest request){
+        String token = request.getHeader("Authorization").split("Bearer ")[1];
         try {
-            if(tokenRequest.token()==null || tokenRequest.token().equals("")) {
+            if(token==null || token.equals("")) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getSubject(token);
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal==null) {
@@ -174,13 +177,14 @@ public class ExpensesService {
         }
     }
 
-    public ResponseEntity<?> getMonthlyIncome(TokenRequest tokenRequest){
+    public ResponseEntity<?> getMonthlyIncome(HttpServletRequest request){
+        String token = request.getHeader("Authorization").split("Bearer ")[1];
         try{
-            if(tokenRequest.token()==null || tokenRequest.token().equals("")) {
+            if(token==null || token.equals("")) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getSubject(token);
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal==null){

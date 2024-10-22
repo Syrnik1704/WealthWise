@@ -9,6 +9,7 @@ import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Entity.Incomes;
 import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -59,13 +60,14 @@ public class IncomesService {
         }
     }
 
-    public ResponseEntity<?> getMonthlyIncome(TokenRequest tokenRequest){
+    public ResponseEntity<?> getMonthlyIncome(HttpServletRequest request){
+        String token = request.getHeader("Authorization").split("Bearer ")[1];
         try{
-            if(tokenRequest.token()==null || tokenRequest.token().equals("")) {
+            if(token==null || token.equals("")) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getSubject(token);
             UserEntity principal = userDAO.findUserByEmail(email);
             if(principal==null) {
                 return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
