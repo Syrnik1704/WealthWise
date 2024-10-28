@@ -43,7 +43,7 @@ public class AssetService {
                 return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(assetsRequest.getToken());
+            String email = jwtUtil.getEmail(assetsRequest.getToken());
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal == null){
@@ -67,7 +67,7 @@ public class AssetService {
                 return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(assetsListRequestDelete.getToken());
+            String email = jwtUtil.getEmail(assetsListRequestDelete.getToken());
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if (principal == null){
@@ -93,7 +93,7 @@ public class AssetService {
                 return new ResponseEntity<>("Missing data", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getEmail(tokenRequest.token());
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal == null){

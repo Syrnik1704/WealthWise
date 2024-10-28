@@ -78,13 +78,12 @@ public class AuthenticationService {
                 }
             }
 
-            String tokenAccess = jwtUtil.issueToken(userDTO.email(), userDTO.role().toString());
-            String tokenRefresh = jwtUtil.issueRefreshToken(userDTO.email());
+            String tokenAccess = jwtUtil.issueToken(userDTO.name(), userDTO.active(), userDTO.email(), userDTO.role());
+            String tokenRefresh = jwtUtil.issueRefreshToken(userDTO.email(),userDTO.role());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             saveTokenAccess(tokenAccess);
             saveTokenRefresh(tokenRefresh);
-            userEntityRepository.changeStatusOfUser(userDTO.email());
             return new ResponseEntity<>(new AuthenticationResponse(tokenAccess, tokenRefresh), HttpStatus.OK);
         }catch(AuthenticationException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
@@ -92,12 +91,12 @@ public class AuthenticationService {
     }
 
     private void saveTokenAccess(String token){
-        AccessToken accessToken = new AccessToken(token, jwtUtil.getSubject(token), jwtUtil.extractExpiration(token));
+        AccessToken accessToken = new AccessToken(token, jwtUtil.getEmail(token), jwtUtil.extractExpiration(token));
         jwtTokenAccessRepository.save(accessToken);
     }
 
     private void saveTokenRefresh(String token){
-        RefreshToken refreshToken = new RefreshToken(token, jwtUtil.getSubject(token), jwtUtil.extractExpiration(token));
+        RefreshToken refreshToken = new RefreshToken(token, jwtUtil.getEmail(token), jwtUtil.extractExpiration(token));
         jwtTokenRefreshRepository.save(refreshToken);
     }
 
@@ -105,18 +104,18 @@ public class AuthenticationService {
 
         try{
             if(jwtUtil.isRefreshTokenValid(refreshToken.refreshToken())){
-                String email = jwtUtil.getSubject(refreshToken.refreshToken());
+                String email = jwtUtil.getEmail(refreshToken.refreshToken());
                 jwtUtil.deleteRefreshToken(email);
                 jwtUtil.deleteAccessToken(email);
 
                 UserEntity principal = userEntityRepository.findByEmail(email);
-                String newAccessToken = jwtUtil.issueToken(principal.getEmail(), principal.getRole().toString());
-                String newRefreshToken = jwtUtil.issueRefreshToken(principal.getEmail());
+                String newAccessToken = jwtUtil.issueToken(principal.getName(), principal.getActive(),principal.getEmail() ,principal.getRole().toString());
+                String newRefreshToken = jwtUtil.issueRefreshToken(principal.getEmail(), principal.getRole().toString());
                 saveTokenAccess(newAccessToken);
                 saveTokenRefresh(newRefreshToken);
                 return new ResponseEntity<>(new AuthenticationResponse(newAccessToken, newRefreshToken), HttpStatus.OK);
             }else{
-                String email = jwtUtil.getSubject(refreshToken.refreshToken());
+                String email = jwtUtil.getEmail(refreshToken.refreshToken());
                 jwtUtil.deleteRefreshToken(email);
                 jwtUtil.deleteAccessToken(email);
                 return new ResponseEntity<>(new AuthenticationFailedResponse("Refresh token is invalid"), HttpStatus.UNAUTHORIZED);

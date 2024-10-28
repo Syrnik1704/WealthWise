@@ -4,6 +4,7 @@ package com.example.wealthwise_api.Services;
 import com.example.wealthwise_api.DAO.UserDAO;
 import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.DTO.UserDataResponse;
+import com.example.wealthwise_api.Entity.Role;
 import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Repository.JWTokenAccessRepository;
 import com.example.wealthwise_api.Repository.JWTokenRefreshRepository;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -28,9 +32,27 @@ public class UserService {
         this.jwtTokenAccessRepository = jwtTokenAccessRepository;
     }
 
+    public ResponseEntity<List<UserDataResponse>> getAllUsers(){
+
+        List<UserEntity> userEntityList = userDAO.findAll();
+
+        if(userEntityList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        List<UserDataResponse> userDataResponsesList = userEntityList.stream().filter(
+                userEntity -> userEntity.getRole()== Role.USER
+                )
+                .map(userEntity -> new UserDataResponse(userEntity.getIdUser(),userEntity.getName(),
+                        userEntity.getSurname(),userEntity.getEmail(),userEntity.getActive(),
+                        userEntity.getRole(), userEntity.getBirthDay())).collect(Collectors.toList());
+
+        return new ResponseEntity<>(userDataResponsesList, HttpStatus.OK);
+    }
+
     public ResponseEntity<?> getDataUser(TokenRequest tokenResponse){
         try {
-            String email = jwtUtil.getSubject(tokenResponse.token());
+            String email = jwtUtil.getEmail(tokenResponse.token());
 
             UserEntity userEntity = userDAO.findUserByEmail(email);
 
@@ -38,7 +60,7 @@ public class UserService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            UserDataResponse userDataResponse = new UserDataResponse(userEntity.getName(), userEntity.getSurname(), userEntity.getEmail(), userEntity.getBirthDay());
+            UserDataResponse userDataResponse = new UserDataResponse(userEntity.getIdUser(), userEntity.getName(), userEntity.getSurname(), userEntity.getEmail(),userEntity.getActive(),userEntity.getRole(),userEntity.getBirthDay());
 
             return new ResponseEntity<>(userDataResponse, HttpStatus.OK);
         }catch (Exception e){
@@ -53,7 +75,7 @@ public class UserService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getEmail(tokenRequest.token());
 
             UserEntity userEntity = userDAO.findUserByEmail(email);
 

@@ -1,15 +1,22 @@
 package com.example.wealthwise_api.DTO;
 
+import com.example.wealthwise_api.Entity.Role;
+
 public class UserDataResponse{
+    private long id;
     private String name;
     private String surname;
     private String email;
+    private Boolean isActive;
+    private Role role;
     private String  birthDay;
 
-    public UserDataResponse(String name, String surname, String email, String birthDay) {
+    public UserDataResponse(long idUser, String name, String surname, String email, Boolean isActive, Role role, String birthDay) {
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.isActive = isActive;
+        this.role = role;
         this.birthDay = birthDay;
     }
 
@@ -43,5 +50,25 @@ public class UserDataResponse{
 
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public long getId() {
+        return id;
     }
 }

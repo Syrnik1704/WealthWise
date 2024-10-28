@@ -51,7 +51,7 @@ public class LogoutService implements LogoutHandler {
             }
 
             String jwt = authHeader.substring(7);
-            String email = jwtUtil.getSubject(jwt); // email extracted from JWT
+            String email = jwtUtil.getEmail(jwt); // email extracted from JWT
             logger.warn("logout - email " + email);
             if (email != null) {
                 // Sprawdź, czy tokeny istnieją w bazie

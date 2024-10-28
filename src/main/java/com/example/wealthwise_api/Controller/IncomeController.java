@@ -6,6 +6,7 @@ import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Services.IncomesService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 @RequestMapping("/incomes")
 public class IncomeController {
     private IncomesService incomesService;
@@ -20,6 +22,7 @@ public class IncomeController {
     public IncomeController(IncomesService incomesService) {
         this.incomesService = incomesService;
     }
+
 
     @PostMapping(value="/getIncome",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIncomes(@RequestBody TokenRequest tokenRequest){

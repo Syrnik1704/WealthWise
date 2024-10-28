@@ -6,11 +6,13 @@ import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Services.SavingsGoalService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 @RequestMapping("/savingsGoal")
 public class SavingsGoalController {
 

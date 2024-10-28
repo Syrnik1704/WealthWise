@@ -5,9 +5,11 @@ import com.example.wealthwise_api.DTO.AssetsRequest;
 import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Services.AssetService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 @RequestMapping("/asset")
 public class AssetController {
 
@@ -16,6 +18,7 @@ public class AssetController {
     public AssetController(AssetService assetService) {
         this.assetService = assetService;
     }
+
 
     @PostMapping(value="/addAsset",produces = "application/json")
     public ResponseEntity<?> addAsset(@RequestBody AssetsRequest assetsRequest){

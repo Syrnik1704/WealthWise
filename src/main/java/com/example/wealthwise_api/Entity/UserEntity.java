@@ -32,8 +32,6 @@ public class UserEntity  implements UserDetails {
     private String birthDay;
     @Column(nullable = false)
     private Boolean isActive;
-    @Column(nullable = false)
-    private Boolean isBlocked;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -68,14 +66,13 @@ public class UserEntity  implements UserDetails {
         this.role = role;
     }
 
-    public UserEntity(@NotNull String email, @NotNull String password, @NotNull String name, @NotNull String surname, @NotNull String birthDay, @NotNull Boolean isActive,  @NotNull Boolean isBlocked, @NotNull Role role) {
+    public UserEntity(@NotNull String email, @NotNull String password, @NotNull String name, @NotNull String surname, @NotNull String birthDay, @NotNull Boolean isActive, @NotNull Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.birthDay = birthDay;
         this.isActive = isActive;
-        this.isBlocked = isBlocked;
         this.role = role;
     }
 
@@ -116,7 +113,7 @@ public class UserEntity  implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
     }
 
     public Role getRole() {
@@ -179,24 +176,18 @@ public class UserEntity  implements UserDetails {
         isActive = active;
     }
 
-    public Boolean getBlocked() {
-        return isBlocked;
-    }
 
-    public void setBlocked(Boolean blocked) {
-        isBlocked = blocked;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return idUser == that.idUser && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(birthDay, that.birthDay) && Objects.equals(isActive, that.isActive) && Objects.equals(isBlocked, that.isBlocked) && role == that.role && Objects.equals(savingsGoalsSet, that.savingsGoalsSet) && Objects.equals(assetsSet, that.assetsSet) && Objects.equals(incomesSet, that.incomesSet) && Objects.equals(expensesSet, that.expensesSet);
+        return idUser == that.idUser && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(birthDay, that.birthDay) && Objects.equals(isActive, that.isActive) && role == that.role && Objects.equals(savingsGoalsSet, that.savingsGoalsSet) && Objects.equals(assetsSet, that.assetsSet) && Objects.equals(incomesSet, that.incomesSet) && Objects.equals(expensesSet, that.expensesSet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, email, password, name, surname, birthDay, isActive, isBlocked, role, savingsGoalsSet, assetsSet, incomesSet, expensesSet);
+        return Objects.hash(idUser, email, password, name, surname, birthDay, isActive, role, savingsGoalsSet, assetsSet, incomesSet, expensesSet);
     }
 }

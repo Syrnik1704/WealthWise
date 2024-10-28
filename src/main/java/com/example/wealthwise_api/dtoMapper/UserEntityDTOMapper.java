@@ -11,8 +11,10 @@ public class UserEntityDTOMapper implements Function<UserEntity, UserDTO> {
     @Override
     public UserDTO apply(UserEntity userEntity) {
         return new UserDTO(
+                userEntity.getName(),
+                userEntity.getActive(),
                 userEntity.getEmail(),
-                userEntity.getRole()
+                userEntity.getRole().toString()
         );
     }
 }

@@ -40,7 +40,7 @@ public class IncomesService {
                 return new ResponseEntity<>("Incorrect value", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(incomesRequest.token());
+            String email = jwtUtil.getEmail(incomesRequest.token());
             UserEntity principal = userDAO.findUserByEmail(email);
             if(principal==null) {
                return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
@@ -65,7 +65,7 @@ public class IncomesService {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getEmail(tokenRequest.token());
             UserEntity principal = userDAO.findUserByEmail(email);
             if(principal==null) {
                 return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);

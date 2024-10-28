@@ -44,7 +44,7 @@ public class SavingsGoalService {
                 return new ResponseEntity<>("Goal amount must be greater than 0", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(savingsGoalRequest.getToken());
+            String email = jwtUtil.getEmail(savingsGoalRequest.getToken());
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal == null){
@@ -76,7 +76,7 @@ public class SavingsGoalService {
                 return new ResponseEntity<>("Current amount must be greater than 0", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(addSavingsGoalRequest.getToken());
+            String email = jwtUtil.getEmail(addSavingsGoalRequest.getToken());
 
             UserEntity principal = userDAO.findUserByEmail(email);
 
@@ -116,7 +116,7 @@ public class SavingsGoalService {
                 return new ResponseEntity<>("Token is required", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getSubject(tokenRequest.token());
+            String email = jwtUtil.getEmail(tokenRequest.token());
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal == null){

@@ -8,8 +8,10 @@ import com.example.wealthwise_api.Services.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 @RequestMapping("/user")
 public class UserController {
 
@@ -32,6 +34,8 @@ public class UserController {
         return  userService.getDataUser(tokenRequest);
     }
 
+
+    //TODO do poprawy usuwanie po emailu
     @PostMapping(value="/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE )
     public ResponseEntity<?> deleteUser(@RequestBody TokenRequest tokenRequest){
         return  userService.deleteUser(tokenRequest);
