@@ -55,6 +55,9 @@ import { LoginForm, LoginFormKeys } from '../models';
             }}</mat-error>
           }
         </mat-form-field>
+        @if (modelForm.hasError(authenticationError)) {
+          <mat-error>{{ 'COMMON.ERRORS.AUTHENTICATION_ERROR' | translate }}</mat-error>
+        }
         <button type="button" mat-button [routerLink]="['register']">
           {{ 'LOGIN_FORM.SINGUP_MESSAGE' | translate }}
         </button>
@@ -70,19 +73,24 @@ import { LoginForm, LoginFormKeys } from '../models';
       align-items: center;
       justify-content: center;
       width: 100%;
-      padding: 24px;
+      height: 100%;
     }
     .login-form {
       display: flex;
       gap: 8px;
       flex-direction: column;
       width: 75%;
+      background: aliceblue;
+      border-radius: 8px;
+      border: 1px solid lightgrey;
+      padding: 24px;
     }
   `,
 })
 export class LoginComponent implements OnInit {
   protected modelForm?: FormGroup<LoginForm>;
   protected readonly LoginFormKeys = LoginFormKeys;
+  protected readonly authenticationError = 'authenticationError';
   private readonly formBuild = inject(NonNullableFormBuilder);
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
@@ -103,8 +111,8 @@ export class LoginComponent implements OnInit {
       .login(this.modelForm.getRawValue())
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        catchError(error => {
-          console.log(error);
+        catchError(() => {
+          this.modelForm?.setErrors({ [this.authenticationError]: true });
           return EMPTY;
         })
       )

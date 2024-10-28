@@ -8,7 +8,8 @@
     },
     "ERRORS": {
       "REQUIRED": "{{value}} is required",
-      "INVALID_EMAIL": "Please enter a valid email addres"
+      "INVALID_EMAIL": "Please enter a valid email addres",
+      "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password"
     }
   },
   "LOGIN_FORM": {
