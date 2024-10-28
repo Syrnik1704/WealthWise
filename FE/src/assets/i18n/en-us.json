@@ -1,5 +1,17 @@
 {
   "COMMON": {
-    "LOGIN": "Login"
+    "APP_NAME": "WealthWise",
+    "LOGIN": "Login",
+    "LABELS": {
+      "EMAIL": "Email",
+      "PASSWORD": "Password"
+    },
+    "ERRORS": {
+      "REQUIRED": "{{value}} is required",
+      "INVALID_EMAIL": "Please enter a valid email addres"
+    }
+  },
+  "LOGIN_FORM": {
+    "SINGUP_MESSAGE": "Create account, if you don't have it yet"
   }
 }
