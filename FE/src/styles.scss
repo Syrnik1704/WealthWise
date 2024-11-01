@@ -2,3 +2,12 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-mdc-simple-snack-bar{
+    background: rgb(0, 94, 0) !important;
+    border-radius: 5px;
+    &.mat-mdc-snack-bar-container {
+      margin: 0 !important;
+    }
+  }
+  

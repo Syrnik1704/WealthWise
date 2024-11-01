@@ -1,0 +1,65 @@
+.login-container {
+  display: flex;
+  height: 60vh;
+  width: 20%;
+  overflow: hidden;
+  padding: 50px;
+  //background-color: gray;
+}
+.formStyle {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 250px;
+  width: 500px;
+}
+
+.btn {
+  &.loginBtn {
+    width: 120px;
+    height: 40px;
+    color: #050505;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 5px 5px 20px rgb(77, 77, 77);
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    transition: 0.3s;
+
+    &:hover {
+      background: #eb8e03;
+    }
+  }
+}
+
+.inputStyle,
+mat-select {
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  height: 30px;
+  padding: 0;
+  color: white;
+}
+
+.inputStyle,
+mat-icon {
+  overflow: visible;
+  margin-right: 10px;
+}
+
+.mat-mdc-checkbox {
+  font-size: 20px;
+  margin-top: -10px;
+}
+
+mat-form-field {
+  width: 80%;
+  margin-bottom: 30px;
+}
+
+mat-error {
+  color: white !important;
+}
+

@@ -1,5 +1,6 @@
 {
   "COMMON": {
-    "LOGIN": "Login"
+    "LOGIN": "Login",
+    "REGISTER": "Register"
   }
 }
