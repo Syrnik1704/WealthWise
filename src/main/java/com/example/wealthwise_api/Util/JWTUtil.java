@@ -23,8 +23,10 @@ public class JWTUtil {
     private final JWTokenAccessRepository jwTokenAccessRepository;
     private final JWTokenRefreshRepository jwtTokenRefreshRepository;
 
+
     private static final String SECRET_KEY = "maka_987654321_maka_987654321_maka_987654321_maka_987654321";
     private static final long ACCESS_TOKEN_EXPIRATION = 15 * 60 * 1000; // Czas ważności tokenu dostępu (15 minut)
+
     private static final long REFRESH_TOKEN_EXPIRATION = 5 * 24 * 60 * 60 * 1000; // Czas ważności tokenu odświeżania (30 dni)
 
     public JWTUtil(JWTokenAccessRepository jwTokenAccessRepository, JWTokenRefreshRepository jwtTokenRefreshRepository) {

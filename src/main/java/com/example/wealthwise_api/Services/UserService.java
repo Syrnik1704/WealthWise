@@ -9,6 +9,7 @@ import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Repository.JWTokenAccessRepository;
 import com.example.wealthwise_api.Repository.JWTokenRefreshRepository;
 import com.example.wealthwise_api.Util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,7 @@ public class UserService {
         this.jwtTokenAccessRepository = jwtTokenAccessRepository;
     }
 
+
     public ResponseEntity<List<UserDataResponse>> getAllUsers(){
 
         List<UserEntity> userEntityList = userDAO.findAll();
@@ -53,6 +55,7 @@ public class UserService {
     public ResponseEntity<?> getDataUser(TokenRequest tokenResponse){
         try {
             String email = jwtUtil.getEmail(tokenResponse.token());
+
 
             UserEntity userEntity = userDAO.findUserByEmail(email);
 

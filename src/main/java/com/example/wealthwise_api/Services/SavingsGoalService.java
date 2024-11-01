@@ -9,6 +9,7 @@ import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Entity.SavingsGoals;
 import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Util.JWTUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -110,13 +111,16 @@ public class SavingsGoalService {
         }
     }
 
-    public ResponseEntity<?> getSavingsGoalList(TokenRequest tokenRequest){
+    public ResponseEntity<?> getSavingsGoalList(HttpServletRequest request){
+        String token = request.getHeader("Authorization").split("Bearer ")[1];
         try {
-            if(tokenRequest.token()==null || tokenRequest.token().isEmpty()){
+            if(token==null || token.isEmpty()){
                 return new ResponseEntity<>("Token is required", HttpStatus.BAD_REQUEST);
             }
 
+
             String email = jwtUtil.getEmail(tokenRequest.token());
+
             UserEntity principal = userDAO.findUserByEmail(email);
 
             if(principal == null){

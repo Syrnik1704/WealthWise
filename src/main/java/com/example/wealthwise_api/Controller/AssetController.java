@@ -4,6 +4,7 @@ import com.example.wealthwise_api.DTO.AssetsListRequestDelete;
 import com.example.wealthwise_api.DTO.AssetsRequest;
 import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.Services.AssetService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +26,9 @@ public class AssetController {
         return assetService.addAsset(assetsRequest);
     }
 
-    @PostMapping(value="/getAsset",produces = "application/json")
-    public ResponseEntity<?> getAsset(@RequestBody TokenRequest tokenRequest){
-        return assetService.getAllAssetsList(tokenRequest);
+    @GetMapping(value="/getAsset",produces = "application/json")
+    public ResponseEntity<?> getAsset(HttpServletRequest request){
+        return assetService.getAllAssetsList(request);
     }
 
 
