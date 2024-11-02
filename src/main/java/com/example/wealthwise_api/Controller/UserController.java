@@ -9,8 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
+@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
 @RequestMapping("/user")
 public class UserController {
 
@@ -28,14 +30,16 @@ public class UserController {
         return changePasswordService.changePassword(request);
     }
 
-    @GetMapping(value="/getDataUser", produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<?> getData(HttpServletRequest request){
-        return  userService.getDataUser(request);
-    }
+    // @GetMapping(value="/getDataUser", produces = MediaType.APPLICATION_JSON_VALUE )
+    // public ResponseEntity<?> getData(HttpServletRequest request){
+    //     return  userService.getDataUser(request);
+    // }
 
-    @PostMapping(value="/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<?> deleteUser(@RequestBody TokenRequest tokenRequest){
-        return  userService.deleteUser(tokenRequest);
-    }
+
+    // //TODO do poprawy usuwanie po emailu
+    // @PostMapping(value="/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE )
+    // public ResponseEntity<?> deleteUser(HttpServletRequest request){
+    //     return  userService.deleteUser(request);
+    // }
 
 }
