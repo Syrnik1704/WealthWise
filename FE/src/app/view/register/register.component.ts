@@ -11,6 +11,7 @@ import { IRegister } from '../../models/authentication/IRegister';
 import { IErrorAPIModel } from '../../models/IErrorAPIModel';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -26,7 +27,7 @@ export class RegisterComponent implements OnInit {
   hidePassword = true;
   hideConfirmPassword = true;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private snackBar: MatSnackBar) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private snackBar: MatSnackBar,private router: Router) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -37,10 +38,6 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, this.passwordValidator]],
       confirmPassword: ['', Validators.required]
     }, { validators: this.passwordMatchValidator });
-    this.snackBar.open('Konto zostało utworzone', '', {
-      duration: 116000,
-      panelClass: ['custom-snackbar'],
-    });
   }
 
   passwordValidator(control: AbstractControl): { [key: string]: boolean } | null {
@@ -49,6 +46,10 @@ export class RegisterComponent implements OnInit {
       return { invalidPassword: true };
     }
     return null;
+  }
+
+  async goLoginPage() {
+    this.router.navigate(['/login']);
   }
 
   passwordMatchValidator(form: FormGroup) {
