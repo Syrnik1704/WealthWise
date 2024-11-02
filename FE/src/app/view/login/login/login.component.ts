@@ -12,6 +12,7 @@ import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'ww-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     @Inject(Router) private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar
   ) { }
 
   userForm!: FormGroup;
@@ -54,11 +56,13 @@ export class LoginComponent implements OnInit {
 
     })
   }
-
+  
   async onChangeRememberMe() {
     this.rememberMe = !this.rememberMe
   }
-
+  async goToMainPage() {
+    this.router.navigate(['/']);
+  }
   async goRegisterPage() {
     this.router.navigate(['/register']);
   }
@@ -75,7 +79,11 @@ export class LoginComponent implements OnInit {
     }
 
     this.authService.login(formData).subscribe({
-      next: () => {},
+      next: () => {
+        this.snackBar.open('Zostałeś zalogowany', '', {
+          duration: 5000,
+          panelClass: ['custom-snackbar']
+        })},
       error: (err: IErrorAPIModel) => { console.log(this.userForm, err) },
     });
 
