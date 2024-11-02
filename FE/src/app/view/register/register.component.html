@@ -1,104 +1,132 @@
 
-<div class="register-container">
-  <form [formGroup]="registerForm" class="formStyle" (ngSubmit)="onSubmit(registerForm.value)">
-    <div class="formContainer register" matDialogContent>
-      <mat-form-field appearance="fill">
-        <div class="inputStyle">
-          <mat-icon matPrefix>person</mat-icon>
-          <input matInput formControlName="name" placeholder="Name" />
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+      <div class="login-wrap p-4 p-md-5">
+        <div class="d-flex">
+          <div class="w-100">
+            <h3 class="mb-4">Rejestracja</h3>
+          </div>
         </div>
-        <mat-error>
-          <ng-container *ngIf="registerForm.get('name')?.hasError('required')">
-            Name is required.
-          </ng-container>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <div class="inputStyle">
-          <mat-icon matPrefix>person</mat-icon>
-          <input matInput formControlName="surname" placeholder="Surname" />
-        </div>
-        <mat-error>
-          <ng-container *ngIf="registerForm.get('surname')?.hasError('required')">
-            Surname is required.
-          </ng-container>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <div class="inputStyle">
-          <mat-icon matPrefix>calendar_today</mat-icon>
-          <input matInput formControlName="birthDay" type="date" placeholder="Birth Day" />
-        </div>
-        <mat-error>
-          <ng-container *ngIf="registerForm.get('birthDay')?.hasError('required')">
-            Birth Day is required.
-          </ng-container>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <div class="inputStyle">
-          <mat-icon matPrefix>email</mat-icon>
-          <input matInput formControlName="email" type="email" placeholder="Email" />
-        </div>
-        <mat-error>
-          <ng-container *ngIf="registerForm.get('email')?.hasError('required')">
-            Email is required.
-          </ng-container>
-          <ng-container *ngIf="registerForm.get('email')?.hasError('email')">
-            Enter a valid email address.
-          </ng-container>
-        </mat-error>
-      </mat-form-field>
-   
-      <mat-form-field appearance="fill">
-        <label>Przykład hasła: Password1</label>
-        <div class="inputStyle">
-          <mat-icon matPrefix>lock</mat-icon>
-          <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" placeholder="Password" />
-          <button matSuffix type="button" mat-icon-button (click)="hidePassword = !hidePassword"
-            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-            <mat-icon>
-              {{ hidePassword ? "visibility_off" : "visibility" }}
-            </mat-icon>
-          </button>
-        </div>
-        <mat-error>
-          <ng-container *ngIf="registerForm.get('password')?.hasError('required')">
-            Password is required.
-          </ng-container>
-          <ng-container *ngIf="registerForm.get('password')?.hasError('invalidPassword')">
-            Password must be at least 7 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
-          </ng-container>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <div class="inputStyle">
-          <mat-icon matPrefix>lock</mat-icon>
-          <input [type]="hideConfirmPassword ? 'password' : 'text'" matInput formControlName="confirmPassword" placeholder="Confirm Password" />
-          <button matSuffix type="button" mat-icon-button (click)="hideConfirmPassword = !hideConfirmPassword"
-            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
-            <mat-icon>
-              {{ hideConfirmPassword ? "visibility_off" : "visibility" }}
-            </mat-icon>
-          </button>
-        </div>
-        <mat-error>
-          <ng-container *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
-            Confirm Password is required.
-          </ng-container>
-          <ng-container *ngIf="registerForm?.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
-            Passwords must match.
-          </ng-container>
-        </mat-error>
-      </mat-form-field>
-
-      <button mat-button type="submit" class="btn registerBtn" [disabled]="registerForm.invalid">
-        Register
-      </button>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <div class="inputStyle">
+                <mat-icon class="icon" >person</mat-icon>
+                <input matInput formControlName="name" placeholder="Name" />
+              </div>
+              <mat-error>
+                <ng-container *ngIf="registerForm.get('name')?.hasError('required')">
+                  Name is required.
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <div class="inputStyle">
+                <mat-icon class="icon" matPrefix>person</mat-icon>
+                <input matInput formControlName="surname" placeholder="Surname" />
+              </div>
+              <mat-error>
+                <ng-container *ngIf="registerForm.get('surname')?.hasError('required')">
+                  Surname is required.
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <div class="inputStyle">
+                <mat-icon class="icon" matPrefix>calendar_today</mat-icon>
+                <input matInput formControlName="birthDay" type="date" placeholder="Birth Day" />
+              </div>
+              <mat-error>
+                <ng-container *ngIf="registerForm.get('birthDay')?.hasError('required')">
+                  Birth Day is required.
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <div class="inputStyle">
+                <mat-icon class="icon" matPrefix>email</mat-icon>
+                <input matInput formControlName="email" type="email" placeholder="Email" />
+              </div>
+              <mat-error>
+                <ng-container *ngIf="registerForm.get('email')?.hasError('required')">
+                  Email is required.
+                </ng-container>
+                <ng-container *ngIf="registerForm.get('email')?.hasError('email')">
+                  Enter a valid email address.
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <label>Przykład hasła: Password1</label>
+              <div class="inputStyle">
+                <mat-icon class="icon" matPrefix>lock</mat-icon>
+                <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" placeholder="Password" />
+                <button matSuffix type="button" mat-icon-button (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                  <mat-icon>
+                    {{ hidePassword ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+                </button>
+              </div>
+              <mat-error>
+                <ng-container *ngIf="registerForm.get('password')?.hasError('required')">
+                  Password is required.
+                </ng-container>
+                <ng-container *ngIf="registerForm.get('password')?.hasError('invalidPassword')">
+                  Password must be at least 7 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character.
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill">
+              <div class="inputStyle">
+                <mat-icon class="icon" matPrefix>lock</mat-icon>
+                <input [type]="hideConfirmPassword ? 'password' : 'text'" matInput formControlName="confirmPassword" placeholder="Confirm Password" />
+                <button matSuffix type="button" mat-icon-button (click)="hideConfirmPassword = !hideConfirmPassword"
+                  [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                  <mat-icon>
+                    {{ hideConfirmPassword ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+                </button>
+              </div>
+              <mat-error>
+                <ng-container *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
+                  Confirm Password is required.
+                </ng-container>
+                <ng-container *ngIf="registerForm?.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched">
+                  Passwords must match.
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group d-flex align-items-center">
+          
+            <div class="w-100 d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary rounded submit" [disabled]="registerForm.invalid">
+                Zarejestruj
+              </button>
+             
+            </div>
+            
+          </div>
+          <div class="form-group mt-4">
+            <div class="w-100 text-center">
+              <p class="mb-1">Masz konto ? <a class="link-primary" (click)="goLoginPage()">Zaloguj się</a></p>
+            
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-  </form>
+  </div>
 </div>

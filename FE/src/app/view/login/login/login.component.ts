@@ -59,6 +59,10 @@ export class LoginComponent implements OnInit {
     this.rememberMe = !this.rememberMe
   }
 
+  async goRegisterPage() {
+    this.router.navigate(['/register']);
+  }
+
   async onSubmit(formData: ILogin) {
 
     
