@@ -24,8 +24,8 @@ public class IncomeController {
 
 
     @PostMapping(value="/getIncome",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getIncomes(@RequestBody TokenRequest tokenRequest){
-        return incomesService.getMonthlyIncome(tokenRequest);
+    public ResponseEntity<?> getIncomes(HttpServletRequest request){
+        return incomesService.getMonthlyIncome(request);
 
     }
 

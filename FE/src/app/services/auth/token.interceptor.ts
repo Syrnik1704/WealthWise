@@ -19,7 +19,6 @@ export class TokenInterceptor implements HttpInterceptor {
       // Nie przechwytuj żądania odświeżenia tokena
       return next.handle(request);
     }
-    console.log("Intercepting request...");
     return this.sendRequest(request, next)
       .pipe(
         catchError((httpError: HttpErrorResponse) =>
@@ -46,7 +45,6 @@ export class TokenInterceptor implements HttpInterceptor {
   // }
 
   private sendRequest(request: HttpRequest<any>, next: HttpHandler) {
-    console.log("Sending request...");
     return this.waitForNewTokenIfNeeded(request)
       .pipe(
         switchMap(() => this.addTokenToRequestIfNeeded(request)),
@@ -56,7 +54,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private waitForNewTokenIfNeeded(request: HttpRequest<any>) {
-    console.log("waitForNewTokenIfNeeded...");
     const shouldWaitForNewToken = () => this.refreshTokenInProgress && request.url !== this.refreshTokenUrl;
     return iif(
       shouldWaitForNewToken,
@@ -66,7 +63,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private addTokenToRequestIfNeeded(request: HttpRequest<any>) {
-    console.log("Adding token to request...");
     return this.noTokenUrls.some(el => el === request.url)
       ? of(request)
       : this.auth.getTokenData().pipe(
@@ -83,7 +79,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handleTokenRefresh(request: HttpRequest<any>, next: HttpHandler) {
-    console.log("Token expired, refreshing...");
     return this.postTokenRefresh().pipe(
       switchMap(() => this.addTokenToRequestIfNeeded(request)),
       switchMap(requestWithToken => next.handle(requestWithToken))
@@ -91,7 +86,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private postTokenRefresh() {
-    console.log("Refreshing token...");
     this.refreshTokenInProgress = true;
     return this.auth.refreshJWT().pipe(
       first(),
@@ -107,7 +101,6 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private waitForNewToken() {
-    console.log("waitForNewToken...");
     return this.auth.getTokenData().pipe(
       skip(1),
       first()

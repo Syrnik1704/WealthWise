@@ -4,7 +4,7 @@ import { interval, observable, Subscription } from 'rxjs';
 import { IJwtToken } from '../../models/authentication/IJwtToken';
 import { AuthService } from '../../services/auth/auth.service';
 import { CommonModule, DecimalPipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AfterLoginService } from './afterLogin.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class AfterLoginComponent implements OnInit {
   timeLeftInSeconds: number = 0;
   private timerSubscription!: Subscription;
 
-  constructor(private authService: AuthService, private afterLoginService:AfterLoginService, private cdr: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private afterLoginService:AfterLoginService, private cdr: ChangeDetectorRef, private router: Router) {
     this.timeLeftInSeconds = 0;
   }
 
@@ -49,6 +49,9 @@ export class AfterLoginComponent implements OnInit {
     this.afterLoginService.getData().subscribe((data) => {
       console.log(data);
     });
+  }
+  protected undo() {
+    this.router.navigate(['login']);
   }
   protected logOut() {
    this.authService.logout();

@@ -1,6 +1,10 @@
+import { Role } from "./ERole";
+
 export interface IJwtToken {
-    scopes: string[];     
-    sub: string;        
+    role: Role; 
+    email: string;
+    name: string;   
+    isActive: boolean; 
     iat: number;         
     exp: number;           
   }

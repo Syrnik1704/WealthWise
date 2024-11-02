@@ -96,7 +96,7 @@ public class AssetService {
             }
 
 
-            String email = jwtUtil.getEmail(tokenRequest.token());
+            String email = jwtUtil.getEmail(token);
 
             UserEntity principal = userDAO.findUserByEmail(email);
 

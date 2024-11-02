@@ -30,16 +30,16 @@ public class UserController {
         return changePasswordService.changePassword(request);
     }
 
-    @GetMapping(value="/getDataUser", produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<?> getData(HttpServletRequest request){
-        return  userService.getDataUser(request);
-    }
+    // @GetMapping(value="/getDataUser", produces = MediaType.APPLICATION_JSON_VALUE )
+    // public ResponseEntity<?> getData(HttpServletRequest request){
+    //     return  userService.getDataUser(request);
+    // }
 
 
-    //TODO do poprawy usuwanie po emailu
-    @PostMapping(value="/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE )
-    public ResponseEntity<?> deleteUser(@RequestBody TokenRequest tokenRequest){
-        return  userService.deleteUser(tokenRequest);
-    }
+    // //TODO do poprawy usuwanie po emailu
+    // @PostMapping(value="/deleteUser", produces = MediaType.APPLICATION_JSON_VALUE )
+    // public ResponseEntity<?> deleteUser(HttpServletRequest request){
+    //     return  userService.deleteUser(request);
+    // }
 
 }

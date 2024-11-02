@@ -105,7 +105,7 @@ public class ExpensesService {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
-            String email = jwtUtil.getEmail(tokenRequest.token());
+            String email = jwtUtil.getEmail(token);
 
             UserEntity principal = userDAO.findUserByEmail(email);
 
@@ -144,7 +144,7 @@ public class ExpensesService {
             }
 
 
-            String email = jwtUtil.getEmail(tokenRequest.token());
+            String email = jwtUtil.getEmail(token);
 
             UserEntity principal = userDAO.findUserByEmail(email);
 
@@ -188,7 +188,7 @@ public class ExpensesService {
             }
 
 
-            String email = jwtUtil.getEmail(tokenRequest.token());
+            String email = jwtUtil.getEmail(token);
 
             UserEntity principal = userDAO.findUserByEmail(email);
 

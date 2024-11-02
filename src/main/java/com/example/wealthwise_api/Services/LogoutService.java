@@ -42,8 +42,9 @@ public class LogoutService implements LogoutHandler {
                        HttpServletResponse response,
                        Authentication authentication) {
         try {
-            final String authHeader = request.getHeader("Authorization");
 
+            final String authHeader = request.getHeader("Authorization");
+       
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Zwraca 400 jeśli token nie istnieje
                 response.getWriter().write("Authorization header missing or not valid.");

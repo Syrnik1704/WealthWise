@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthenticationController {
@@ -33,7 +34,6 @@ public class AuthenticationController {
         return registrationService.register(request);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping(value = "refreshToken", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> refreshToken(@RequestBody AuthenticationRequestToken refreshToken){
         return authenticationService.refreshToken(refreshToken);

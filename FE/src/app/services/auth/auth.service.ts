@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, first, map, switchMap, tap, throwError, concatWith } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, first, map, switchMap, tap, throwError, concatWith, finalize, catchError } from 'rxjs';
 import { IRegister } from '../../models/authentication/IRegister';
 import { IToken } from '../../models/authentication/IToken';
 import { environment } from '../../environments/environment.development';
@@ -24,7 +24,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-   
+
   ) { }
 
   private loadTokens() {
@@ -68,28 +68,27 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}/${this.controllerPath}/register`, user)
       .pipe(
         tap(() => { this.router.navigate(['login']); }),
-        
-  )
+
+      )
   }
 
   public logout(): void {
-
-    //narazie tylko na froncie bo brak endpointu na backendzie
-    this.clearTokens();
-    this.router.navigate(['/login']);
-
-    // const url = `${environment.apiUrl}/${this.controllerPath}/logOut`
-    // this.http.delete(url).subscribe(() => {
-    //   console.log('logged out');
-    //   this.token.next('');
-    //   this.loggedUser.next(undefined);
-
-    //   localStorage.removeItem('access_token');
-    //   localStorage.removeItem('refresh_token');
-    //   this.router.navigate(['/login']);
-    // })
-
-  }
+    const url = `${environment.apiUrl}/${this.controllerPath}/logout`
+    this.http.post(url, {}).pipe(
+      tap(() => {
+        console.log('Logged out');
+      }),
+      catchError((err) => {
+        console.error('Failed to logout', err);
+        return throwError(err);
+      }),
+      finalize(() => {
+        this.clearTokens();
+        this.loggedUser.next(undefined);
+        this.router.navigate(['/login']);
+      })
+    ).subscribe();
+  };
 
   public login(body: ILogin): Observable<any> {
     const url = `${environment.apiUrl}/${this.controllerPath}/login`;

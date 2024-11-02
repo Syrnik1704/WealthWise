@@ -1,5 +1,5 @@
 package com.example.wealthwise_api.Controller;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import com.example.wealthwise_api.DTO.TokenRequest;
 import com.example.wealthwise_api.DTO.UserDataResponse;
 import com.example.wealthwise_api.Services.UserService;
