@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
-import { ILogin } from '../../../models/authentication/ILogin';
-import { IErrorAPIModel } from '../../../models/IErrorAPIModel';
+import { ILogin } from '../../models/authentication/ILogin';
+import { IErrorAPIModel } from '../../models/IErrorAPIModel';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';

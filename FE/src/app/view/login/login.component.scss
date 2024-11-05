@@ -1,4 +1,4 @@
-.register-container{
+.login-container{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6,23 +6,19 @@
   min-height: 100vh;
 }
 
-.register-form{
+.login-form{
   display: flex;
   flex-direction: column;
 }
 
 mat-form-field{
-  margin-bottom: 30px !important;
-
-  &.password{
-    margin-bottom: 50px !important;
-  }
+  margin-bottom: 20px !important;
 }
 
-.register-form-options{
+.login-form-options{
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 20px;
 }
 

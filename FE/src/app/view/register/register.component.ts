@@ -58,6 +58,7 @@ export class RegisterComponent implements OnInit {
   }
 
   async onSubmit(formData: IRegister) {
+    console.log(formData);
     if (this.registerForm.valid) {
       console.log('Form is valid:', this.registerForm.value);
       this.authService.register(formData).subscribe({
