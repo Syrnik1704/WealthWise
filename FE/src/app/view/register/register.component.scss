@@ -1,0 +1,31 @@
+.register-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field{
+  margin-bottom: 30px !important;
+
+  &.password{
+    margin-bottom: 50px !important;
+  }
+}
+
+.register-form-options{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+mat-error {
+  color: rgb(238, 0, 0) !important;
+}

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-
 @Component({
   selector: 'ww-root',
   changeDetection: ChangeDetectionStrategy.OnPush,

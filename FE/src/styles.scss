@@ -6,8 +6,21 @@ body {
 }
 body {
   margin: 0;
+<<<<<<< HEAD
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 * {
   box-sizing: border-box;
+=======
+  padding: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.mat-mdc-simple-snack-bar {
+  background: rgb(0, 94, 0) !important;
+  border-radius: 5px;
+  &.mat-mdc-snack-bar-container {
+    margin: 0 !important;
+  }
+>>>>>>> Initial
 }

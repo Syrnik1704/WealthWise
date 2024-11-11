@@ -1,5 +1,6 @@
 {
   "COMMON": {
+<<<<<<< HEAD
     "APP_NAME": "WealthWise",
     "LOGIN": "Login",
     "REGISTER": "Sing up",
@@ -18,5 +19,9 @@
   },
   "LOGIN_FORM": {
     "SINGUP_MESSAGE": "Create account, if you don't have it yet"
+=======
+    "LOGIN": "Login",
+    "REGISTER": "Register"
+>>>>>>> Initial
   }
 }
