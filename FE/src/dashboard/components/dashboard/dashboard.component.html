@@ -1,1 +1,32 @@
-<button mat-raised-button [routerLink]="['login']">{{ 'COMMON.LOGIN' | translate }}</button>
+<mat-toolbar class="toolbar dashboard-header">
+  <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  <img
+    class="dashboard-header__logo"
+    [src]="'/assets/imgs/wealthwise.webp'"
+    [alt]="'COMMON.APP_NAME' | translate" />
+</mat-toolbar>
+
+<mat-sidenav-container
+  class="sidenav-container"
+  [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+  <mat-sidenav
+    #snav
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [fixedInViewport]="mobileQuery.matches"
+    fixedTopGap="56"
+    class="sidenav">
+    <div class="sidenav__header">
+      @for (nav of headerMenuItems$ | async; track nav) {
+        <a class="sidenav__menu-item" routerLink="[nav.route]"
+          ><mat-icon>{{ nav.icon }}</mat-icon
+          >{{ nav.label | translate }}</a
+        >
+      }
+    </div>
+    <div class="sidenav__footer">
+      @for (nav of footerMenuItems$ | async; track nav) {
+        <button mat-raised-button [routerLink]="[nav.route]">{{ nav.label | translate }}</button>
+      }
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

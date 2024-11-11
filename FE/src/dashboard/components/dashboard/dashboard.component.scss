@@ -1,0 +1,55 @@
+@import '../../../variables';
+
+:host {
+  width: 100%;
+}
+
+.dashboard-header {
+  background: linear-gradient(315.11deg, $navy 14.45%, $primary_blue 86.81%);
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: 30px 1fr 30px;
+  &__logo {
+    flex: 1;
+    width: 50vw;
+    max-width: 400px;
+    justify-self: center;
+  }
+}
+
+.sidenav-container {
+  flex: 1;
+}
+
+.is-mobile .sidenav-container {
+  flex: 1 0 auto;
+}
+
+:host ::ng-deep {
+  .mat-drawer-inner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px 0;
+  }
+}
+
+.sidenav {
+  padding: 12px;
+  border-radius: 0;
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 50%;
+  }
+  .sidenav__menu-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    text-decoration: none;
+    padding: 16px 16px 16px 0;
+    color: inherit;
+  }
+}
