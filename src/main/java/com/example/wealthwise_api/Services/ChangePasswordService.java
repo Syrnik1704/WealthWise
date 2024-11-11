@@ -30,7 +30,7 @@ public class ChangePasswordService {
     public ResponseEntity<?> changePassword(ChangePasswordRequest request){
         try{
 
-            String email = jwtUtil.getSubject(request.token());
+            String email = jwtUtil.getEmail(request.token());
             UserEntity userEntity = userDAO.findUserByEmail(email);
             if(userEntity == null){
                 return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);

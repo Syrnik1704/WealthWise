@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 @Service
 public class PasswordValidatorService implements Predicate<String>{
 
-    private final static String PASSWORD_REGEX = "^[a-zA-Z]{7,9}\\d$";
+    private final static String PASSWORD_REGEX = "^[a-zA-Z]{7,}\\d$";
 
 
 

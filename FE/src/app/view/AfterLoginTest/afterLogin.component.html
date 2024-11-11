@@ -1,0 +1,13 @@
+
+@if (timeLeftInSeconds > 0) {
+  <p>Token wygaśnie za: {{ timeLeftInSeconds }}</p>
+} 
+@else {
+  <p>Token wygasł. Proszę zalogować się ponownie.</p>
+}
+<button (click)="getData()" mat-raised-button>Get data</button>
+<button (click)="logOut()" mat-raised-button>Wyloguj</button>
+<button (click)="undo()" mat-raised-button>Cofnij</button>
+
+
+

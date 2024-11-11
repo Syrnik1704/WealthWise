@@ -1,0 +1,27 @@
+.login-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-form{
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field{
+  margin-bottom: 20px !important;
+}
+
+.login-form-options{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+mat-error {
+  color: rgb(238, 0, 0) !important;
+}

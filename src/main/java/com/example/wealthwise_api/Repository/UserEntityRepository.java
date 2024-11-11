@@ -19,11 +19,18 @@ public interface UserEntityRepository extends JpaRepository<UserEntity, Long>{
 
     @Query(value = "SELECT EXISTS(SELECT * FROM users  WHERE email =:email)", nativeQuery = true)
     boolean findEmail(@Param("email") String email);
+
     @Modifying
+    @Transactional
     @Query(value = "UPDATE users SET password =:password WHERE email =:email", nativeQuery = true)
     void changePassword(@Param("email") String email, @Param("password") String password);
 
     @Query(value="SELECT new com.example.wealthwise_api.Entity.UserDataRequest(ue.name,ue.role) FROM UserEntity ue where ue" +
             ".email=:email")
     UserDataRequest getUserData(@Param("email") String email);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE users SET is_active = true WHERE email =:email", nativeQuery = true)
+    void changeStatusOfUser(@Param("email") String email);
 }
