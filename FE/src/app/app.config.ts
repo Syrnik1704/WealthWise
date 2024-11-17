@@ -37,10 +37,16 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideStore } from '@ngxs/store';
 import { routes } from './app.routes';
 import { TokenInterceptor } from './services/auth/token.interceptor';
 
@@ -51,12 +57,13 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideStore(),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
-      multi: true
+      multi: true,
     },
     importProvidersFrom([
       TranslateModule.forRoot({
@@ -68,5 +75,6 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'en-us',
       }),
     ]),
+    provideStore([]),
   ],
 };

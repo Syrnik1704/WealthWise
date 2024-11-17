@@ -6,18 +6,20 @@
     [alt]="'COMMON.APP_NAME' | translate" />
 </mat-toolbar>
 
-<mat-sidenav-container
-  class="sidenav-container"
-  [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+<mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #snav
     [mode]="mobileQuery.matches ? 'over' : 'side'"
     [fixedInViewport]="mobileQuery.matches"
-    fixedTopGap="56"
     class="sidenav">
     <div class="sidenav__header">
       @for (nav of headerMenuItems$ | async; track nav) {
-        <a class="sidenav__menu-item" routerLink="[nav.route]"
+        <a
+          class="sidenav__menu-item"
+          [routerLink]="nav.route"
+          [fragment]="nav.fragment"
+          [routerLinkActive]="'sidenav__menu-item--active'"
+          [routerLinkActiveOptions]="routerLinkMatch"
           ><mat-icon>{{ nav.icon }}</mat-icon
           >{{ nav.label | translate }}</a
         >
@@ -25,10 +27,77 @@
     </div>
     <div class="sidenav__footer">
       @for (nav of footerMenuItems$ | async; track nav) {
-        <button mat-raised-button [routerLink]="[nav.route]">{{ nav.label | translate }}</button>
+        <button class="sidenav__footer-item" mat-raised-button [routerLink]="[nav.route]">
+          {{ nav.label | translate }}
+        </button>
       }
     </div>
   </mat-sidenav>
+  <mat-sidenav-content>
+    <section id="reason" class="reasons">
+      <div class="reasons__goal h3">
+        {{ 'DASHBOARD.GOAL' | translate }}
+      </div>
+    </section>
+    <section id="features" class="features">
+      <h3>{{ 'DASHBOARD.FEATURES.TITLE' | translate }}</h3>
+      @for (feature of dashboradService.getFeatures() | async; track $index) {
+        <div class="features__item h5" [ngStyle]="{ 'text-align': $index % 2 ? 'end' : 'start' }">
+          {{ feature }}
+        </div>
+        <hr class="features__split-line" />
+      }
+    </section>
+    <section id="userInterface" class="ui">
+      <h3>{{ 'COMMON.UI' | translate }}</h3>
+      @let images = dashboradService.getImages() | async;
+      @if (images?.length) {
+        <div id="uiCarousel" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators">
+            @for (image of images; track $index) {
+              <li
+                data-target="#uiCarousel"
+                [ngClass]="{ active: $index === 0 }"
+                [attr.data-slide-to]="$index"></li>
+            }
+          </ol>
+        </div>
+        <div id="carousel" class="carousel slide">
+          <div class="carousel-indicators">
+            @for (image of images; track $index) {
+              <button
+                type="button"
+                data-bs-target="#carousel"
+                [attr.data-bs-slide-to]="$index"
+                [ngClass]="{ active: $index === 0 }"
+                [attr.aria-label]="'Slide ' + $index"></button>
+            }
+          </div>
+          <div class="carousel-inner">
+            @for (image of images; track $index) {
+              <div class="carousel-item" [ngClass]="{ active: $index === 0 }">
+                <img class="d-block w-100" [src]="image.url" [alt]="image.alt" />
+              </div>
+            }
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carousel"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{{ 'COMMON.GALLERY.PREV' | translate }}</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carousel"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">{{ 'COMMON.GALLERY.NEXT' | translate }}</span>
+          </button>
+        </div>
+      }
+    </section>
+  </mat-sidenav-content>
 </mat-sidenav-container>
-<button [routerLink]="['/login']" mat-raised-button>{{ 'COMMON.LOGIN' | translate }}</button>
-<button [routerLink]="['/register']" mat-raised-button>{{ 'COMMON.REGISTER' | translate }}</button>

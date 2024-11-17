@@ -4,16 +4,14 @@ html,
 body {
   height: 100%;
 }
-body {
-  margin: 0;
-<<<<<<< HEAD
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
-}
+
 * {
   box-sizing: border-box;
-=======
   padding: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: 'Tilt Neon', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .mat-mdc-simple-snack-bar {
@@ -22,5 +20,4 @@ body {
   &.mat-mdc-snack-bar-container {
     margin: 0 !important;
   }
->>>>>>> Initial
 }

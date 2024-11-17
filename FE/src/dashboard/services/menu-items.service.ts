@@ -24,17 +24,20 @@ export class MenuItemService {
     ];
     this._headerMenuItems = [
       {
-        route: '#reason',
+        route: '',
+        fragment: 'reason',
         label: 'COMMON.REASONS',
-        icon: 'target',
+        icon: 'verified',
       },
       {
-        route: '#functions',
-        label: 'COMMON.FUNCTIONALITIES',
+        route: '',
+        fragment: 'features',
+        label: 'COMMON.FEATURES',
         icon: 'checklist',
       },
       {
-        route: '#userInterface',
+        route: '',
+        fragment: 'userInterface',
         label: 'COMMON.UI',
         icon: 'preview',
       },
