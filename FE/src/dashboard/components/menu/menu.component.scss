@@ -19,7 +19,7 @@
 }
 
 .sidenav-container {
-  flex: 1;
+  height: 100%;
 }
 
 .is-mobile .sidenav-container {
@@ -61,40 +61,5 @@
     &:hover {
       background: rgba($primary_blue, 0.2);
     }
-  }
-}
-
-.reasons {
-  width: 100%;
-  display: grid;
-  place-items: center;
-  background: image-set('./assets/imgs/saving.webp' 1x), rgba(0, 0, 0, 0.5);
-  background-position: center center;
-  background-size: cover;
-  background-blend-mode: multiply;
-
-  &__goal {
-    color: $reverted_text;
-    text-align: center;
-    padding: 48px 32px;
-    font-weight: 400;
-  }
-}
-
-.features {
-  width: 100%;
-  background: image-set('./assets/imgs/features.jpg' 1x), rgba(0, 0, 0, 0.5);
-  background-position: center center;
-  background-size: cover;
-  background-blend-mode: multiply;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: $reverted_text;
-  padding: 48px 24px;
-  &__split-line {
-    height: 1px;
-    background: $grey;
-    margin: 0;
   }
 }

@@ -1,9 +1,33 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './components';
+import { userRoleGuard } from '../app/guards';
+import { guestGuard } from '../app/guards/guest.guard';
+import { outcomeRoute } from '../outcomes/outcomes.routes';
+import { UserRole } from '../shared';
+import { MenuComponent } from './components';
+import { GuestDashboardComponent } from './components/guest-dashboard';
+import { UserDashboardComponent } from './components/user-dashboard';
 
 export const dashboardRoutes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
+    component: MenuComponent,
+    children: [
+      {
+        path: 'dashboard',
+        component: GuestDashboardComponent,
+        canMatch: [guestGuard],
+      },
+      {
+        path: 'dashboard',
+        component: UserDashboardComponent,
+        canMatch: [userRoleGuard(UserRole.USER)],
+      },
+      outcomeRoute,
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
   },
 ];

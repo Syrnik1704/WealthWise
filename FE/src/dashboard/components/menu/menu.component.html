@@ -1,0 +1,45 @@
+<mat-toolbar class="toolbar dashboard-header">
+  <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  <img
+    class="dashboard-header__logo"
+    [src]="'/assets/imgs/wealthwise.webp'"
+    [alt]="'COMMON.APP_NAME' | translate" />
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #snav
+    [mode]="mobileQuery.matches ? 'over' : 'side'"
+    [fixedInViewport]="mobileQuery.matches"
+    class="sidenav">
+    <div class="sidenav__header">
+      @for (nav of headerMenuItems$ | async; track nav) {
+        <a
+          class="sidenav__menu-item"
+          [routerLink]="[nav.route]"
+          [fragment]="nav.fragment"
+          [routerLinkActive]="'sidenav__menu-item--active'"
+          [routerLinkActiveOptions]="routerLinkMatch"
+          ><mat-icon>{{ nav.icon }}</mat-icon
+          >{{ nav.label | translate }}</a
+        >
+      }
+    </div>
+    <div class="sidenav__footer">
+      @for (nav of footerMenuItems$ | async; track nav) {
+        @if (nav.action) {
+          <button class="sidenav__footer-item" mat-raised-button (click)="nav.action()">
+            {{ nav.label | translate }}
+          </button>
+        } @else {
+          <button class="sidenav__footer-item" mat-raised-button [routerLink]="[nav.route]">
+            {{ nav.label | translate }}
+          </button>
+        }
+      }
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,24 +1,26 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   inject,
   OnDestroy,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { IsActiveMatchOptions, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { DashboardService, MenuItemService } from '../../services';
+import { MenuItemService } from '../../services';
 
 @Component({
-  selector: 'ww-dashboard',
+  selector: 'ww-menu',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -31,14 +33,14 @@ import { DashboardService, MenuItemService } from '../../services';
     MatIconModule,
     MatListModule,
   ],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  templateUrl: './menu.component.html',
+  styleUrls: ['./menu.component.scss'],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class MenuComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('snav') sideNav?: MatSidenav;
   protected readonly mobileQuery = inject(MediaMatcher).matchMedia('(max-width: 600px)');
   private readonly cdRef = inject(ChangeDetectorRef);
   private readonly menuItemsService = inject(MenuItemService);
-  protected readonly dashboradService = inject(DashboardService);
   private mediaListener = () => {
     this.cdRef.detectChanges();
   };
@@ -53,7 +55,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.mobileQuery.addListener(this.mediaListener);
-    this.menuItemsService.setGuestUserMenuItems();
+    this.menuItemsService.initWatchUser();
+  }
+
+  public ngAfterViewInit(): void {
+    this.menuItemsService.sideNav = this.sideNav;
   }
 
   public ngOnDestroy(): void {

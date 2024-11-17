@@ -47,6 +47,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideStore } from '@ngxs/store';
+import { UserState } from '../shared';
 import { routes } from './app.routes';
 import { TokenInterceptor } from './services/auth/token.interceptor';
 
@@ -57,7 +58,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideStore(),
+    provideStore([UserState]),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi()),
     {
@@ -75,6 +76,5 @@ export const appConfig: ApplicationConfig = {
         defaultLanguage: 'en-us',
       }),
     ]),
-    provideStore([]),
   ],
 };

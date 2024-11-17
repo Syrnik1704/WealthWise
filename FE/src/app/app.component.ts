@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from './services/auth/auth.service';
 @Component({
   selector: 'ww-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,4 +18,9 @@ import { TranslateModule } from '@ngx-translate/core';
     `,
   ],
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  private readonly authService = inject(AuthService);
+  public ngOnInit(): void {
+    this.authService.initAuthState();
+  }
+}

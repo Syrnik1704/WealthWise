@@ -2,10 +2,15 @@
   "COMMON": {
     "APP_NAME": "WealthWise",
     "LOGIN": "Login",
+    "LOGOUT": "Logout",
     "REGISTER": "Sing up",
     "REASONS": "Goal",
     "FEATURES": "Features",
     "UI": "How it looks",
+    "SAVING_GOALS": "Saving goals",
+    "OUTCOMES": "Outcomes",
+    "INCOMES": "Incomes",
+    "SUBSCRIPTION_MANAGMENT": "Subscription managment",
     "LABELS": {
       "EMAIL": "Email",
       "PASSWORD": "Password"

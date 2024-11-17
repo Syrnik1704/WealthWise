@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { ImageItem } from '../model';
 
 @Injectable({ providedIn: 'root' })
-export class DashboardService {
+export class LandingService {
   private readonly functionalitiesTranslations = [
     'DASHBOARD.FEATURES.SAVING_GOALS',
     'DASHBOARD.FEATURES.OUTCOME_GROUPING',
