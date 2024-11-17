@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LandingService } from '../../services';
 
@@ -67,6 +69,22 @@ import { LandingService } from '../../services';
   `,
   styleUrl: './guest-dashboard.component.scss',
 })
-export class GuestDashboardComponent {
+export class GuestDashboardComponent implements OnInit {
   protected readonly landingService = inject(LandingService);
+  protected readonly activatedRoute = inject(ActivatedRoute);
+  protected readonly destroyRef = inject(DestroyRef);
+  ngOnInit() {
+    this.activatedRoute.fragment
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((fragment: string | null) => {
+        if (fragment) this.jumpToSection(fragment);
+      });
+  }
+
+  jumpToSection(section: string | null) {
+    if (section)
+      document
+        .getElementById(section)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  }
 }
