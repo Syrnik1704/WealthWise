@@ -1,31 +1,36 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, first, map, switchMap, tap, throwError, concatWith, finalize, catchError } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { jwtDecode } from 'jwt-decode';
+import { BehaviorSubject, finalize, Observable, Subject, tap } from 'rxjs';
+import { AddUser, RemoveUserData, User } from '../../../shared';
+import { environment } from '../../environments/environment.development';
+import { IJwtToken } from '../../models/authentication/IJwtToken';
+import { ILogin } from '../../models/authentication/ILogin';
 import { IRegister } from '../../models/authentication/IRegister';
 import { IToken } from '../../models/authentication/IToken';
-import { environment } from '../../environments/environment.development';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { jwtDecode } from 'jwt-decode';
-import { ILogin } from '../../models/authentication/ILogin';
-import { IJwtToken } from '../../models/authentication/IJwtToken';
-
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private controllerPath = 'auth';
 
-  token = new BehaviorSubject<{ tokenAccess: string; tokenRefresh: string } | null>(this.loadTokens());
-  loggedUser = new BehaviorSubject<IJwtToken | undefined>(this.decodeToken());
+  token = new BehaviorSubject<{ tokenAccess: string; tokenRefresh: string } | null>(
+    this.loadTokens()
+  );
   authHasChanged = new Subject();
+  private readonly store = inject(Store);
 
   constructor(
     private http: HttpClient,
-    private router: Router,
+    private router: Router
+  ) {}
 
-  ) { }
+  public initAuthState(): void {
+    this.saveUser();
+  }
 
   private loadTokens() {
     try {
@@ -63,49 +68,52 @@ export class AuthService {
     return tokenAccess ? jwtDecode<IJwtToken>(tokenAccess) : undefined;
   }
 
-  register(user: IRegister): Observable<any> {
-    console.log('registering user', user);
-    return this.http.post(`${environment.apiUrl}/${this.controllerPath}/register`, user)
-      .pipe(
-        tap(() => { this.router.navigate(['login']); }),
+  private saveUser(): void {
+    if (!this.token.value) {
+      return;
+    }
+    const decodedToken: IJwtToken = jwtDecode<IJwtToken>(this.token.value.tokenAccess);
+    const user: User = {
+      name: decodedToken.name,
+      email: decodedToken.email,
+      role: decodedToken.role,
+    };
+    this.store.dispatch(new AddUser(user));
+  }
 
-      )
+  register(user: IRegister): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/${this.controllerPath}/register`, user).pipe(
+      tap(() => {
+        this.router.navigate(['login']);
+      })
+    );
   }
 
   public logout(): void {
-    const url = `${environment.apiUrl}/${this.controllerPath}/logout`
-    this.http.post(url, {}).pipe(
-      tap(() => {
-        console.log('Logged out');
-      }),
-      catchError((err) => {
-        console.error('Failed to logout', err);
-        return throwError(err);
-      }),
-      finalize(() => {
-        this.clearTokens();
-        this.loggedUser.next(undefined);
-        this.router.navigate(['/login']);
-      })
-    ).subscribe();
-  };
+    const url = `${environment.apiUrl}/${this.controllerPath}/logout`;
+    this.http
+      .post(url, {})
+      .pipe(
+        finalize(() => {
+          this.clearTokens();
+          this.store.dispatch(new RemoveUserData());
+          this.router.navigate(['']);
+        })
+      )
+      .subscribe();
+  }
 
-  public login(body: ILogin): Observable<any> {
+  public login(body: ILogin): Observable<{ tokenAccess: string; tokenRefresh: string }> {
     const url = `${environment.apiUrl}/${this.controllerPath}/login`;
 
-    return this.http.post(url, body).pipe(
-      tap((res: any) => {
+    return this.http.post<{ tokenAccess: string; tokenRefresh: string }>(url, body).pipe(
+      tap(res => {
         if (res.tokenAccess && res.tokenRefresh) {
           this.saveTokens(res.tokenAccess, res.tokenRefresh);
-
-          const decodedToken: IJwtToken = jwtDecode<IJwtToken>(res.tokenAccess);
-          console.log("Decoded token:", decodedToken);
-
-          this.loggedUser.next(decodedToken); // Przechowaj dane użytkownika, w tym rolę
-
-          this.router.navigate(['USER/afterLogin']);
+          this.saveUser();
+          this.router.navigate(['']);
         } else {
-          console.error("No tokens in response", res);
+          console.error('No tokens in response', res);
         }
       })
     );
@@ -123,22 +131,24 @@ export class AuthService {
     }
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     });
 
     const body = {
-      refreshToken: refreshToken // Dodaj refresh token do ciała zapytania
+      refreshToken: refreshToken, // Dodaj refresh token do ciała zapytania
     };
 
-    return this.http.post<IToken>(refreshTokenUrl, body, { headers })
-      .pipe(
-        tap((response: IToken) => {
-          if (response) {
-            localStorage.setItem('refresh_token', response.tokenRefresh);
-            localStorage.setItem('access_token', response.tokenAccess);
-            this.token.next({ tokenAccess: response.tokenAccess, tokenRefresh: response.tokenRefresh });
-          }
-        })
-      );
+    return this.http.post<IToken>(refreshTokenUrl, body, { headers }).pipe(
+      tap((response: IToken) => {
+        if (response) {
+          localStorage.setItem('refresh_token', response.tokenRefresh);
+          localStorage.setItem('access_token', response.tokenAccess);
+          this.token.next({
+            tokenAccess: response.tokenAccess,
+            tokenRefresh: response.tokenRefresh,
+          });
+        }
+      })
+    );
   }
 }

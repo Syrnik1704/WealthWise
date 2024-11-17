@@ -1,11 +1,10 @@
-import { Role } from "./ERole";
+import { UserRole } from '../../../shared';
 
 export interface IJwtToken {
-    role: Role; 
-    email: string;
-    name: string;   
-    isActive: boolean; 
-    iat: number;         
-    exp: number;           
-  }
-  
+  role: UserRole;
+  email: string;
+  name: string;
+  isActive: boolean;
+  iat: number;
+  exp: number;
+}

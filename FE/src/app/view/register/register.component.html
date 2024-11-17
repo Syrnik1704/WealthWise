@@ -6,7 +6,7 @@
       <mat-icon class="icon" matPrefix>person</mat-icon>
       <input matInput formControlName="name" placeholder="Name" />
       <mat-error>
-        @if (this.registerForm.get('name')?.hasError('required')){
+        @if (this.registerForm.get('name')?.hasError('required')) {
           Name is required.
         }
       </mat-error>
@@ -16,7 +16,7 @@
       <mat-icon class="icon" matPrefix>person</mat-icon>
       <input matInput formControlName="surname" placeholder="Surname" />
       <mat-error>
-        @if (this.registerForm.get('surname')?.hasError('required')){
+        @if (this.registerForm.get('surname')?.hasError('required')) {
           Surname is required.
         }
       </mat-error>
@@ -26,7 +26,7 @@
       <mat-icon class="icon" matPrefix>calendar_today</mat-icon>
       <input matInput formControlName="birthDay" type="date" placeholder="Birth Day" />
       <mat-error>
-        @if (this.registerForm.get('birthDay')?.hasError('required')){
+        @if (this.registerForm.get('birthDay')?.hasError('required')) {
           Birth Day is required.
         }
       </mat-error>
@@ -36,10 +36,10 @@
       <mat-icon class="icon" matPrefix>email</mat-icon>
       <input matInput formControlName="email" type="email" placeholder="Email" />
       <mat-error>
-        @if (this.registerForm.get('email')?.hasError('required')){
+        @if (this.registerForm.get('email')?.hasError('required')) {
           Email is required.
         }
-        @if (this.registerForm.get('email')?.hasError('email')){
+        @if (this.registerForm.get('email')?.hasError('email')) {
           Enter a valid email address.
         }
       </mat-error>
@@ -48,10 +48,10 @@
       <mat-label>Hasło</mat-label>
       <mat-icon class="icon" matPrefix>lock</mat-icon>
       <input
-            [type]="hidePassword ? 'password' : 'text'"
-            matInput
-            formControlName="password"
-            placeholder="Password" />
+        [type]="hidePassword ? 'password' : 'text'"
+        matInput
+        formControlName="password"
+        placeholder="Password" />
       <mat-hint>Przykładowe hasło: Password1</mat-hint>
       <button
         matSuffix
@@ -66,12 +66,11 @@
         </mat-icon>
       </button>
       <mat-error>
-        @if (this.registerForm.get('password')?.hasError('required')){
+        @if (this.registerForm.get('password')?.hasError('required')) {
           Password is required.
-        }
-        @else if (this.registerForm.get('password')?.hasError('invalidPassword')){
-          Password must be at least 7 characters long, contain at least one uppercase
-          letter, one lowercase letter, one digit, and one special character.
+        } @else if (this.registerForm.get('password')?.hasError('invalidPassword')) {
+          Password must be at least 7 characters long, contain at least one uppercase letter, one
+          lowercase letter, one digit, and one special character.
         }
       </mat-error>
     </mat-form-field>
@@ -79,10 +78,10 @@
       <mat-label>Powtórz hasło</mat-label>
       <mat-icon class="icon" matPrefix>lock</mat-icon>
       <input
-            [type]="hideConfirmPassword ? 'password' : 'text'"
-            matInput
-            formControlName="confirmPassword"
-            placeholder="Confirm Password" />
+        [type]="hideConfirmPassword ? 'password' : 'text'"
+        matInput
+        formControlName="confirmPassword"
+        placeholder="Confirm Password" />
       <button
         matSuffix
         type="button"
@@ -96,10 +95,12 @@
         </mat-icon>
       </button>
       <mat-error>
-        @if (this.registerForm.get('confirmPassword')?.hasError('required')){
+        @if (this.registerForm.get('confirmPassword')?.hasError('required')) {
           Confirm Password is required.
-        }
-        @else if (this.registerForm?.errors?.['passwordMismatch'] && this.registerForm.get('confirmPassword')?.touched){
+        } @else if (
+          this.registerForm.errors?.['passwordMismatch'] &&
+          this.registerForm.get('confirmPassword')?.touched
+        ) {
           Passwords must match.
         }
       </mat-error>

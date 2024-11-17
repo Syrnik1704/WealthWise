@@ -1,6 +1,44 @@
 {
   "COMMON": {
+    "APP_NAME": "WealthWise",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "REGISTER": "Sing up",
+    "REASONS": "Goal",
+    "FEATURES": "Features",
+    "UI": "How it looks",
+    "SAVING_GOALS": "Saving goals",
+    "OUTCOMES": "Outcomes",
+    "INCOMES": "Incomes",
+    "SUBSCRIPTION_MANAGMENT": "Subscription managment",
+    "LABELS": {
+      "EMAIL": "Email",
+      "PASSWORD": "Password"
+    },
+    "ERRORS": {
+      "REQUIRED": "{{value}} is required",
+      "INVALID_EMAIL": "Please enter a valid email addres",
+      "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password"
+    },
+    "GALLERY": {
+      "NEXT": "Next",
+      "PREV": "Previous"
+    }
+  },
+  "LOGIN_FORM": {
+    "SINGUP_MESSAGE": "Create account, if you don't have it yet",
     "LOGIN": "Login",
     "REGISTER": "Register"
+  },
+  "DASHBOARD": {
+    "GOAL": "WealthWise is application which You can use for managing your finances. With our app You can learn how to save money based on monitoring your incomes and split outcomes into variouse category.",
+    "FEATURES": {
+      "TITLE": "Features",
+      "SAVING_GOALS": "Manage your saving goals",
+      "OUTCOME_GROUPING": "Group your outcomes to better spending visibilty",
+      "SUBSCRIPTION_MANAGMENT": "Manage your subscription",
+      "PROGRESS_MONITORING": "Watch your progress through our intuitative graphs",
+      "INCOMING_PAYMENT": "Get notification about your cycle payment"
+    }
   }
 }

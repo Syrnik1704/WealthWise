@@ -1,21 +1,20 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './view/login/login.component';
-import { DashboardComponent } from '../dashboard';
+import { dashboardRoutes } from '../dashboard/dashboard-routes';
+
+import { UserRole } from '../shared';
+import { guestGuard } from './guards/guest.guard';
+import { userRoleGuard } from './guards/user.guard';
 import { AfterLoginComponent } from './view/AfterLoginTest/afterLogin.component';
-import { USERGuard } from './guards/user/user.guard';
+import { LoginComponent } from './view/login/login.component';
 import { RegisterComponent } from './view/register/register.component';
 
-
 export const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  ...dashboardRoutes,
+  { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [guestGuard] },
   {
     path: 'USER',
-    canActivate: [USERGuard],
-    children: [
-      { path: 'afterLogin', component: AfterLoginComponent },
-    ]
+    canActivate: [userRoleGuard(UserRole.USER)],
+    children: [{ path: 'afterLogin', component: AfterLoginComponent }],
   },
-
 ];
