@@ -57,7 +57,7 @@ class SavingsGoalControllerTest {
     @BeforeEach
     public void addTestUser() throws Exception {
         String password = passwordEncoder.encode(USER_PASSWORD);
-        UserEntity userEntity =  new UserEntity(USER_EMAIL, password, "jan", "kowalski", "12-12-2001", Role.USER);
+        UserEntity userEntity =  new UserEntity(USER_EMAIL, password, "jan", "kowalski", "12-12-2001", true,Role.USER);
         userEntityRepository.save(userEntity);
         SavingsGoals savingsGoals = new SavingsGoals("Dom", 100000.0, 0.0, true, userEntity);
         savingsGoalsRepository.save(savingsGoals);

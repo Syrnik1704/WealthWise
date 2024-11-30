@@ -12,6 +12,7 @@ import java.util.List;
 public interface AssetsRepository extends JpaRepository<Assets, Long> {
     @Query(value = "SELECT * FROM assets WHERE id_user =:userId", nativeQuery = true)
     List<Assets> findAllAssetsByUserId(@Param("userId")Long userId);
+
     @Query(value = "SELECT * FROM assets WHERE value =:value AND currency =:currency AND name =:name AND id_user =:userId", nativeQuery = true)
     Assets findAssetByAllData(@Param("value") double value, @Param("currency")String currency,@Param("name") String name, @Param("userId")Long userId);
 }

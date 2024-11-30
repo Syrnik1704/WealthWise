@@ -22,4 +22,9 @@ public class CategoriesJPADataAccessService implements CategoriesDAO{
     public Categories findByName(String category) {
         return categoriesRepository.findByCategory(category);
     }
+
+    @Override
+    public void save(Categories categories) {
+        categoriesRepository.save(categories);
+    }
 }

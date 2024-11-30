@@ -10,10 +10,15 @@ import java.util.List;
 public interface ExpensesDAO {
 
     void save(Expenses expenses);
+
     boolean exists(long userId);
+
     List<Expenses> getExpensesByUserId(Long userId);
+
     List<Tuple> getExpensesForEachCategoryByMonth(Long userId);
+
     double getSumOfExpensesByUserId(Long userId);
+
     List<Tuple> getMonthlySummary(Long userId);
 
 }

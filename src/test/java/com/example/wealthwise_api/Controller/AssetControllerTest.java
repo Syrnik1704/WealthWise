@@ -62,7 +62,7 @@ class AssetControllerTest {
     @BeforeEach
     public void addTestUser() throws Exception {
         String password = passwordEncoder.encode(USER_PASSWORD);
-        UserEntity userEntity =  new UserEntity(USER_EMAIL, password, "jan", "kowalski", "12-12-2001", Role.USER);
+        UserEntity userEntity =  new UserEntity(USER_EMAIL, password, "jan", "kowalski", "12-12-2001", true,Role.USER);
         userEntityRepository.save(userEntity);
         tokenAccess = loginUserAndGetAccessToken(USER_EMAIL, USER_PASSWORD);
 

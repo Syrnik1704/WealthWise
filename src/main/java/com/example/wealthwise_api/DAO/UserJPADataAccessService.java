@@ -1,15 +1,17 @@
 package com.example.wealthwise_api.DAO;
 
 
-import com.example.wealthwise_api.Entity.UserDataRequest;
+import com.example.wealthwise_api.DTO.UserData;
+import com.example.wealthwise_api.DTO.UserInfo;
 import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Repository.UserEntityRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("jpa")
-public class UserJPADataAccessService  implements UserDAO{
+public class UserJPADataAccessService implements UserDAO{
 
     private final UserEntityRepository userEntityRepository;
 
@@ -42,13 +44,28 @@ public class UserJPADataAccessService  implements UserDAO{
     }
 
     @Override
-    public UserDataRequest getData(String email) {
+    public UserInfo getData(String email) {
         return userEntityRepository.getUserData(email);
     }
 
     @Override
     public void deleteUser(UserEntity userEntity) {
         userEntityRepository.delete(userEntity);
+    }
+
+    @Override
+    public void deleteAll(List<UserEntity> userEntities) {
+        userEntityRepository.deleteAll(userEntities);
+    }
+
+    @Override
+    public List<UserEntity> findAllByEmailIn(List<String> emails) {
+        return userEntityRepository.findAllByEmailIn(emails);
+    }
+
+    @Override
+    public Optional<UserEntity> findUserById(long id) {
+        return userEntityRepository.findById(id);
     }
 
 }

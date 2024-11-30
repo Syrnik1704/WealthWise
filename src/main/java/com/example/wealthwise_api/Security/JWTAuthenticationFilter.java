@@ -2,6 +2,8 @@ package com.example.wealthwise_api.Security;
 
 import com.example.wealthwise_api.Entity.UserEntity;
 import com.example.wealthwise_api.Util.JWTUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +37,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NotNull HttpServletRequest request,
             @NotNull HttpServletResponse response,
-            @NotNull FilterChain filterChain) throws ServletException, IOException {
+            @NotNull FilterChain filterChain) throws ServletException, IOException{
 
         String authHeader=request.getHeader("Authorization");
 
@@ -43,28 +45,43 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
             return;
         }
+        try {
+            String jwt = authHeader.substring(7);
+            String subject = jwtUtil.getEmail(jwt); // email
+            String role = jwtUtil.getRole(jwt); // role
 
-        String jwt=authHeader.substring(7);
-        String subject=jwtUtil.getEmail(jwt); // email
-        String role = jwtUtil.getRole(jwt); // role
+            if (subject != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserEntity userEntity = (UserEntity) userDetailsService.loadUserByUsername(subject);
 
-        if(subject!= null && SecurityContextHolder.getContext().getAuthentication()==null) {
-            UserEntity userEntity = (UserEntity) userDetailsService.loadUserByUsername(subject);
+                if (jwtUtil.isAccessTokenValid(jwt)) {
 
-            if(jwtUtil.isAccessTokenValid(jwt)){
+                    List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
 
-                List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEntity, null,
+                            authorities);
 
-                UsernamePasswordAuthenticationToken authenticationToken= new UsernamePasswordAuthenticationToken(userEntity,null,
-                        authorities);
-
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                }
             }
+        }catch (ExpiredJwtException e) {
+            // Handle expired token case
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token has expired.");
 
+        } catch (JwtException e) {
+            // Handle invalid signature or other JWT exceptions
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid JWT token.");
+
+        } catch (Exception e) {
+            // Handle generic exceptions
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("An error occurred while processing the JWT.");
+            return;
+        }
             filterChain.doFilter(request,response);
 
         }
-    }
-
 }
+

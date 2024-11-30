@@ -51,7 +51,7 @@ public class ExpensesService {
 
     public ResponseEntity<?> saveExpenses(ExpensesRequest expensesRequest) {
         try {
-            if(expensesRequest.token()==null || expensesRequest.token().equals("")) {
+            if(expensesRequest.token()==null || expensesRequest.token().isEmpty()) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
@@ -59,7 +59,7 @@ public class ExpensesService {
                 return new ResponseEntity<>("Incorrect value", HttpStatus.BAD_REQUEST);
             }
 
-            if(expensesRequest.category()==null || expensesRequest.category().equals("")) {
+            if(expensesRequest.category()==null || expensesRequest.category().isEmpty()) {
                 return new ResponseEntity<>("Incorrect category", HttpStatus.BAD_REQUEST);
             }
 
@@ -101,7 +101,7 @@ public class ExpensesService {
     public ResponseEntity<?> getFewLastExpenses(HttpServletRequest request){
         String token = request.getHeader("Authorization").split("Bearer ")[1];
         try {
-            if(token==null || token.equals("")) {
+            if(token==null || token.isEmpty()) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
@@ -139,7 +139,7 @@ public class ExpensesService {
     public ResponseEntity<?> getExpensesForEachCategoryByMonth(HttpServletRequest request){
         String token = request.getHeader("Authorization").split("Bearer ")[1];
         try {
-            if(token==null || token.equals("")) {
+            if(token==null || token.isEmpty()) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
@@ -183,7 +183,7 @@ public class ExpensesService {
     public ResponseEntity<?> getMonthlyIncome(HttpServletRequest request){
         String token = request.getHeader("Authorization").split("Bearer ")[1];
         try{
-            if(token==null || token.equals("")) {
+            if(token==null || token.isEmpty()) {
                 return new ResponseEntity<>("Lack of token", HttpStatus.BAD_REQUEST);
             }
 
