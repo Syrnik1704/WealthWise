@@ -10,6 +10,8 @@ COPY . ./
 
 RUN npm run build --prod
 
+RUN find /app/dist -name '*.map' -type f -delete
+
 FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
