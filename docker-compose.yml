@@ -33,14 +33,11 @@ services:
   frontend:
     build:
       context: ./FE
-      dockerfile: Dockerfile
+      dockerfile: ../docker/frontend/Dockerfile
     environment:
       - NODE_ENV=production
     ports:
       - "4200:80"
     depends_on:
       - backend
-    working_dir: /usr/share/nginx/html
-    volumes:
-      - ./frontend/dist:/usr/share/nginx/html
     command: ["nginx", "-g", "daemon off;"]
