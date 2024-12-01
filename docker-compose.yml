@@ -30,7 +30,7 @@ services:
     ports:
       - "5432:5432"
 
-    frontend:
+  frontend:
     build:
       context: ./FE
       dockerfile: Dockerfile
