@@ -37,6 +37,10 @@ public class UserEntity  implements UserDetails {
 
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<SavingsGoals> savingsGoalsSet;
+
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<SavingTarget> savingTargetSet;
+
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Assets> assetsSet;
 
