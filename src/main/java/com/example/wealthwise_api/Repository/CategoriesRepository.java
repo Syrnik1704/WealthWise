@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface CategoriesRepository extends JpaRepository<Categories, Long> {
     @Query(value = "SELECT * FROM categories WHERE name = :category", nativeQuery = true)
     Categories findByCategory( @Param("category")String category);
+
     @Query(value = "SELECT EXISTS(SELECT * FROM categories WHERE name = :category)", nativeQuery = true)
     boolean existsByCategory(String category);
 }

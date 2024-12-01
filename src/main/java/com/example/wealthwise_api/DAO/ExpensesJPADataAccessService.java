@@ -28,6 +28,7 @@ public class ExpensesJPADataAccessService implements ExpensesDAO{
     public boolean exists(long userId) {
         return expensesRepository.checkIfExpensesExistInCurrentMonth(userId);
     }
+
     @Override
     public List<Expenses> getExpensesByUserId(Long userId) {
         return expensesRepository.getFewLastExpensesByUserId(userId);

@@ -7,4 +7,6 @@ public interface CategoriesDAO {
     boolean exists(String category);
 
     Categories findByName(String category);
+
+    void save(Categories categories);
 }
