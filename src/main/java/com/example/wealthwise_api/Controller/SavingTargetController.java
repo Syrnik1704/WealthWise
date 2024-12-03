@@ -23,6 +23,13 @@ public class SavingTargetController {
         return ResponseEntity.ok(service.getSavingTargets(token));
     }
 
+    @GetMapping("/{targetId}")
+    public ResponseEntity<SavingTargetResponse> getSavingTargetById(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long targetId) {
+        return ResponseEntity.ok(service.getSavingTargetById(token, targetId));
+    }
+
     @PostMapping
     public ResponseEntity<SavingTargetResponse> addSavingTarget(
             @RequestHeader("Authorization") String token,

@@ -34,6 +34,17 @@ public class SavingTargetService {
                 .collect(Collectors.toList());
     }
 
+    public SavingTargetResponse getSavingTargetById(String token, Long targetId) {
+        UserEntity user = findUserByToken(token);
+        SavingTarget target = findTargetById(targetId);
+
+        if (target.getUserEntity().getIdUser() != user.getIdUser()) {
+            throw new RuntimeException("You are not authorized to view this saving target.");
+        }
+
+        return SavingTargetResponse.fromEntity(target);
+    }
+
     public SavingTargetResponse addSavingTarget(String token, SavingTargetRequest request) {
         UserEntity user = findUserByToken(token);
         SavingTarget target = request.toEntity(user);
