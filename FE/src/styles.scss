@@ -1,13 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use 'sass:map';
+@use '@angular/material' as mat;
+@import '../m3-theme.scss';
+
 html,
 body {
   height: 100%;
 }
+
+html{
+  @include mat.all-component-themes($dark-theme);
+}
+
 body {
   margin: 0;
   padding: 0;
+  color: map.get($_palettes, neutral, 90);
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: map.get($_palettes, neutral, 10);
+}
+
+.mat-mdc-checkbox .mat-internal-form-field {
+  color: map.get($_palettes, neutral, 90) !important;
 }
 
 .mat-mdc-simple-snack-bar {

@@ -99,7 +99,7 @@
         @if (this.registerForm.get('confirmPassword')?.hasError('required')){
           Confirm Password is required.
         }
-        @else if (this.registerForm?.errors?.['passwordMismatch'] && this.registerForm.get('confirmPassword')?.touched){
+        @if (this.registerForm.errors?.['passwordMismatch'] && this.registerForm.get('confirmPassword')?.touched){
           Passwords must match.
         }
       </mat-error>
@@ -110,6 +110,7 @@
   </form>
   <p>
     Masz konto?
-    <a class="link-primary" (click)="goLoginPage()">Zaloguj się</a>
+    <!-- <a class="link-primary" (click)="goLoginPage()">Zaloguj się</a> -->
+    <button mat-button (click)="goLoginPage()">Zaloguj się</button>
   </p>
 </div>
