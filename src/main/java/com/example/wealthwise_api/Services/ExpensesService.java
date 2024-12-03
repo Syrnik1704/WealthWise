@@ -9,11 +9,15 @@ import com.example.wealthwise_api.Entity.Categories;
 import com.example.wealthwise_api.Entity.Expenses;
 import com.example.wealthwise_api.Entity.Incomes;
 import com.example.wealthwise_api.Entity.UserEntity;
+import com.example.wealthwise_api.Repository.ExpensesRepository;
+import com.example.wealthwise_api.Repository.IncomesRepository;
+import com.example.wealthwise_api.Repository.UserEntityRepository;
 import com.example.wealthwise_api.Util.JWTUtil;
 import com.example.wealthwise_api.dtoMapper.ExpensesMapper;
 import com.example.wealthwise_api.dtoMapper.MonthlySummaryMapper;
 import jakarta.persistence.Tuple;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,8 @@ import java.util.List;
 @Service
 public class ExpensesService {
 
+    private final ExpensesRepository repository;
+    private final UserEntityRepository userEntityRepository;
     private final UserDAO userDAO;
     private final JWTUtil jwtUtil;
     private final ExpensesDAO expensesDAO;
@@ -34,12 +40,17 @@ public class ExpensesService {
     private final ExpensesMapper expensesMapper;
     private final MonthlySummaryMapper monthlySummaryMapper;
 
-    public ExpensesService(@Qualifier("jpa") UserDAO userDAO, JWTUtil jwtUtil,
+    @Autowired
+    public ExpensesService(ExpensesRepository repository,
+                           UserEntityRepository userEntityRepository,
+                           @Qualifier("jpa") UserDAO userDAO, JWTUtil jwtUtil,
                            @Qualifier("expensesJPA") ExpensesDAO expensesDAO,
                            @Qualifier("categoriesJPA") CategoriesDAO categoriesDAO,
-                            @Qualifier("incomesJPA") IncomesDAO incomesDAO,
+                           @Qualifier("incomesJPA") IncomesDAO incomesDAO,
                            ExpensesMapper expensesMapper,
                            MonthlySummaryMapper monthlySummaryMapper) {
+        this.repository = repository;
+        this.userEntityRepository = userEntityRepository;
         this.userDAO = userDAO;
         this.jwtUtil = jwtUtil;
         this.expensesDAO = expensesDAO;
@@ -208,5 +219,30 @@ public class ExpensesService {
         }catch (Exception e){
             return new ResponseEntity<>("Error" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    public void deleteExpense(String token, Long expenseId) {
+        UserEntity user = findUserByToken(token);
+        Expenses expense = findExpenseById(expenseId);
+
+        if (expense.getUserEntity().getIdUser() != user.getIdUser()) {
+            throw new RuntimeException("You are not authorized to delete this expense.");
+        }
+
+        repository.delete(expense);
+    }
+
+    private UserEntity findUserByToken(String token) {
+        String email = jwtUtil.getEmail(token.replace("Bearer ", ""));
+        UserEntity user = userEntityRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User associated with the token was not found.");
+        }
+        return user;
+    }
+
+    private Expenses findExpenseById(Long expenseId) {
+        return repository.findById(expenseId)
+                .orElseThrow(() -> new RuntimeException("Expense with the specified ID was not found."));
     }
 }

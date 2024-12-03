@@ -7,11 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -42,6 +38,14 @@ public class ExpensesController {
     @GetMapping(value = "/getMonthlyExpenseAndIncome",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getMonthlyExpenseAndIncome(HttpServletRequest request){
         return expensesService.getMonthlyIncome(request);
+    }
+
+    @DeleteMapping("/{expenseId}")
+    public ResponseEntity<String> deleteExpense(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long expenseId) {
+        expensesService.deleteExpense(token, expenseId);
+        return ResponseEntity.ok("Income deleted successfully");
     }
 
 }

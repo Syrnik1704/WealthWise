@@ -21,16 +21,21 @@ public class IncomeController {
         this.incomesService = incomesService;
     }
 
-
-
-    @PostMapping(value="/getIncome",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/getIncome",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getIncomes(HttpServletRequest request){
         return incomesService.getMonthlyIncome(request);
-
     }
 
     @PostMapping(value="/addIncome",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addIncome(@RequestBody IncomesRequest incomesRequest){
         return incomesService.addIncome(incomesRequest);
+    }
+
+    @DeleteMapping("/{incomeId}")
+    public ResponseEntity<String> deleteIncome(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long incomeId) {
+        incomesService.deleteIncome(token, incomeId);
+        return ResponseEntity.ok("Income deleted successfully");
     }
 }
