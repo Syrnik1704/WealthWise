@@ -12,6 +12,7 @@ import com.example.wealthwise_api.Repository.SavingTargetRepository;
 import com.example.wealthwise_api.Repository.UserEntityRepository;
 import com.example.wealthwise_api.Util.JWTUtil;
 import java.time.LocalDateTime;
+import com.example.wealthwise_api.Exception.ResourceNotFoundException;
 
 @Service
 public class SavingTargetService {
@@ -109,7 +110,7 @@ public class SavingTargetService {
 
     private SavingTarget findTargetById(Long targetId) {
         return repository.findById(targetId)
-                .orElseThrow(() -> new RuntimeException("Saving target with the specified ID was not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Saving target with the specified ID was not found."));
     }
 }
 
