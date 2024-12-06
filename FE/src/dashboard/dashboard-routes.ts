@@ -21,8 +21,8 @@ export const dashboardRoutes: Routes = [
         path: 'dashboard',
         component: UserDashboardComponent,
         canMatch: [userRoleGuard(UserRole.USER)],
+        children: [outcomeRoute],
       },
-      outcomeRoute,
       {
         path: '',
         redirectTo: 'dashboard',
