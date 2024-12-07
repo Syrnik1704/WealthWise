@@ -15,16 +15,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { IRegister } from '../../models/authentication/IRegister';
+import { IRegister } from '../../models/IRegister';
 import { IErrorAPIModel } from '../../models/IErrorAPIModel';
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'ww-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  templateUrl: './register-form.component.html',
+  styleUrls: ['./register-form.component.scss'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,7 +36,7 @@ import { AuthService } from '../../services/auth/auth.service';
     MatInputModule,
   ],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterFormComponent implements OnInit {
   registerForm!: FormGroup;
   hidePassword = true;
   hideConfirmPassword = true;

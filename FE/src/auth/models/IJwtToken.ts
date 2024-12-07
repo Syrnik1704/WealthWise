@@ -1,4 +1,4 @@
-import { UserRole } from '../../../shared';
+import { UserRole } from '../../shared';
 
 export interface IJwtToken {
   role: UserRole;

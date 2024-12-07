@@ -9,9 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ILogin } from '../../models/authentication/ILogin';
+import { ILogin } from '../../../auth/models/ILogin';
 import { IErrorAPIModel } from '../../models/IErrorAPIModel';
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
+
 
 @Component({
   selector: 'ww-login',
@@ -27,10 +28,10 @@ import { AuthService } from '../../services/auth/auth.service';
     MatCheckboxModule,
     MatInputModule,
   ],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginFormComponent implements OnInit {
   constructor(
     private authService: AuthService,
     @Inject(Router) private router: Router,
