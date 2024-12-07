@@ -57,6 +57,12 @@
       "DESCRIPTION": "Description",
       "CYCLICAL_PAYMENT_AMOUNT": "Cyclical Payment Amount",
       "CYCLICAL_PAYMENT_INTERVAL": "Cyclical Payment Interval"
+    },
+    "TOAST": {
+      "SUCCESS_ADD": "Saving Goal {{name}} created successfully",
+      "SUCCESS_UPDATE": "Saving Goal {{name}} updated successfully",
+      "ERROR_ADD": "Error occur {{error}}. Cannot add saving goal {{name}}",
+      "ERROR_UPDATE": "Error occur {{error}}. Cannot update saving goal {{name}}"
     }
   }
 }

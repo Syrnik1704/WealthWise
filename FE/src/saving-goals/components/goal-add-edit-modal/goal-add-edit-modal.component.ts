@@ -15,9 +15,9 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import { LabeledValue } from '../../../shared';
+import { SavingGoalRequest } from '../../models';
 import { GoalAddEditForm, GoalAddEditFormKeys } from './goal-add-edit-form.model';
 import { GoalAddEditDialogContent } from './goal-add-edit-modal-content.model';
-import { SavingGoal } from '../../models';
 
 @Component({
   selector: 'ww-goal-add-edit-modal',
@@ -40,7 +40,9 @@ export class GoalAddEditModalComponent implements OnInit {
   protected modelForm?: FormGroup<GoalAddEditForm>;
   protected readonly GoalAddEditFormKeys = GoalAddEditFormKeys;
   protected content: GoalAddEditDialogContent = inject(DIALOG_DATA);
-  private dialogRef = inject<DialogRef<string>>(DialogRef<string>);
+  private dialogRef = inject<DialogRef<SavingGoalRequest | undefined>>(
+    DialogRef<SavingGoalRequest | undefined>
+  );
   private readonly formBuilder = inject(FormBuilder);
   private readonly intervalMap: Record<string, string> = {
     '0 0 10 * * *': 'SAVING_GOAL.INTERVAL.DAILY',
@@ -58,18 +60,18 @@ export class GoalAddEditModalComponent implements OnInit {
     if (this.modelForm?.invalid) {
       return;
     }
-    this.dialogRef.
+    this.dialogRef.close(this.prepareReuestData());
   }
 
-  private prepareReuestData(): Omit<SavingGoal, 'targetId'> | undefined {
+  private prepareReuestData(): SavingGoalRequest | undefined {
     const formValue = this.modelForm?.getRawValue();
     if (!formValue) {
       return;
     }
     return {
       ...formValue,
-
-    }
+      cyclicalPaymentCron: formValue[GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL]?.value,
+    };
   }
 
   private initFormModel(): void {

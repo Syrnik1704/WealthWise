@@ -3,8 +3,10 @@ export interface SavingGoal {
   targetTitle: string;
   targetAmount: number;
   targetDate: Date;
-  cyclicalPaymentAmount: number;
-  cyclicalPaymentCron: string;
   currentAmount: number;
-  description: string;
+  cyclicalPaymentAmount?: number;
+  cyclicalPaymentCron?: string;
+  description?: string;
 }
+
+export type SavingGoalRequest = Omit<SavingGoal, 'targetId'>;
