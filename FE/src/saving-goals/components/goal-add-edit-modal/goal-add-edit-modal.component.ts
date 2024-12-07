@@ -17,6 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LabeledValue } from '../../../shared';
 import { GoalAddEditForm, GoalAddEditFormKeys } from './goal-add-edit-form.model';
 import { GoalAddEditDialogContent } from './goal-add-edit-modal-content.model';
+import { SavingGoal } from '../../models';
 
 @Component({
   selector: 'ww-goal-add-edit-modal',
@@ -53,6 +54,24 @@ export class GoalAddEditModalComponent implements OnInit {
     this.initFormModel();
   }
 
+  protected saveForm(): void {
+    if (this.modelForm?.invalid) {
+      return;
+    }
+    this.dialogRef.
+  }
+
+  private prepareReuestData(): Omit<SavingGoal, 'targetId'> | undefined {
+    const formValue = this.modelForm?.getRawValue();
+    if (!formValue) {
+      return;
+    }
+    return {
+      ...formValue,
+
+    }
+  }
+
   private initFormModel(): void {
     this.modelForm = this.formBuilder.group({
       [GoalAddEditFormKeys.TITLE]: new FormControl<string>(
@@ -69,8 +88,8 @@ export class GoalAddEditModalComponent implements OnInit {
           nonNullable: true,
         }
       ),
-      [GoalAddEditFormKeys.DATE]: new FormControl<Date | undefined>(
-        this.content.savingGoal?.targetDate,
+      [GoalAddEditFormKeys.DATE]: new FormControl<Date>(
+        this.content.savingGoal?.targetDate ?? new Date(),
         { validators: [Validators.required], nonNullable: true }
       ),
       [GoalAddEditFormKeys.DESCRIPTION]: new FormControl<string | undefined>(
