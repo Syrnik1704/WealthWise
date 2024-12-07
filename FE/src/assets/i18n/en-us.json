@@ -40,5 +40,23 @@
       "PROGRESS_MONITORING": "Watch your progress through our intuitative graphs",
       "INCOMING_PAYMENT": "Get notification about your cycle payment"
     }
+  },
+  "SAVING_GOAL": {
+    "INTERVAL": {
+      "DAILY": "Daily",
+      "EVERY_TWO_DAYS": "Every two days",
+      "WEEKLY": "Weekly",
+      "BIWEEKLY": "Every two weeks",
+      "MONTHLY": "Monthly"
+    },
+    "TABLE": {
+      "TITLE": "Title",
+      "CURRENT_AMOUNT": "Current Amount",
+      "DATE": "Date",
+      "AMOUNT": "Amount",
+      "DESCRIPTION": "Description",
+      "CYCLICAL_PAYMENT_AMOUNT": "Cyclical Payment Amount",
+      "CYCLICAL_PAYMENT_INTERVAL": "Cyclical Payment Interval"
+    }
   }
 }

@@ -15,8 +15,8 @@ export interface GoalAddEditForm {
   [GoalAddEditFormKeys.TITLE]: FormControl<string>;
   [GoalAddEditFormKeys.AMOUNT]: FormControl<number>;
   [GoalAddEditFormKeys.DATE]: FormControl<Date>;
-  [GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT]: FormControl<number | null>;
-  [GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL]: FormControl<LabeledValue | null>;
+  [GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT]: FormControl<number | undefined>;
+  [GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL]: FormControl<LabeledValue | undefined>;
   [GoalAddEditFormKeys.CURRENT_AMOUNT]: FormControl<number>;
-  [GoalAddEditFormKeys.DESCRIPTION]: FormControl<string | null>;
+  [GoalAddEditFormKeys.DESCRIPTION]: FormControl<string | undefined>;
 }
