@@ -3,8 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, map, Observable, of } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { SavingGoalRequest } from '../models';
+import { environment } from '../../app/environments/environment.development';
+import { SavingGoal } from '../models/saving-goal.model';
 
 @Injectable({ providedIn: 'root' })
 export class SavingGoalApiService {
@@ -24,6 +25,10 @@ export class SavingGoalApiService {
         return of(false);
       })
     );
+  }
+
+  public getGoalList(): Observable<SavingGoal[]> {
+    return this.httpClient.get<SavingGoal[]>(`${this.baseApiUrl}`);
   }
 
   public updateGoal(savingGoalId: number, request: SavingGoalRequest): Observable<boolean> {

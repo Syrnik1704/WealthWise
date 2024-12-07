@@ -10,7 +10,7 @@
           Email jest wymagane
         }
         @if (this.userForm.get('email')?.hasError('email')) {
-          Wprowadź prawidłowy adres email, np. jan.kowalski&#64;email.pl.
+          Wprowadź prawidłowy adres email, np. jan.kowalski&#64;email.com.
         }
         @if (this.userForm.get('email')?.hasError('serverErrorEmail')) {
           {{ this.userForm.get('email')?.getError('serverErrorEmail') }}

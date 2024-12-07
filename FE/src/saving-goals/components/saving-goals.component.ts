@@ -8,16 +8,18 @@ import { SavingGoal, SavingGoalRequest } from '../models';
 import { SavingGoalApiService } from '../services';
 import { GoalAddEditDialogContent } from './goal-add-edit-modal/goal-add-edit-modal-content.model';
 import { GoalAddEditModalComponent } from './goal-add-edit-modal/goal-add-edit-modal.component';
+import { SavingGoalListComponent } from "./saving-goal-list/saving-goal-list.component";
 
 @Component({
   selector: 'ww-saving-goals',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, TranslateModule],
+  imports: [MatButtonModule, TranslateModule, SavingGoalListComponent],
   template: `
-    <button mat-raised-button (click)="addGoal()">
+    <ww-saving-goal-list></ww-saving-goal-list>
+    <!-- <button mat-raised-button (click)="addGoal()">
       {{ 'SAVING_GOAL.ADD_GOAL' | translate }}
-    </button>
+    </button> -->
   `,
   styles: ``,
 })
