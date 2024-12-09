@@ -19,7 +19,7 @@ public class EmailServiceTest {
 
         // When
         try {
-            emailService.sendTestEmail(user);
+            emailService.sendEmail(user.getEmail(), "Test WealthWise email", "static/email_template.html");
             emailSentWithSuccess = true;
         } catch (Exception e) {
             System.err.println("Błąd podczas wysyłania e-maila:");
