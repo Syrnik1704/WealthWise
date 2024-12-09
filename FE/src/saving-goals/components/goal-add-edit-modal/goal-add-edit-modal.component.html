@@ -1,43 +1,59 @@
-<h2 mat-dialog-title>
-  {{ ('SAVING_GOAL_MODAL.HEADER.' + content.isEdit ? 'EDIT' : 'ADD') | translate }}
-</h2>
-<mat-dialog-content class="mat-typography">
-  <form *ngIf="modelForm" [formGroup]="modelForm">
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }}</mat-label>
-      <input matInput [formControlName]="GoalAddEditFormKeys.TITLE" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.AMOUNT' | translate }}</mat-label>
-      <input matInput [formControlName]="GoalAddEditFormKeys.AMOUNT" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.DATE' | translate }}</mat-label>
-      <input matInput [formControlName]="GoalAddEditFormKeys.DATE" [matDatepicker]="picker" />
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.CURRENT_AMOUNT' | translate }}</mat-label>
-      <input matInput [formControlName]="GoalAddEditFormKeys.CURRENT_AMOUNT" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.DESCRIPTION' | translate }}</mat-label>
-      <textarea matInput [formControlName]="GoalAddEditFormKeys.DESCRIPTION"></textarea>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT_AMOUNT' | translate }}</mat-label>
-      <input matInput [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT_INTERVAL' | translate }}</mat-label>
-      <input matInput [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL" />
-    </mat-form-field>
-  </form>
+<h1 mat-dialog-title>
+  {{ 'SAVING_GOAL_MODAL.HEADER.' + (content.isEdit ? 'EDIT' : 'ADD') | translate }}
+</h1>
+<mat-dialog-content>
+  @if (modelForm) {
+    <form class="saving-goal-form" [formGroup]="modelForm">
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }}</mat-label>
+        <input matInput [formControlName]="GoalAddEditFormKeys.TITLE" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.AMOUNT' | translate }}</mat-label>
+        <input matInput [formControlName]="GoalAddEditFormKeys.AMOUNT" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.DATE' | translate }}</mat-label>
+        <input matInput [formControlName]="GoalAddEditFormKeys.DATE" [matDatepicker]="picker" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.CURRENT_AMOUNT' | translate }}</mat-label>
+        <input matInput [formControlName]="GoalAddEditFormKeys.CURRENT_AMOUNT" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.DESCRIPTION' | translate }}</mat-label>
+        <textarea matInput [formControlName]="GoalAddEditFormKeys.DESCRIPTION"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT_AMOUNT' | translate }}</mat-label>
+        <input matInput [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT_INTERVAL' | translate }}</mat-label>
+        <mat-select [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL">
+          <mat-option>-</mat-option>
+          @for (interval of intervalService.intervalOptions(); track interval) {
+            <mat-option [value]="interval">
+              @if (interval && interval?.label) {
+                {{ interval.label | translate }}
+              }
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </form>
+  }
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>{{ 'COMMON.BUTTONS.CANCEL' | translate }}</button>
-  <button mat-button [disabled]="modelForm?.invalid || modelForm?.pristine" (click)="saveForm()">
-    {{ 'COMMON.BUTTONS.SAVE' | translate }}
-  </button>
+<mat-dialog-actions>
+  <div class="saving-goal-actions">
+    <button mat-button (click)="onCancel()">{{ 'COMMON.BUTTONS.CANCEL' | translate }}</button>
+    <button
+      mat-raised-button
+      [disabled]="modelForm?.invalid || modelForm?.pristine"
+      (click)="saveForm()">
+      {{ 'COMMON.BUTTONS.SAVE' | translate }}
+    </button>
+  </div>
 </mat-dialog-actions>

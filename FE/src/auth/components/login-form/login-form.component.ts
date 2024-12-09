@@ -10,9 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ILogin } from '../../../auth/models/ILogin';
-import { IErrorAPIModel } from '../../models/IErrorAPIModel';
 import { AuthService } from '../../../auth/services/auth.service';
-
+import { IErrorAPIModel } from '../../models/IErrorAPIModel';
 
 @Component({
   selector: 'ww-login',
@@ -80,10 +79,14 @@ export class LoginFormComponent implements OnInit {
       next: () => {
         this.snackBar.open('Zostałeś zalogowany', '', {
           duration: 5000,
-          panelClass: ['custom-snackbar'],
+          panelClass: ['success-toast'],
         });
       },
       error: (err: IErrorAPIModel) => {
+        this.snackBar.open('Wrong email or password provided', '', {
+          duration: 5000,
+          panelClass: ['error-toast'],
+        });
         console.log(this.userForm, err);
       },
     });

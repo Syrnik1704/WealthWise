@@ -1,59 +1,64 @@
-import { Dialog } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, switchMap } from 'rxjs';
-import { SavingGoal, SavingGoalRequest } from '../models';
+import { SavingGoalRequest } from '../models';
 import { SavingGoalApiService } from '../services';
 import { GoalAddEditDialogContent } from './goal-add-edit-modal/goal-add-edit-modal-content.model';
 import { GoalAddEditModalComponent } from './goal-add-edit-modal/goal-add-edit-modal.component';
-import { SavingGoalListComponent } from "./saving-goal-list/saving-goal-list.component";
+import { SavingGoalListComponent } from './saving-goal-list/saving-goal-list.component';
 
 @Component({
   selector: 'ww-saving-goals',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonModule, TranslateModule, SavingGoalListComponent],
+  imports: [MatButtonModule, TranslateModule, SavingGoalListComponent, MatDialogModule],
   template: `
-    <ww-saving-goal-list></ww-saving-goal-list>
-    <!-- <button mat-raised-button (click)="addGoal()">
+    <button mat-raised-button (click)="addGoal()">
       {{ 'SAVING_GOAL.ADD_GOAL' | translate }}
-    </button> -->
+    </button>
+    <ww-saving-goal-list #savingGoalList></ww-saving-goal-list>
   `,
-  styles: ``,
+  styles: `
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-top: 16px;
+    }
+  `,
 })
 export class SavingGoalsComponent {
-  private readonly dialogService = inject(Dialog);
+  @ViewChild('savingGoalList')
+  protected readonly savingGoalList?: SavingGoalListComponent;
+  private readonly dialogService = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
   private readonly savingGoalApiService = inject(SavingGoalApiService);
 
   protected addGoal(): void {
-    this.openDialog(false);
-  }
-
-  private openDialog(isEdit: boolean, savingGoal?: SavingGoal): void {
     const dialogData: GoalAddEditDialogContent = {
-      isEdit,
-      savingGoal,
+      isEdit: false,
     };
-    const dialogRef = this.dialogService.open<SavingGoalRequest>(GoalAddEditModalComponent, {
+    const dialogRef = this.dialogService.open<
+      GoalAddEditModalComponent,
+      GoalAddEditDialogContent,
+      SavingGoalRequest
+    >(GoalAddEditModalComponent, {
       hasBackdrop: true,
       closeOnNavigation: true,
-      closeOnDestroy: true,
       data: dialogData,
+      maxWidth: '100vw',
+      minWidth: '40vw',
     });
 
-    dialogRef.closed
+    dialogRef
+      .afterClosed()
       .pipe(
         switchMap(result => {
           if (!result) {
             return of(false);
-          }
-          if (isEdit) {
-            return savingGoal
-              ? this.savingGoalApiService.updateGoal(savingGoal?.targetId, savingGoal)
-              : of(false);
           }
           return this.savingGoalApiService.addGoal(result);
         }),
@@ -61,7 +66,7 @@ export class SavingGoalsComponent {
       )
       .subscribe(result => {
         if (result) {
-          //TODO: refresh table
+          this.savingGoalList?.refreshTable();
         }
       });
   }

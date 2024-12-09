@@ -3,6 +3,7 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 @import '../m3-theme.scss';
+@import '@angular/cdk/overlay-prebuilt.css';
 
 html,
 body {
@@ -18,7 +19,7 @@ body {
   font-style: normal;
 }
 
-html{
+html {
   @include mat.all-component-themes($dark-theme);
 }
 
@@ -34,9 +35,21 @@ body {
 }
 
 .mat-mdc-simple-snack-bar {
-  background: rgb(0, 94, 0) !important;
+  color: white;
   border-radius: 5px;
   &.mat-mdc-snack-bar-container {
     margin: 0 !important;
   }
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface.mdc-snackbar__surface {
+  background-color: inherit;
+}
+
+.success-toast {
+  background: rgb(0, 94, 0) !important;
+}
+
+.error-toast {
+  background: rgb(94, 0, 0) !important;
 }

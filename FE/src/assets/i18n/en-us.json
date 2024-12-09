@@ -23,6 +23,12 @@
     "GALLERY": {
       "NEXT": "Next",
       "PREV": "Previous"
+    },
+    "BUTTONS": {
+      "EDIT": "Edit",
+      "SAVE": "Save",
+      "REMOVE": "Remove",
+      "CANCEL": "Cancel"
     }
   },
   "LOGIN_FORM": {
@@ -56,13 +62,25 @@
       "AMOUNT": "Amount",
       "DESCRIPTION": "Description",
       "CYCLICAL_PAYMENT_AMOUNT": "Cyclical Payment Amount",
-      "CYCLICAL_PAYMENT_INTERVAL": "Cyclical Payment Interval"
+      "CYCLICAL_PAYMENT_INTERVAL": "Cyclical Payment Interval",
+      "TARGET_DATE": "Target date",
+      "CYCLICAL_PAYMENT": "Cyclical Payment",
+      "OCCURS": " occurs "
     },
     "TOAST": {
       "SUCCESS_ADD": "Saving Goal {{name}} created successfully",
       "SUCCESS_UPDATE": "Saving Goal {{name}} updated successfully",
+      "SUCCESS_REMOVE": "Saving Goal {{name}} removed successfully",
+      "ERROR_REMOVE": "Error occur {{error}}. Cannot remove saving goal {{name}}",
       "ERROR_ADD": "Error occur {{error}}. Cannot add saving goal {{name}}",
       "ERROR_UPDATE": "Error occur {{error}}. Cannot update saving goal {{name}}"
+    },
+    "ADD_GOAL": "Add goal"
+  },
+  "SAVING_GOAL_MODAL": {
+    "HEADER": {
+      "ADD": "Add",
+      "EDIT": "Edit"
     }
   }
 }

@@ -1,6 +1,5 @@
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
-import { NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
@@ -9,12 +8,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
-import { LabeledValue } from '../../../shared';
+import { IntervalService, LabeledValue } from '../../../shared';
 import { SavingGoalRequest } from '../../models';
 import { GoalAddEditForm, GoalAddEditFormKeys } from './goal-add-edit-form.model';
 import { GoalAddEditDialogContent } from './goal-add-edit-modal-content.model';
@@ -29,31 +30,54 @@ import { GoalAddEditDialogContent } from './goal-add-edit-modal-content.model';
     MatInput,
     MatLabel,
     TranslateModule,
-    NgIf,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
+  providers: [provideNativeDateAdapter()],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './goal-add-edit-modal.component.html',
+  styles: [
+    `
+      .saving-goal-form {
+        display: flex;
+        gap: 24px;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .saving-goal-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+      }
+    `,
+  ],
 })
 export class GoalAddEditModalComponent implements OnInit {
   protected modelForm?: FormGroup<GoalAddEditForm>;
   protected readonly GoalAddEditFormKeys = GoalAddEditFormKeys;
-  protected content: GoalAddEditDialogContent = inject(DIALOG_DATA);
-  private dialogRef = inject<DialogRef<SavingGoalRequest | undefined>>(
-    DialogRef<SavingGoalRequest | undefined>
+  protected content: GoalAddEditDialogContent = inject(MAT_DIALOG_DATA);
+  protected readonly intervalService = inject(IntervalService);
+  private dialogRef = inject<MatDialogRef<SavingGoalRequest | undefined>>(
+    MatDialogRef<SavingGoalRequest | undefined>
   );
   private readonly formBuilder = inject(FormBuilder);
-  private readonly intervalMap: Record<string, string> = {
-    '0 0 10 * * *': 'SAVING_GOAL.INTERVAL.DAILY',
-    '0 0 10 */2 * *': 'SAVING_GOAL.INTERVAL.EVERY_TWO_DAYS',
-    '0 0 10 * * MON': 'SAVING_GOAL.INTERVAL.WEEKLY',
-    '0 0 10 */14 * *': 'SAVING_GOAL.INTERVAL.BIWEEKLY',
-    '0 0 10 1 * *': 'SAVING_GOAL.INTERVAL.MONTHLY',
-  };
+  private readonly destroyRef = inject(DestroyRef);
 
   public ngOnInit(): void {
     this.initFormModel();
+    this.modelForm?.controls[GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT].valueChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(value => {
+        if (value) {
+          this.modelForm?.controls[GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL].enable();
+        } else {
+          this.modelForm?.controls[GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL].disable();
+        }
+      });
   }
 
   protected saveForm(): void {
@@ -61,6 +85,10 @@ export class GoalAddEditModalComponent implements OnInit {
       return;
     }
     this.dialogRef.close(this.prepareReuestData());
+  }
+
+  protected onCancel(): void {
+    this.dialogRef.close();
   }
 
   private prepareReuestData(): SavingGoalRequest | undefined {
@@ -104,19 +132,15 @@ export class GoalAddEditModalComponent implements OnInit {
       ),
       [GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT]: new FormControl<number | undefined>(
         this.content.savingGoal?.cyclicalPaymentAmount,
-        { nonNullable: true }
+        { nonNullable: true, validators: [Validators.min(1)] }
       ),
       [GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL]: new FormControl<LabeledValue | undefined>(
-        this.getInterval(this.content.savingGoal?.cyclicalPaymentCron),
+        {
+          value: this.intervalService.getInterval(this.content.savingGoal?.cyclicalPaymentCron),
+          disabled: !this.content.savingGoal?.cyclicalPaymentAmount,
+        },
         { nonNullable: true }
       ),
     });
-  }
-
-  private getInterval(cronPattern?: string): LabeledValue | undefined {
-    if (!cronPattern || !this.intervalMap[cronPattern]) {
-      return;
-    }
-    return { label: this.intervalMap[cronPattern], value: cronPattern };
   }
 }

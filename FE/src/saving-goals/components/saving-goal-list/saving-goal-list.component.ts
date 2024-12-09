@@ -1,62 +1,30 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  OnInit,
-} from '@angular/core';
-import { SavingGoalApiService } from '../../services/saving-goal-api.service';
-import { SavingGoal } from '../../models';
-import { MatTableModule } from '@angular/material/table';
-import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatListModule } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
+import { IntervalService } from '../../../shared';
+import { SavingGoal } from '../../models';
+import { SavingGoalApiService } from '../../services/saving-goal-api.service';
 
 @Component({
   selector: 'ww-saving-goal-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatTableModule,
-    TranslateModule,
-    CommonModule
-  ],
+  imports: [MatListModule, TranslateModule, CommonModule, DatePipe],
   templateUrl: './saving-goal-list.component.html',
   styleUrl: './saving-goal-list.component.scss',
-  providers: [DatePipe],
 })
-export class SavingGoalListComponent implements OnInit {
-  private readonly cdr = inject(ChangeDetectorRef);
+export class SavingGoalListComponent {
   private readonly savingGoalApiService = inject(SavingGoalApiService);
-  protected savingGoalsData: SavingGoal[] = [];
+  protected readonly intervalService = inject(IntervalService);
+  protected savingGoalsData$: Observable<SavingGoal[]> = this.getTableData();
 
-  protected savingGoalsColumns: string[] = [
-    'targetTitle',
-    'targetAmount',
-    'cyclicalPaymentAmount',
-    'currentAmount',
-    'targetDate',
-  ];
+  public refreshTable(): void {
+    this.savingGoalsData$ = this.getTableData();
+  }
 
-  protected savingGoalsHeaders: string[] = [
-    'TITLE',
-    'AMOUNT',
-    'CYCLICAL_PAYMENT_AMOUNT',
-    'CURRENT_AMOUNT',
-    'DATE',
-  ];
-
-  protected displayedColumns: string[] = this.savingGoalsColumns;
-
-  ngOnInit(): void {
-    this.savingGoalApiService.getGoalList().subscribe({
-      next: (data: SavingGoal[]) => {
-        this.savingGoalsData = data;
-        this.cdr.markForCheck();
-        console.log(data);
-      },
-      error: err => {
-        console.error(err);
-      },
-    });
+  private getTableData(): Observable<SavingGoal[]> {
+    return this.savingGoalApiService.getGoalList();
   }
 }
