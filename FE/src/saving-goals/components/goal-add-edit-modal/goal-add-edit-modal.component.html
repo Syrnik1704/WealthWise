@@ -34,7 +34,7 @@
         <mat-label>{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT_INTERVAL' | translate }}</mat-label>
         <mat-select [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL">
           <mat-option>-</mat-option>
-          @for (interval of intervalService.intervalOptions(); track interval) {
+          @for (interval of intervalOptions; track interval) {
             <mat-option [value]="interval">
               @if (interval && interval?.label) {
                 {{ interval.label | translate }}

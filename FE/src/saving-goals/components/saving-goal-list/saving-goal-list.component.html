@@ -1,27 +1,31 @@
-<mat-list>
+<mat-list class="saving-goal-list">
   @for (savingGoal of savingGoalsData$ | async; track savingGoal) {
-    <mat-list-item>
-      <div matListItemTitle>
-        <span>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }} {{ savingGoal.targetTitle }}</span>
-        <span>{{ savingGoal.currentAmount }}/{{ savingGoal.targetAmount }}</span>
-        <span
-          >{{ 'SAVING_GOAL.TABLE.TARGET_DATE' | translate }}
-          {{ savingGoal.targetDate | date }}</span
-        >
-      </div>
-      <div class="lower-line">
-        <span *ngIf="savingGoal.cyclicalPaymentAmount">
+    <mat-card class="saving-goal-list__item" appearance="outlined">
+      <mat-card-content>
+        <div class="first-line h5">
+          <span class="first-line__header"
+            ><div>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }}: {{ savingGoal.targetTitle }}</div>
+            <div>{{ savingGoal.currentAmount }}/{{ savingGoal.targetAmount }} PLN</div>
+          </span>
           <span
-            >{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT' | translate }}
-            {{ savingGoal.cyclicalPaymentAmount }}</span
+            >{{ 'SAVING_GOAL.TABLE.TARGET_DATE' | translate }}
+            {{ savingGoal.targetDate | date }}</span
           >
-          <span
-            >{{ 'SAVING_GOAL.TABLE.OCCURS' | translate }}
-            {{ intervalService.getInterval(savingGoal.cyclicalPaymentCron) }}</span
-          >
-        </span>
-        <span *ngIf="savingGoal.description">{{ savingGoal.description }}</span>
-      </div>
-    </mat-list-item>
+        </div>
+        <div class="lower-line h6">
+          <span *ngIf="savingGoal.cyclicalPaymentAmount">
+            <span
+              >{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT' | translate }}
+              {{ savingGoal.cyclicalPaymentAmount }} PLN</span
+            >
+            <span *ngIf="savingGoal.cyclicalPaymentCron"
+              >{{ 'SAVING_GOAL.TABLE.OCCURS' | translate }}
+              {{ intervalService.getLabel(savingGoal.cyclicalPaymentCron) | translate }}</span
+            >
+          </span>
+          <span *ngIf="savingGoal.description">{{ savingGoal.description }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
   }
 </mat-list>

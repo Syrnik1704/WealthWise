@@ -13,6 +13,9 @@ export class IntervalService {
   public intervalOptions() {
     return Object.keys(this.intervalMap).map(this.getInterval.bind(this));
   }
+  public getLabel(cronPattern: string): string {
+    return this.intervalMap[cronPattern];
+  }
   public getInterval(cronPattern?: string): LabeledValue | undefined {
     if (!cronPattern || !this.intervalMap[cronPattern]) {
       return;

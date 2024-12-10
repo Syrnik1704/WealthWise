@@ -27,6 +27,8 @@ import { SavingGoalListComponent } from './saving-goal-list/saving-goal-list.com
       flex-direction: column;
       gap: 24px;
       padding-top: 16px;
+      padding-left: 4px;
+      padding-right: 4px;
     }
   `,
 })

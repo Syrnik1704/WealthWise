@@ -66,6 +66,7 @@ export class GoalAddEditModalComponent implements OnInit {
   );
   private readonly formBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
+  protected intervalOptions = this.intervalService.intervalOptions();
 
   public ngOnInit(): void {
     this.initFormModel();
