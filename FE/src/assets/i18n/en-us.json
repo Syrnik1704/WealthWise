@@ -17,6 +17,10 @@
     },
     "ERRORS": {
       "REQUIRED": "{{value}} is required",
+      "MIN_LENGTH": "Provided value is too short. Minmum length {{minlength}}",
+      "MAX_LENGTH": "Provided value is too long. Maximum length {{maxlength}}",
+      "MIN": "Provided value is too samll. Minmum {{min}}",
+      "MAX": "Provided value is too big. Maximum {{max}}",
       "INVALID_EMAIL": "Please enter a valid email addres",
       "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password"
     },

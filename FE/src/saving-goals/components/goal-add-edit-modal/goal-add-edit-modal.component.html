@@ -7,16 +7,71 @@
       <mat-form-field>
         <mat-label>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }}</mat-label>
         <input matInput [formControlName]="GoalAddEditFormKeys.TITLE" />
+        @if (modelForm.controls[GoalAddEditFormKeys.TITLE].hasError('required')) {
+          <mat-error>{{
+            'COMMON.ERRORS.REQUIRED' | translate: { value: 'SAVING_GOAL.TABLE.TITLE' | translate }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[GoalAddEditFormKeys.TITLE].hasError('minlength')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MIN_LENGTH'
+              | translate
+                : {
+                    minlength:
+                      modelForm.controls[GoalAddEditFormKeys.TITLE].errors?.['minlength']
+                        .requiredLength,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[GoalAddEditFormKeys.TITLE].hasError('maxlength')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MAX_LENGTH'
+              | translate
+                : {
+                    minlength:
+                      modelForm.controls[GoalAddEditFormKeys.TITLE].errors?.['maxlength']
+                        .requiredLength,
+                  }
+          }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ 'SAVING_GOAL.TABLE.AMOUNT' | translate }}</mat-label>
         <input matInput [formControlName]="GoalAddEditFormKeys.AMOUNT" />
+        @if (modelForm.controls[GoalAddEditFormKeys.AMOUNT].hasError('min')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MIN'
+              | translate
+                : {
+                    min: modelForm.controls[GoalAddEditFormKeys.AMOUNT].errors?.['min'].min,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[GoalAddEditFormKeys.AMOUNT].hasError('max')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MAX'
+              | translate
+                : {
+                    max: modelForm.controls[GoalAddEditFormKeys.AMOUNT].errors?.['max'].max,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[GoalAddEditFormKeys.AMOUNT].hasError('required')) {
+          <mat-error>{{
+            'COMMON.ERRORS.REQUIRED' | translate: { value: 'SAVING_GOAL.TABLE.AMOUNT' | translate }
+          }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ 'SAVING_GOAL.TABLE.DATE' | translate }}</mat-label>
         <input matInput [formControlName]="GoalAddEditFormKeys.DATE" [matDatepicker]="picker" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        @if (modelForm.controls[GoalAddEditFormKeys.DATE].hasError('required')) {
+          <mat-error>{{
+            'COMMON.ERRORS.REQUIRED' | translate: { value: 'SAVING_GOAL.TABLE.DATE' | translate }
+          }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ 'SAVING_GOAL.TABLE.CURRENT_AMOUNT' | translate }}</mat-label>
@@ -25,6 +80,17 @@
       <mat-form-field>
         <mat-label>{{ 'SAVING_GOAL.TABLE.DESCRIPTION' | translate }}</mat-label>
         <textarea matInput [formControlName]="GoalAddEditFormKeys.DESCRIPTION"></textarea>
+        @if (modelForm.controls[GoalAddEditFormKeys.DESCRIPTION].hasError('maxlength')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MAX_LENGTH'
+              | translate
+                : {
+                    maxlength:
+                      modelForm.controls[GoalAddEditFormKeys.DESCRIPTION].errors?.['maxlength']
+                        .requiredLength,
+                  }
+          }}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT_AMOUNT' | translate }}</mat-label>
