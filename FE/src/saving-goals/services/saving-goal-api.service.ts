@@ -45,16 +45,18 @@ export class SavingGoalApiService {
   }
 
   public removeGoal(savingGoalId: number, savingGoalTitle: string) {
-    return this.httpClient.delete(`${this.baseApiUrl}/${savingGoalId}`).pipe(
-      map(() => {
-        this.openGoalToast(true, 'REMOVED', savingGoalTitle);
-        return true;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.openGoalToast(false, 'REMOVED', savingGoalTitle, error.error);
-        return of(false);
-      })
-    );
+    return this.httpClient
+      .delete(`${this.baseApiUrl}/${savingGoalId}`, { responseType: 'text' })
+      .pipe(
+        map(() => {
+          this.openGoalToast(true, 'REMOVED', savingGoalTitle);
+          return true;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.openGoalToast(false, 'REMOVED', savingGoalTitle, error.error);
+          return of(false);
+        })
+      );
   }
 
   private openGoalToast(isSuccess: boolean, action: string, name: string, error?: string): void {

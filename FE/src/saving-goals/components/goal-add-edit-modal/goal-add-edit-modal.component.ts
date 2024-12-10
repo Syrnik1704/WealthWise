@@ -137,7 +137,9 @@ export class GoalAddEditModalComponent implements OnInit {
       ),
       [GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL]: new FormControl<LabeledValue | undefined>(
         {
-          value: this.intervalService.getInterval(this.content.savingGoal?.cyclicalPaymentCron),
+          value: this.intervalOptions.find(
+            interval => interval?.value === this.content.savingGoal?.cyclicalPaymentCron
+          ),
           disabled: !this.content.savingGoal?.cyclicalPaymentAmount,
         },
         { nonNullable: true }

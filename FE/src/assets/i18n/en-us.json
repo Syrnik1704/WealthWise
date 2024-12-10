@@ -28,7 +28,9 @@
       "EDIT": "Edit",
       "SAVE": "Save",
       "REMOVE": "Remove",
-      "CANCEL": "Cancel"
+      "CANCEL": "Cancel",
+      "CONFIRM": "Confirm",
+      "REJECT": "Reject"
     }
   },
   "LOGIN_FORM": {
@@ -70,12 +72,18 @@
     "TOAST": {
       "SUCCESS_ADD": "Saving Goal {{name}} created successfully",
       "SUCCESS_UPDATE": "Saving Goal {{name}} updated successfully",
-      "SUCCESS_REMOVE": "Saving Goal {{name}} removed successfully",
-      "ERROR_REMOVE": "Error occur {{error}}. Cannot remove saving goal {{name}}",
+      "SUCCESS_REMOVED": "Saving Goal {{name}} removed successfully",
+      "ERROR_REMOVED": "Error occur {{error}}. Cannot remove saving goal {{name}}",
       "ERROR_ADD": "Error occur {{error}}. Cannot add saving goal {{name}}",
       "ERROR_UPDATE": "Error occur {{error}}. Cannot update saving goal {{name}}"
     },
-    "ADD_GOAL": "Add goal"
+    "ADD_GOAL": "Add goal",
+    "MODALS": {
+      "REMOVE": {
+        "HEADER": "Remove goal",
+        "MESSAGE": "Are you sure you want to remove saving goal: "
+      }
+    }
   },
   "SAVING_GOAL_MODAL": {
     "HEADER": {
