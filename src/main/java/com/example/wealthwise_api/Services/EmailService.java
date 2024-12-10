@@ -17,14 +17,15 @@ public class EmailService {
 
     private final EmailConfig emailConfig;
 
-    public void sendTestEmail(UserEntity user) {
+    public void sendEmail(String userEmail, String subject, String htmlTemplatePath) {
         try {
-            ClassPathResource resource = new ClassPathResource("static/email_template.html");
+            ClassPathResource resource = new ClassPathResource(htmlTemplatePath);
             InputStream inputStream = resource.getInputStream();
             String html = new Scanner(inputStream, StandardCharsets.UTF_8).useDelimiter("\\A").next();
-            emailConfig.sendEmail(user.getEmail(), "Test Email", html, true);
+            emailConfig.sendEmail(userEmail, subject, html, true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 }
