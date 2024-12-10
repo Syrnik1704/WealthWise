@@ -1,0 +1,31 @@
+.saving-goal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  &__item {
+    border-width: 2px;
+
+    .content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .first-line {
+      display: flex;
+      gap: 8px;
+      flex-direction: column;
+      &__header {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    .lower-line {
+      display: flex;
+      gap: 4px;
+      flex-direction: column;
+    }
+  }
+}

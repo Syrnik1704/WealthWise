@@ -9,9 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ILogin } from '../../models/authentication/ILogin';
+import { ILogin } from '../../../auth/models/ILogin';
+import { AuthService } from '../../../auth/services/auth.service';
 import { IErrorAPIModel } from '../../models/IErrorAPIModel';
-import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'ww-login',
@@ -27,10 +27,10 @@ import { AuthService } from '../../services/auth/auth.service';
     MatCheckboxModule,
     MatInputModule,
   ],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginFormComponent implements OnInit {
   constructor(
     private authService: AuthService,
     @Inject(Router) private router: Router,
@@ -79,10 +79,14 @@ export class LoginComponent implements OnInit {
       next: () => {
         this.snackBar.open('Zostałeś zalogowany', '', {
           duration: 5000,
-          panelClass: ['custom-snackbar'],
+          panelClass: ['success-toast'],
         });
       },
       error: (err: IErrorAPIModel) => {
+        this.snackBar.open('Wrong email or password provided', '', {
+          duration: 5000,
+          panelClass: ['error-toast'],
+        });
         console.log(this.userForm, err);
       },
     });

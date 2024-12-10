@@ -3,9 +3,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store } from '@ngxs/store';
 import { ReplaySubject } from 'rxjs';
-import { AuthService } from '../../app/services/auth/auth.service';
+
 import { User, UserSelectors } from '../../shared';
 import { MenuItem } from '../components/menu/menu-item';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class MenuItemService {

@@ -1,0 +1,51 @@
+<mat-list class="saving-goal-list">
+  @for (savingGoal of savingGoalsData$ | async; track savingGoal) {
+    <mat-card class="saving-goal-list__item" appearance="outlined">
+      <mat-card-content class="content">
+        <div class="col-11">
+          <div class="first-line h5">
+            <span class="first-line__header"
+              ><div>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }}: {{ savingGoal.targetTitle }}</div>
+              <div>{{ savingGoal.currentAmount }}/{{ savingGoal.targetAmount }} PLN</div>
+            </span>
+            <span
+              >{{ 'SAVING_GOAL.TABLE.TARGET_DATE' | translate }}
+              {{ savingGoal.targetDate | date }}</span
+            >
+          </div>
+          <div class="lower-line h6">
+            <span *ngIf="savingGoal.cyclicalPaymentAmount">
+              <span
+                >{{ 'SAVING_GOAL.TABLE.CYCLICAL_PAYMENT' | translate }}
+                {{ savingGoal.cyclicalPaymentAmount }} PLN</span
+              >
+              <span *ngIf="savingGoal.cyclicalPaymentCron"
+                >{{ 'SAVING_GOAL.TABLE.OCCURS' | translate }}
+                {{ intervalService.getLabel(savingGoal.cyclicalPaymentCron) | translate }}</span
+              >
+            </span>
+            <span *ngIf="savingGoal.description">{{ savingGoal.description }}</span>
+          </div>
+        </div>
+        <div class="col-1 saving-goal-list__actions">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editGoal(savingGoal)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'COMMON.BUTTONS.EDIT' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="removeGoal(savingGoal)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'COMMON.BUTTONS.REMOVE' | translate }}</span>
+            </button>
+          </mat-menu>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</mat-list>

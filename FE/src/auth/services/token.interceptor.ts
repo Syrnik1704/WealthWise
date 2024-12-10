@@ -3,7 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
 import { Observable, of, throwError, iif } from 'rxjs';
 import { catchError, switchMap, filter, first, map, skip } from 'rxjs/operators';
 import { AuthService } from './auth.service';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../app/environments/environment.development';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
