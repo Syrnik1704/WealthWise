@@ -1,13 +1,11 @@
 package com.example.wealthwise_api.DAO;
 
-import com.example.wealthwise_api.DTO.ExpensesResponse;
-import com.example.wealthwise_api.DTO.MonthlySummaryResponse;
 import com.example.wealthwise_api.Entity.Expenses;
 import com.example.wealthwise_api.Repository.ExpensesRepository;
 import jakarta.persistence.Tuple;
 import org.springframework.stereotype.Repository;
 
-import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 @Repository("expensesJPA")
@@ -25,27 +23,27 @@ public class ExpensesJPADataAccessService implements ExpensesDAO{
     }
 
     @Override
-    public boolean exists(long userId) {
-        return expensesRepository.checkIfExpensesExistInCurrentMonth(userId);
+    public void delete(Expenses expenses) {
+        expensesRepository.delete(expenses);
     }
 
     @Override
-    public List<Expenses> getExpensesByUserId(Long userId) {
-        return expensesRepository.getFewLastExpensesByUserId(userId);
+    public List<Expenses> findExpensesByUser(long userID) {
+        return expensesRepository.findExpensesByUser(userID);
     }
 
     @Override
-    public List<Tuple> getExpensesForEachCategoryByMonth(Long userId) {
-        return expensesRepository.getExpensesForEachCategoryByMonth(userId);
+    public Expenses findExpensesByUserAndIdExpenses(long userID, long idExpenses) {
+        return expensesRepository.findExpensesByUserAndIdExpenses(userID, idExpenses);
     }
 
     @Override
-    public double getSumOfExpensesByUserId(Long userId) {
-        return expensesRepository.getSumOfExpensesByUserId(userId);
+    public boolean checkExpensesExists(List<Long> idExpenses) {
+        return expensesRepository.checkExpensesExists(idExpenses, idExpenses.size());
     }
 
     @Override
-    public List<Tuple> getMonthlySummary(Long userId) {
-        return expensesRepository.getMonthlySummary(userId);
+    public List<Expenses> findExpensesInDateRangeAndSelectedCategories(long userId, Date startDate, Date endDate, long categoriesId) {
+        return expensesRepository.findExpensesInDateRangeAndSelectedCategories(userId, startDate, endDate, categoriesId);
     }
 }

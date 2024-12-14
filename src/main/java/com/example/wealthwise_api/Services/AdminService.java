@@ -4,6 +4,7 @@ package com.example.wealthwise_api.Services;
 import com.example.wealthwise_api.DAO.CategoriesDAO;
 import com.example.wealthwise_api.DAO.UserDAO;
 import com.example.wealthwise_api.DTO.CategoryRequest;
+import com.example.wealthwise_api.DTO.EditCategoryRequest;
 import com.example.wealthwise_api.DTO.UsersListRequest;
 import com.example.wealthwise_api.Entity.Categories;
 import com.example.wealthwise_api.Entity.Role;
@@ -54,7 +55,7 @@ public class AdminService {
                 List<UserData> userDataResponsesList = userEntityList.stream()
                         .filter(userEntity -> !emailPresentUser.equals(userEntity.getEmail()))
                         .map(userEntity -> new UserData(userEntity.getIdUser(), userEntity.getName(),
-                                userEntity.getSurname(), userEntity.getEmail(), userEntity.getActive(),
+                                userEntity.getSurname(), userEntity.getEmail(), userEntity.getIsActive(),
                                 userEntity.getRole(), userEntity.getBirthDay())).toList();
 
                 return new ResponseEntity<>(userDataResponsesList, HttpStatus.OK);
@@ -79,7 +80,7 @@ public class AdminService {
 
             List<UserEntity> candidateToBlock = userDAO.findAll().stream()
                     .filter(userEntity -> userBlockRequest.getEmails().contains(userEntity.getEmail()))
-                    .filter(UserEntity::getActive)
+                    .filter(UserEntity::getIsActive)
                     .toList();
 
             if (candidateToBlock.isEmpty()) {
@@ -87,7 +88,7 @@ public class AdminService {
             }
 
             candidateToBlock.forEach(userEntity -> {
-                userEntity.setActive(false);
+                userEntity.setIsActive(false);
                 userDAO.save(userEntity);
             });
 
@@ -111,7 +112,7 @@ public class AdminService {
 
             List<UserEntity> candidateToUnblock = userDAO.findAll().stream()
                     .filter(userEntity -> usersUnblockRequest.getEmails().contains(userEntity.getEmail()))
-                    .filter(userEntity -> !userEntity.getActive())
+                    .filter(userEntity -> !userEntity.getIsActive())
                     .toList();
 
             if (candidateToUnblock.isEmpty()) {
@@ -119,7 +120,7 @@ public class AdminService {
             }
 
             candidateToUnblock.forEach(userEntity -> {
-                userEntity.setActive(true);
+                userEntity.setIsActive(true);
                 userDAO.save(userEntity);
             });
 
@@ -174,11 +175,11 @@ public class AdminService {
             }
 
             UserEntity user = userToModify.get();
-            if (userDataRequest.getName() != null ) user.setUsername(userDataRequest.getName());
+            if (userDataRequest.getName() != null ) user.setName(userDataRequest.getName());
             if (userDataRequest.getSurname() != null) user.setSurname(userDataRequest.getSurname());
             if (userDataRequest.getBirthDay() != null) user.setBirthDay(userDataRequest.getBirthDay());
             if (userDataRequest.getRole() != null) user.setRole(userDataRequest.getRole());
-            if (userDataRequest.getIsActive() != null) user.setActive(userDataRequest.getIsActive());
+            if (userDataRequest.getIsActive() != null) user.setIsActive(userDataRequest.getIsActive());
 
             userDAO.save(user);
 
@@ -216,6 +217,61 @@ public class AdminService {
         }
     }
 
+    public ResponseEntity<String> deleteCategory(CategoryRequest categoryRequest, HttpServletRequest request){
+        try{
+            Optional<UserEntity> presentUser = Optional.ofNullable(userDAO.findUserByEmail(getUserEmailFromToken(request)));
+
+            if (presentUser.isEmpty() || presentUser.get().getRole() != Role.ADMIN) {
+                return new ResponseEntity<>("Lack of permissions", HttpStatus.UNAUTHORIZED);
+            }
+
+            if(categoryRequest == null){
+                return new ResponseEntity<>("Lack category name", HttpStatus.BAD_REQUEST);
+            }
+
+            if(!categoriesDAO.exists(categoryRequest.getName())){
+                return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
+            }
+
+            Categories categoryToDelete = categoriesDAO.findByName(categoryRequest.getName());
+
+            categoriesDAO.delete(categoryToDelete);
+
+            return new ResponseEntity<>("Category deleted successfully",HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<String> modifyCategory(EditCategoryRequest categoryRequest, HttpServletRequest request){
+        try{
+            Optional<UserEntity> presentUser = Optional.ofNullable(userDAO.findUserByEmail(getUserEmailFromToken(request)));
+
+            if (presentUser.isEmpty() || presentUser.get().getRole() != Role.ADMIN) {
+                return new ResponseEntity<>("Lack of permissions", HttpStatus.UNAUTHORIZED);
+            }
+
+            if(categoryRequest == null){
+                return new ResponseEntity<>("Lack category name", HttpStatus.BAD_REQUEST);
+            }
+
+            if(!categoriesDAO.exists(categoryRequest.getOldNameCategory())){
+                return new ResponseEntity<>("Category not found", HttpStatus.NOT_FOUND);
+            }
+
+            Categories categoryToModify = categoriesDAO.findByName(categoryRequest.getOldNameCategory());
+
+            categoryToModify.setName(categoryRequest.getNewNameCategory());
+
+            categoriesDAO.save(categoryToModify);
+
+            return new ResponseEntity<>("Category modified successfully",HttpStatus.OK);
+
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 }

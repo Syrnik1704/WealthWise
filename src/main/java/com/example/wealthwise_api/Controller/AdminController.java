@@ -1,7 +1,9 @@
 package com.example.wealthwise_api.Controller;
 import com.example.wealthwise_api.DTO.CategoryRequest;
+import com.example.wealthwise_api.DTO.EditCategoryRequest;
 import com.example.wealthwise_api.DTO.UserData;
 import com.example.wealthwise_api.DTO.UsersListRequest;
+import com.example.wealthwise_api.Entity.Categories;
 import com.example.wealthwise_api.Services.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,6 +52,16 @@ public class AdminController {
     @PostMapping("/addCategory")
     public ResponseEntity<String> addCategory(HttpServletRequest request,@RequestBody CategoryRequest categoryRequest){
         return adminService.addCategory(categoryRequest,request);
+    }
+
+    @DeleteMapping("/deleteCategory")
+    public ResponseEntity<String> deleteCategory(HttpServletRequest request,@RequestBody CategoryRequest categoryRequest){
+        return adminService.deleteCategory(categoryRequest,request);
+    }
+
+    @PutMapping("/modifyCategory")
+    public ResponseEntity<String> modifyCategory(HttpServletRequest request,@RequestBody EditCategoryRequest categoryRequest){
+        return adminService.modifyCategory(categoryRequest,request);
     }
 
 

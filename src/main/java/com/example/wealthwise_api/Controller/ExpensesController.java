@@ -1,17 +1,15 @@
 package com.example.wealthwise_api.Controller;
 
+import com.example.wealthwise_api.DTO.ExpensesDateRangeRequest;
 import com.example.wealthwise_api.DTO.ExpensesRequest;
-import com.example.wealthwise_api.DTO.TokenRequest;
+import com.example.wealthwise_api.Entity.Expenses;
 import com.example.wealthwise_api.Services.ExpensesService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -24,24 +22,33 @@ public class ExpensesController {
         this.expensesService = expensesService;
     }
 
-    @PostMapping(value = "/saveExpense",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveExpenses(@RequestBody ExpensesRequest expensesRequest) {
-        return expensesService.saveExpenses(expensesRequest);
+    @PostMapping("/add")
+    public ResponseEntity<String> addExpenses(HttpServletRequest request, @RequestBody ExpensesRequest expensesRequest){
+        return expensesService.addExpenses(request, expensesRequest);
     }
 
-    @GetMapping(value = "/getExpense",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getExpenses(HttpServletRequest request){
-        return expensesService.getFewLastExpenses(request);
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Expenses>> getAllExpenses(HttpServletRequest request){
+        return expensesService.getAllExpensesOfUsers(request);
     }
 
-    @GetMapping(value = "/getByCategory",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getExpensesForEachCategoryByMonth(HttpServletRequest request){
-        return expensesService.getExpensesForEachCategoryByMonth(request);
+    @GetMapping("/get/{expensesId}")
+    public ResponseEntity<Expenses> getExpensesById(HttpServletRequest request, @PathVariable Long expensesId){
+        return expensesService.getExpenses(request, expensesId);
     }
 
-    @GetMapping(value = "/getMonthlyExpenseAndIncome",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getMonthlyExpenseAndIncome(HttpServletRequest request){
-        return expensesService.getMonthlyIncome(request);
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteExpenses(HttpServletRequest request, @RequestBody List<Long> expensesId){
+        return expensesService.deleteExpenses(request, expensesId);
     }
 
+    @PutMapping("/update/{expensesId}")
+    public ResponseEntity<String> updateExpenses(HttpServletRequest request, @PathVariable Long expensesId ,@RequestBody ExpensesRequest expensesRequest){
+        return expensesService.updateExpenses(request, expensesId ,expensesRequest);
+    }
+
+    @GetMapping("/getByDateRange")
+    public ResponseEntity<List<Expenses>> getExpensesByDateRange(HttpServletRequest request, @RequestBody ExpensesDateRangeRequest expensesDateRangeRequest){
+        return expensesService.getExpensesInDateRangeAndSelectedCategories(request, expensesDateRangeRequest);
+    }
 }

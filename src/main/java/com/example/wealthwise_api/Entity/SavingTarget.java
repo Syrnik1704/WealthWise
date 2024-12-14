@@ -1,11 +1,21 @@
 package com.example.wealthwise_api.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "SavingTargets")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class SavingTarget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +45,10 @@ public class SavingTarget {
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
     private UserEntity userEntity;
-
-    public SavingTarget() {
-    }
 
     public SavingTarget(String targetTitle, BigDecimal targetAmount, LocalDateTime targetDate,
                         BigDecimal cyclicalPaymentAmount, String cyclicalPaymentCron,
@@ -53,86 +61,6 @@ public class SavingTarget {
         this.currentAmount = currentAmount;
         this.creationDate = LocalDateTime.now();
         this.description = description;
-        this.userEntity = userEntity;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
-
-    public String getTargetTitle() {
-        return targetTitle;
-    }
-
-    public void setTargetTitle(String targetTitle) {
-        this.targetTitle = targetTitle;
-    }
-
-    public BigDecimal getTargetAmount() {
-        return targetAmount;
-    }
-
-    public void setTargetAmount(BigDecimal targetAmount) {
-        this.targetAmount = targetAmount;
-    }
-
-    public LocalDateTime getTargetDate() {
-        return targetDate;
-    }
-
-    public void setTargetDate(LocalDateTime targetDate) {
-        this.targetDate = targetDate;
-    }
-
-    public BigDecimal getCyclicalPaymentAmount() {
-        return cyclicalPaymentAmount;
-    }
-
-    public void setCyclicalPaymentAmount(BigDecimal cyclicalPaymentAmount) {
-        this.cyclicalPaymentAmount = cyclicalPaymentAmount;
-    }
-
-    public String getCyclicalPaymentCron() {
-        return cyclicalPaymentCron;
-    }
-
-    public void setCyclicalPaymentCron(String cyclicalPaymentCron) {
-        this.cyclicalPaymentCron = cyclicalPaymentCron;
-    }
-
-    public BigDecimal getCurrentAmount() {
-        return currentAmount;
-    }
-
-    public void setCurrentAmount(BigDecimal currentAmount) {
-        this.currentAmount = currentAmount;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
     }
 }

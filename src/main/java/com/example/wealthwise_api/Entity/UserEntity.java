@@ -1,8 +1,13 @@
 package com.example.wealthwise_api.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +19,10 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserEntity  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,18 +43,19 @@ public class UserEntity  implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private Set<SavingsGoals> savingsGoalsSet;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<SavingTarget> savingTargetSet;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Assets> assetsSet;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Incomes> incomesSet;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userEntity",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<Expenses> expensesSet;
 
@@ -79,60 +89,9 @@ public class UserEntity  implements UserDetails {
         this.role = role;
     }
 
-    public UserEntity() {
-    }
-
-    public long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(String birthDay) {
-        this.birthDay = birthDay;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
@@ -155,42 +114,21 @@ public class UserEntity  implements UserDetails {
         return true;
     }
 
-
     @Override
     public String getUsername() {
         return email;
     }
-
-    public void setUsername(String username) {
-        this.name = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return idUser == that.idUser && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(birthDay, that.birthDay) && Objects.equals(isActive, that.isActive) && role == that.role && Objects.equals(savingsGoalsSet, that.savingsGoalsSet) && Objects.equals(assetsSet, that.assetsSet) && Objects.equals(incomesSet, that.incomesSet) && Objects.equals(expensesSet, that.expensesSet);
+        return idUser == that.idUser && Objects.equals(email, that.email) && Objects.equals(password, that.password) && Objects.equals(name, that.name) && Objects.equals(surname, that.surname) && Objects.equals(birthDay, that.birthDay) && Objects.equals(isActive, that.isActive) && role == that.role && Objects.equals(savingTargetSet, that.savingTargetSet) && Objects.equals(assetsSet, that.assetsSet) && Objects.equals(incomesSet, that.incomesSet) && Objects.equals(expensesSet, that.expensesSet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUser, email, password, name, surname, birthDay, isActive, role, savingsGoalsSet, assetsSet, incomesSet, expensesSet);
+        return Objects.hash(idUser, email, password, name, surname, birthDay, isActive, role, savingTargetSet, assetsSet, incomesSet, expensesSet);
     }
 }
