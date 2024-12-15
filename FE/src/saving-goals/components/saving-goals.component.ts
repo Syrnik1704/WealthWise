@@ -16,6 +16,7 @@ import { SavingGoalListComponent } from './saving-goal-list/saving-goal-list.com
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatButtonModule, TranslateModule, SavingGoalListComponent, MatDialogModule],
   template: `
+    <div class="h1">{{ 'COMMON.SAVING_GOALS' | translate }}</div>
     <button mat-raised-button (click)="addGoal()">
       {{ 'SAVING_GOAL.ADD_GOAL' | translate }}
     </button>

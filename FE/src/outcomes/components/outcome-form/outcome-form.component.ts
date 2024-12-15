@@ -1,11 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  EventEmitter,
   inject,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
@@ -13,11 +17,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
-import { Outcome } from '../../models';
+import { CategoriesApiService } from '../../../shared/services/categories-service';
+import { Outcome, OutcomeRequest } from '../../models';
 import { OutcomeForm, OutcomeFormKeys } from '../../models/outcome-form.model';
 import { OutcomeApiService } from '../../services/outcomes-api.service';
 
@@ -31,132 +38,213 @@ import { OutcomeApiService } from '../../services/outcomes-api.service';
     MatInputModule,
     MatSelectModule,
     TranslateModule,
+    MatButtonModule,
+    MatTooltipModule,
+    AsyncPipe,
   ],
   template: `
     @if (modelForm) {
-      <form class="saving-goal-form" [formGroup]="modelForm">
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.NAME' | translate }}</mat-label>
+      <form class="outcome-form" [formGroup]="modelForm">
+        <mat-form-field class="outcome-form__item">
+          <mat-label>{{ 'OUTCOMES.TABLE.NAME' | translate }}</mat-label>
           <input matInput [formControlName]="OutcomeFormKeys.NAME" />
           @if (modelForm.controls[OutcomeFormKeys.NAME].hasError('required')) {
-            <mat-error>{{
-              'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOME.TABLE.NAME' | translate }
-            }}</mat-error>
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOMES.TABLE.NAME' | translate }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOMES.TABLE.NAME' | translate }
+              }}</mat-error
+            >
           }
           @if (modelForm.controls[OutcomeFormKeys.NAME].hasError('minlength')) {
-            <mat-error>{{
-              'COMMON.ERRORS.MIN_LENGTH'
-                | translate
-                  : {
-                      minlength:
-                        modelForm.controls[OutcomeFormKeys.NAME].errors?.['minlength']
-                          .requiredLength,
-                    }
-            }}</mat-error>
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.MIN_LENGTH'
+                  | translate
+                    : {
+                        minlength:
+                          modelForm.controls[OutcomeFormKeys.NAME].errors?.['minlength']
+                            .requiredLength,
+                      }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.MIN_LENGTH'
+                  | translate
+                    : {
+                        minlength:
+                          modelForm.controls[OutcomeFormKeys.NAME].errors?.['minlength']
+                            .requiredLength,
+                      }
+              }}</mat-error
+            >
           }
           @if (modelForm.controls[OutcomeFormKeys.NAME].hasError('maxlength')) {
-            <mat-error>{{
-              'COMMON.ERRORS.MAX_LENGTH'
-                | translate
-                  : {
-                      minlength:
-                        modelForm.controls[OutcomeFormKeys.NAME].errors?.['maxlength']
-                          .requiredLength,
-                    }
-            }}</mat-error>
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.MAX_LENGTH'
+                  | translate
+                    : {
+                        maxlength:
+                          modelForm.controls[OutcomeFormKeys.NAME].errors?.['maxlength']
+                            .requiredLength,
+                      }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.MAX_LENGTH'
+                  | translate
+                    : {
+                        minlength:
+                          modelForm.controls[OutcomeFormKeys.NAME].errors?.['maxlength']
+                            .requiredLength,
+                      }
+              }}</mat-error
+            >
           }
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.AMOUNT' | translate }}</mat-label>
-          <input matInput [formControlName]="GoalAddEditFormKeys.AMOUNT" />
-          @if (modelForm.controls[GoalAddEditFormKeys.AMOUNT].hasError('min')) {
-            <mat-error>{{
-              'COMMON.ERRORS.MIN'
-                | translate
-                  : {
-                      min: modelForm.controls[GoalAddEditFormKeys.AMOUNT].errors?.['min'].min,
-                    }
+        <mat-form-field class="outcome-form__item">
+          <mat-label>{{ 'OUTCOMES.TABLE.AMOUNT' | translate }}</mat-label>
+          <input matInput [formControlName]="OutcomeFormKeys.AMOUNT" />
+          @if (modelForm.controls[OutcomeFormKeys.AMOUNT].hasError('min')) {
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.MIN'
+                  | translate
+                    : {
+                        min: modelForm.controls[OutcomeFormKeys.AMOUNT].errors?.['min'].min,
+                      }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.MIN'
+                  | translate
+                    : {
+                        min: modelForm.controls[OutcomeFormKeys.AMOUNT].errors?.['min'].min,
+                      }
+              }}</mat-error
+            >
+          }
+          @if (modelForm.controls[OutcomeFormKeys.AMOUNT].hasError('pattern')) {
+            <mat-error [matTooltip]="'COMMON.ERRORS.AMOUNT' | translate" class="text-ellipsis">{{
+              'COMMON.ERRORS.AMOUNT' | translate
             }}</mat-error>
           }
-          @if (modelForm.controls[GoalAddEditFormKeys.AMOUNT].hasError('max')) {
-            <mat-error>{{
-              'COMMON.ERRORS.MAX'
-                | translate
-                  : {
-                      max: modelForm.controls[GoalAddEditFormKeys.AMOUNT].errors?.['max'].max,
-                    }
-            }}</mat-error>
-          }
-          @if (modelForm.controls[GoalAddEditFormKeys.AMOUNT].hasError('required')) {
-            <mat-error>{{
-              'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOME.TABLE.AMOUNT' | translate }
-            }}</mat-error>
+          @if (modelForm.controls[OutcomeFormKeys.AMOUNT].hasError('required')) {
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOMES.TABLE.AMOUNT' | translate }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOMES.TABLE.AMOUNT' | translate }
+              }}</mat-error
+            >
           }
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.DATE' | translate }}</mat-label>
-          <input matInput [formControlName]="GoalAddEditFormKeys.DATE" [matDatepicker]="picker" />
-          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-          @if (modelForm.controls[GoalAddEditFormKeys.DATE].hasError('required')) {
-            <mat-error>{{
-              'COMMON.ERRORS.REQUIRED' | translate: { value: 'OUTCOME.TABLE.DATE' | translate }
-            }}</mat-error>
+        <mat-form-field class="outcome-form__item">
+          <mat-label>{{ 'OUTCOMES.TABLE.DESCRIPTION' | translate }}</mat-label>
+          <textarea matInput [formControlName]="OutcomeFormKeys.DESCRIPTION"></textarea>
+          @if (modelForm.controls[OutcomeFormKeys.DESCRIPTION].hasError('required')) {
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.REQUIRED'
+                  | translate: { value: 'OUTCOMES.TABLE.DESCRIPTION' | translate }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.REQUIRED'
+                  | translate: { value: 'OUTCOMES.TABLE.DESCRIPTION' | translate }
+              }}</mat-error
+            >
           }
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.CURRENT_AMOUNT' | translate }}</mat-label>
-          <input matInput [formControlName]="GoalAddEditFormKeys.CURRENT_AMOUNT" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.DESCRIPTION' | translate }}</mat-label>
-          <textarea matInput [formControlName]="GoalAddEditFormKeys.DESCRIPTION"></textarea>
-          @if (modelForm.controls[GoalAddEditFormKeys.DESCRIPTION].hasError('maxlength')) {
-            <mat-error>{{
-              'COMMON.ERRORS.MAX_LENGTH'
-                | translate
-                  : {
-                      maxlength:
-                        modelForm.controls[GoalAddEditFormKeys.DESCRIPTION].errors?.['maxlength']
-                          .requiredLength,
-                    }
-            }}</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.CYCLICAL_PAYMENT_AMOUNT' | translate }}</mat-label>
-          <input matInput [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_AMOUNT" />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>{{ 'OUTCOME.TABLE.CYCLICAL_PAYMENT_INTERVAL' | translate }}</mat-label>
-          <mat-select [formControlName]="GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL">
+        <mat-form-field class="outcome-form__item">
+          <mat-label>{{ 'OUTCOMES.TABLE.CATEGORY' | translate }}</mat-label>
+          <mat-select [formControlName]="OutcomeFormKeys.CATEGORY">
             <mat-option>-</mat-option>
-            @for (interval of intervalOptions; track interval) {
-              <mat-option [value]="interval">
-                @if (interval && interval?.label) {
-                  {{ interval.label | translate }}
-                }
+            @for (category of categories | async; track category) {
+              <mat-option [value]="category">
+                {{ category | translate }}
               </mat-option>
             }
           </mat-select>
+          @if (modelForm.controls[OutcomeFormKeys.DESCRIPTION].hasError('required')) {
+            <mat-error
+              [matTooltip]="
+                'COMMON.ERRORS.REQUIRED'
+                  | translate: { value: 'OUTCOMES.TABLE.CATEGORY' | translate }
+              "
+              class="text-ellipsis"
+              >{{
+                'COMMON.ERRORS.REQUIRED'
+                  | translate: { value: 'OUTCOMES.TABLE.CATEGORY' | translate }
+              }}</mat-error
+            >
+          }
         </mat-form-field>
       </form>
+      <button
+        mat-raised-button
+        [disabled]="modelForm?.invalid || modelForm?.pristine"
+        (click)="save()">
+        {{ (isEdit ? 'COMMON.BUTTONS.SAVE' : 'COMMON.BUTTONS.ADD') | translate }}
+      </button>
     }
   `,
-  styles: ``,
+  styles: `
+    :host {
+      display: flex;
+      flex-direction: column;
+    }
+    .outcome-form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: start;
+      row-gap: 4px;
+      column-gap: 4px;
+      &__item {
+        flex: 1 1 165px;
+      }
+    }
+  `,
 })
 export class OutcomeFormComponent implements OnInit {
   @Input() outcome?: Outcome;
+  @Output() outcomeSaved = new EventEmitter<void>();
   protected modelForm?: FormGroup<OutcomeForm>;
   protected readonly OutcomeFormKeys = OutcomeFormKeys;
+  protected readonly categories = inject(CategoriesApiService).getCategories();
+  protected isEdit = false;
   private readonly apiService = inject(OutcomeApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  private isEdit = false;
 
   public ngOnInit(): void {
     this.modelForm = this.initFromModel(this.outcome);
     this.isEdit = !!this.outcome;
+  }
+
+  protected save(): void {
+    if (!this.modelForm || this.modelForm?.invalid) {
+      return;
+    }
+    const request: OutcomeRequest = {
+      ...this.modelForm.getRawValue(),
+    };
+    const requestMethod =
+      this.isEdit && this.outcome
+        ? this.apiService.updateOutcome(this.outcome?.idExpenses, request)
+        : this.apiService.addOutcome(request);
+    requestMethod.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
+      if (res) {
+        this.modelForm?.reset();
+        this.outcomeSaved.emit();
+      }
+    });
   }
 
   private initFromModel(outcome?: Outcome): FormGroup<OutcomeForm> {
@@ -166,14 +254,14 @@ export class OutcomeFormComponent implements OnInit {
         nonNullable: true,
       }),
       [OutcomeFormKeys.AMOUNT]: new FormControl<number>(outcome?.amount ?? 1, {
-        validators: [Validators.required, Validators.min(0.01), Validators.pattern(/\d*.\d{1,2}/)],
+        validators: [Validators.required, Validators.min(0.01), Validators.pattern(/\d*.?\d{1,2}/)],
         nonNullable: true,
       }),
-      [OutcomeFormKeys.CATEGORY]: new FormControl<string>(outcome?.category ?? '', {
+      [OutcomeFormKeys.CATEGORY]: new FormControl<string>(outcome?.category.name ?? '', {
         validators: [Validators.required],
         nonNullable: true,
       }),
-      [OutcomeFormKeys.DESCRIPTION]: new FormControl<string | undefined>(outcome?.description, {
+      [OutcomeFormKeys.DESCRIPTION]: new FormControl<string>(outcome?.description ?? '', {
         validators: [Validators.required],
         nonNullable: true,
       }),

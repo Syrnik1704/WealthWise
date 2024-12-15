@@ -10,6 +10,6 @@ export enum OutcomeFormKeys {
 export interface OutcomeForm {
   [OutcomeFormKeys.NAME]: FormControl<string>;
   [OutcomeFormKeys.AMOUNT]: FormControl<number>;
-  [OutcomeFormKeys.DESCRIPTION]: FormControl<string | undefined>;
+  [OutcomeFormKeys.DESCRIPTION]: FormControl<string>;
   [OutcomeFormKeys.CATEGORY]: FormControl<string>;
 }

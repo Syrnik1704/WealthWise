@@ -53,3 +53,11 @@ body {
 .error-toast {
   background: rgb(94, 0, 0) !important;
 }
+
+.text-ellipsis {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}

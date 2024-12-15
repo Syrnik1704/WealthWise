@@ -14,7 +14,7 @@ export class OutcomeApiService {
   private readonly translate = inject(TranslateService);
 
   public addOutcome(request: OutcomeRequest): Observable<boolean> {
-    return this.httpClient.post(`${this.baseApiUrl}`, request).pipe(
+    return this.httpClient.post(`${this.baseApiUrl}/add`, request, { responseType: 'text' }).pipe(
       map(() => {
         this.openOutcomeToast(true, 'ADD', request.name);
         return true;
@@ -27,37 +27,41 @@ export class OutcomeApiService {
   }
 
   public getOutcomeList(): Observable<Outcome[]> {
-    return this.httpClient.get<Outcome[]>(`${this.baseApiUrl}`);
+    return this.httpClient.get<Outcome[]>(`${this.baseApiUrl}/getAll`);
   }
 
   public updateOutcome(outcomeId: number, request: OutcomeRequest): Observable<boolean> {
-    return this.httpClient.put(`${this.baseApiUrl}/${outcomeId}`, request).pipe(
-      map(() => {
-        this.openOutcomeToast(true, 'UPDATED', request.name);
-        return true;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.openOutcomeToast(false, 'UPDATED', request.name, error.error);
-        return of(false);
-      })
-    );
+    return this.httpClient
+      .put(`${this.baseApiUrl}/update/${outcomeId}`, request, { responseType: 'text' })
+      .pipe(
+        map(() => {
+          this.openOutcomeToast(true, 'UPDATED', request.name);
+          return true;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.openOutcomeToast(false, 'UPDATED', request.name, error.error);
+          return of(false);
+        })
+      );
   }
 
   public removeOutcome(outcomeId: number, outcomeTitle: string) {
-    return this.httpClient.delete(`${this.baseApiUrl}/${outcomeId}`, { responseType: 'text' }).pipe(
-      map(() => {
-        this.openOutcomeToast(true, 'REMOVED', outcomeTitle);
-        return true;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        this.openOutcomeToast(false, 'REMOVED', outcomeTitle, error.error);
-        return of(false);
-      })
-    );
+    return this.httpClient
+      .delete(`${this.baseApiUrl}/delete`, { body: [outcomeId], responseType: 'text' })
+      .pipe(
+        map(() => {
+          this.openOutcomeToast(true, 'REMOVED', outcomeTitle);
+          return true;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          this.openOutcomeToast(false, 'REMOVED', outcomeTitle, error.error);
+          return of(false);
+        })
+      );
   }
 
   private openOutcomeToast(isSuccess: boolean, action: string, name: string, error?: string): void {
-    const message = `OUTCOME.TOAST.${isSuccess ? 'SUCCESS' : 'ERROR'}_${action}`;
+    const message = `OUTCOMES.TOAST.${isSuccess ? 'SUCCESS' : 'ERROR'}_${action}`;
     let interpolateParams: Record<string, string> = { name };
     if (error) {
       interpolateParams = { ...interpolateParams, error };

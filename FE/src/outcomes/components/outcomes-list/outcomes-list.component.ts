@@ -12,15 +12,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { ConfirmDialogComponent, ConfirmDialogContent, IntervalService } from '../../../shared';
 import { Outcome } from '../../models';
 import { OutcomeApiService } from '../../services/outcomes-api.service';
+import { OutcomeFormComponent } from '../outcome-form';
 
 @Component({
-  selector: 'ww-saving-goal-list',
+  selector: 'ww-outcomes-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -30,29 +30,27 @@ import { OutcomeApiService } from '../../services/outcomes-api.service';
     DatePipe,
     MatCardModule,
     MatIconModule,
-    MatMenuModule,
     MatButtonModule,
+    OutcomeFormComponent,
   ],
   templateUrl: './outcomes-list.component.html',
   styleUrl: './outcomes-list.component.scss',
 })
-export class SavingGoalListComponent {
+export class OutcomesListComponent {
   private readonly apiService = inject(OutcomeApiService);
   protected readonly intervalService = inject(IntervalService);
-  protected savingGoalsData$: Observable<Outcome[]> = this.apiService.getOutcomeList();
+  protected outcomes$: Observable<Outcome[]> = this.apiService.getOutcomeList();
   private readonly cdRef = inject(ChangeDetectorRef);
   private readonly dialogService = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
   private readonly translate = inject(TranslateService);
 
   public refreshTable(): void {
-    this.savingGoalsData$ = this.apiService.getOutcomeList();
+    this.outcomes$ = this.apiService.getOutcomeList();
     this.cdRef.detectChanges();
   }
 
-  protected editGoal(outcome: Outcome): void {}
-
-  protected removeGoal(outcome: Outcome): void {
+  protected remove(outcome: Outcome): void {
     const dialogData: ConfirmDialogContent = {
       header: 'OUTCOMES.MODALS.REMOVE.HEADER',
       message: `${this.translate.instant('OUTCOMES.MODALS.REMOVE.MESSAGE')} ${outcome.name}`,
