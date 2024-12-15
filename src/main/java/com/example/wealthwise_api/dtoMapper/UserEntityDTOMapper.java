@@ -12,7 +12,7 @@ public class UserEntityDTOMapper implements Function<UserEntity, UserDTO> {
     public UserDTO apply(UserEntity userEntity) {
         return new UserDTO(
                 userEntity.getName(),
-                userEntity.getActive(),
+                userEntity.getIsActive(),
                 userEntity.getEmail(),
                 userEntity.getRole().toString()
         );
