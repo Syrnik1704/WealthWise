@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, map, Observable, of } from 'rxjs';
 import { environment } from '../../app/environments/environment.development';
+import { Outcome, OutcomeRequest } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class OutcomeApiService {
@@ -15,11 +16,11 @@ export class OutcomeApiService {
   public addOutcome(request: OutcomeRequest): Observable<boolean> {
     return this.httpClient.post(`${this.baseApiUrl}`, request).pipe(
       map(() => {
-        this.openOutcomeToast(true, 'ADD', request.targetTitle);
+        this.openOutcomeToast(true, 'ADD', request.name);
         return true;
       }),
       catchError((error: HttpErrorResponse) => {
-        this.openOutcomeToast(false, 'ADD', request.targetTitle, error.error);
+        this.openOutcomeToast(false, 'ADD', request.name, error.error);
         return of(false);
       })
     );
@@ -32,11 +33,11 @@ export class OutcomeApiService {
   public updateOutcome(outcomeId: number, request: OutcomeRequest): Observable<boolean> {
     return this.httpClient.put(`${this.baseApiUrl}/${outcomeId}`, request).pipe(
       map(() => {
-        this.openOutcomeToast(true, 'UPDATED', request.targetTitle);
+        this.openOutcomeToast(true, 'UPDATED', request.name);
         return true;
       }),
       catchError((error: HttpErrorResponse) => {
-        this.openOutcomeToast(false, 'UPDATED', request.targetTitle, error.error);
+        this.openOutcomeToast(false, 'UPDATED', request.name, error.error);
         return of(false);
       })
     );

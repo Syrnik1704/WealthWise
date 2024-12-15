@@ -1,6 +1,12 @@
 export interface Outcome {
   category: string;
-  value: number;
+  amount: number;
+  name: string;
+  description: string;
+  idExpenses: number;
+  createdDate: Date;
 }
 
-export type SavingGoalRequest = Omit<SavingGoal, 'targetId'>;
+export type OutcomeRequest = Omit<Outcome, 'idExpenses' | 'createdDate' | 'category'> & {
+  categoryName: string;
+};

@@ -16,10 +16,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { ConfirmDialogComponent, ConfirmDialogContent, IntervalService } from '../../../shared';
-import { SavingGoal, SavingGoalRequest } from '../../models';
-import { SavingGoalApiService } from '../../services/saving-goal-api.service';
-import { GoalAddEditDialogContent } from '../outcome-add-edit-modal/outcome-add-edit-modal-content.model';
-import { GoalAddEditModalComponent } from '../outcome-add-edit-modal/outcome-add-edit-modal.component';
+import { Outcome } from '../../models';
+import { OutcomeApiService } from '../../services/outcomes-api.service';
 
 @Component({
   selector: 'ww-saving-goal-list',
@@ -35,62 +33,29 @@ import { GoalAddEditModalComponent } from '../outcome-add-edit-modal/outcome-add
     MatMenuModule,
     MatButtonModule,
   ],
-  templateUrl: './saving-goal-list.component.html',
-  styleUrl: './saving-goal-list.component.scss',
+  templateUrl: './outcomes-list.component.html',
+  styleUrl: './outcomes-list.component.scss',
 })
 export class SavingGoalListComponent {
-  private readonly savingGoalApiService = inject(SavingGoalApiService);
+  private readonly apiService = inject(OutcomeApiService);
   protected readonly intervalService = inject(IntervalService);
-  protected savingGoalsData$: Observable<SavingGoal[]> = this.savingGoalApiService.getGoalList();
+  protected savingGoalsData$: Observable<Outcome[]> = this.apiService.getOutcomeList();
   private readonly cdRef = inject(ChangeDetectorRef);
   private readonly dialogService = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
   private readonly translate = inject(TranslateService);
 
   public refreshTable(): void {
-    this.savingGoalsData$ = this.savingGoalApiService.getGoalList();
+    this.savingGoalsData$ = this.apiService.getOutcomeList();
     this.cdRef.detectChanges();
   }
 
-  protected editGoal(savingGoal: SavingGoal): void {
-    const dialogData: GoalAddEditDialogContent = {
-      isEdit: true,
-      savingGoal,
-    };
-    const dialogRef = this.dialogService.open<
-      GoalAddEditModalComponent,
-      GoalAddEditDialogContent,
-      SavingGoalRequest
-    >(GoalAddEditModalComponent, {
-      hasBackdrop: true,
-      closeOnNavigation: true,
-      data: dialogData,
-      maxWidth: '100vw',
-      minWidth: '40vw',
-    });
+  protected editGoal(outcome: Outcome): void {}
 
-    dialogRef
-      .afterClosed()
-      .pipe(
-        switchMap(result => {
-          if (!result) {
-            return of(false);
-          }
-          return this.savingGoalApiService.updateGoal(savingGoal.targetId, result);
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      )
-      .subscribe(result => {
-        if (result) {
-          this.refreshTable();
-        }
-      });
-  }
-
-  protected removeGoal(savingGoal: SavingGoal): void {
+  protected removeGoal(outcome: Outcome): void {
     const dialogData: ConfirmDialogContent = {
-      header: 'SAVING_GOAL.MODALS.REMOVE.HEADER',
-      message: `${this.translate.instant('SAVING_GOAL.MODALS.REMOVE.MESSAGE')} ${savingGoal.targetTitle}`,
+      header: 'OUTCOMES.MODALS.REMOVE.HEADER',
+      message: `${this.translate.instant('OUTCOMES.MODALS.REMOVE.MESSAGE')} ${outcome.name}`,
     };
     const dialogRef = this.dialogService.open<
       ConfirmDialogComponent,
@@ -110,7 +75,7 @@ export class SavingGoalListComponent {
           if (!result) {
             return of(false);
           }
-          return this.savingGoalApiService.removeGoal(savingGoal.targetId, savingGoal.targetTitle);
+          return this.apiService.removeOutcome(outcome.idExpenses, outcome.name);
         }),
         takeUntilDestroyed(this.destroyRef)
       )
