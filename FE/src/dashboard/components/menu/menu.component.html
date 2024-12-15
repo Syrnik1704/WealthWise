@@ -20,6 +20,7 @@
           [fragment]="nav.fragment"
           [routerLinkActive]="'sidenav__menu-item--active'"
           [routerLinkActiveOptions]="routerLinkMatch"
+          (click)="onClickMenuItem()"
           ><mat-icon>{{ nav.icon }}</mat-icon
           >{{ nav.label | translate }}</a
         >
