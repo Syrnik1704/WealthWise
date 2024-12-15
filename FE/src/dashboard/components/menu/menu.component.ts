@@ -65,4 +65,10 @@ export class MenuComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnDestroy(): void {
     this.mobileQuery.removeListener(this.mediaListener);
   }
+
+  protected onClickMenuItem(): void {
+    if (this.mobileQuery.matches) {
+      this.sideNav?.close();
+    }
+  }
 }
