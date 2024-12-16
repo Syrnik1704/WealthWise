@@ -13,8 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable, of, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { ConfirmDialogComponent, ConfirmDialogContent, IntervalService } from '../../../shared';
 import { SavingGoal, SavingGoalRequest } from '../../models';
 import { SavingGoalApiService } from '../../services/saving-goal-api.service';
@@ -34,6 +35,7 @@ import { GoalAddEditModalComponent } from '../goal-add-edit-modal/goal-add-edit-
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatProgressBarModule
   ],
   templateUrl: './saving-goal-list.component.html',
   styleUrl: './saving-goal-list.component.scss',
@@ -41,7 +43,14 @@ import { GoalAddEditModalComponent } from '../goal-add-edit-modal/goal-add-edit-
 export class SavingGoalListComponent {
   private readonly savingGoalApiService = inject(SavingGoalApiService);
   protected readonly intervalService = inject(IntervalService);
-  protected savingGoalsData$: Observable<SavingGoal[]> = this.savingGoalApiService.getGoalList();
+  protected savingGoalsData$: Observable<SavingGoal[]> = this.savingGoalApiService.getGoalList().pipe(
+    map((savingGoals) =>
+      savingGoals.map((goal) => ({
+        ...goal,
+        progress: this.calculateProgress(goal),
+      }))
+    )
+  );
   private readonly cdRef = inject(ChangeDetectorRef);
   private readonly dialogService = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
@@ -120,4 +129,9 @@ export class SavingGoalListComponent {
         }
       });
   }
+
+  protected calculateProgress(savingGoal: SavingGoal): number {
+    return (savingGoal.currentAmount / savingGoal.targetAmount) * 100;
+  }
+
 }
