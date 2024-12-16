@@ -6,6 +6,7 @@ import { UserRole } from '../shared';
 import { MenuComponent } from './components';
 import { GuestDashboardComponent } from './components/guest-dashboard';
 import { UserDashboardComponent } from './components/user-dashboard';
+import { AdminDashboardComponent } from './components/admin-dashboard';
 
 export const dashboardRoutes: Routes = [
   {
@@ -21,6 +22,11 @@ export const dashboardRoutes: Routes = [
         path: 'dashboard',
         component: UserDashboardComponent,
         canMatch: [userRoleGuard(UserRole.USER)],
+      },
+      {
+        path: 'dashboard',
+        component: AdminDashboardComponent,
+        canMatch: [userRoleGuard(UserRole.ADMIN)],
       },
       outcomeRoute,
       {
