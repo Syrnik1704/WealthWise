@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { userRoleGuard } from '../app/guards';
 import { guestGuard } from '../app/guards/guest.guard';
 import { outcomeRoute } from '../outcomes/outcomes.routes';
+import { savingGoalsRoute } from '../saving-goals/saving-goals.routes';
 import { UserRole } from '../shared';
 import { MenuComponent } from './components';
 import { GuestDashboardComponent } from './components/guest-dashboard';
@@ -29,6 +30,7 @@ export const dashboardRoutes: Routes = [
         canMatch: [userRoleGuard(UserRole.ADMIN)],
       },
       outcomeRoute,
+      savingGoalsRoute,
       {
         path: '',
         redirectTo: 'dashboard',

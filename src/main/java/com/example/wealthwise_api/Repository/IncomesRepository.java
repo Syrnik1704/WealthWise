@@ -6,20 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface IncomesRepository extends JpaRepository<Incomes, Long> {
 
-    @Query(value = "SELECT CASE WHEN COUNT(i) > 0 THEN true ELSE false END\n" +
-            "FROM Incomes i\n" +
-            "WHERE YEAR(i.createdDate) = YEAR(CURRENT_DATE)\n" +
-            "  AND MONTH(i.createdDate) = MONTH(CURRENT_DATE)\n" +
-            "  AND i.userEntity.idUser = :userId")
-    boolean existsForDedicatedMonthAndYear(@Param("userId") long userId);
+    @Query(value = "SELECT CASE WHEN COUNT(i) = :size THEN true ELSE false END " +
+            "FROM Incomes i WHERE i.idIncomes IN :idIncomes")
+    boolean checkIncomesExists(@Param("idIncomes") List<Long> idIncomes, @Param("size") long size);
 
-    @Query(value = "SELECT i\n" +
-            "FROM Incomes i\n" +
-            "WHERE YEAR(i.createdDate) = YEAR(CURRENT_DATE)\n" +
-            "  AND MONTH(i.createdDate) = MONTH(CURRENT_DATE)\n" +
-            "  AND i.userEntity.idUser = :userId")
-    Incomes findIncomesByUser(@Param("userId") long userId);
+    @Query(value = "SELECT i FROM Incomes i WHERE i.userEntity.idUser = :userId")
+    List<Incomes> findIncomesByUser(@Param("userId") long userId);
+
+    @Query(value = "SELECT i FROM Incomes i WHERE i.userEntity.idUser = :userId AND i.idIncomes = :idIncomes")
+    Incomes findIncomesByUserAndIdIncomes(@Param("userId") long userId, @Param("idIncomes") long idIncomes);
 }

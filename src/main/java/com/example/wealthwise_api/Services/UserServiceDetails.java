@@ -1,9 +1,9 @@
 package com.example.wealthwise_api.Services;
 
 import com.example.wealthwise_api.DAO.UserDAO;
-import com.example.wealthwise_api.Entity.UserDataRequest;
+import com.example.wealthwise_api.DTO.UserData;
+import com.example.wealthwise_api.DTO.UserInfo;
 import com.example.wealthwise_api.Entity.UserEntity;
-import com.example.wealthwise_api.Util.JWTUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class UserServiceDetails implements UserDetailsService {
 
     public ResponseEntity<?> getUser(Authentication authentication){
         try{
-            UserDataRequest activeUser = userDAO.getData(authentication.getName());
+            UserInfo activeUser = userDAO.getData(authentication.getName());
             if(activeUser==null){
                 return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
             }

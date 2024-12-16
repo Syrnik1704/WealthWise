@@ -1,8 +1,10 @@
 package com.example.wealthwise_api.DAO;
+import com.example.wealthwise_api.DTO.UserInfo;
 import com.example.wealthwise_api.Entity.UserEntity;
-import com.example.wealthwise_api.Entity.UserDataRequest;
+import com.example.wealthwise_api.DTO.UserData;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface UserDAO {
@@ -16,8 +18,13 @@ public interface UserDAO {
 
     void changePassword(String email, String password);
 
-    UserDataRequest getData(String email);
+    UserInfo getData(String email);
 
     void deleteUser(UserEntity userEntity);
 
+    void deleteAll(List<UserEntity> userEntities);
+
+    List<UserEntity> findAllByEmailIn(List<String> emails);
+
+    Optional<UserEntity> findUserById(long id);
 }

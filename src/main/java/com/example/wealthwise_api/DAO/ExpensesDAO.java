@@ -1,19 +1,20 @@
 package com.example.wealthwise_api.DAO;
 
-import com.example.wealthwise_api.DTO.ExpensesResponse;
-import com.example.wealthwise_api.DTO.MonthlySummaryResponse;
 import com.example.wealthwise_api.Entity.Expenses;
-import jakarta.persistence.Tuple;
-
+import java.util.Date;
 import java.util.List;
 
 public interface ExpensesDAO {
 
     void save(Expenses expenses);
-    boolean exists(long userId);
-    List<Expenses> getExpensesByUserId(Long userId);
-    List<Tuple> getExpensesForEachCategoryByMonth(Long userId);
-    double getSumOfExpensesByUserId(Long userId);
-    List<Tuple> getMonthlySummary(Long userId);
 
+    void delete(Expenses expenses);
+
+    List<Expenses> findExpensesByUser(long userID);
+
+    Expenses findExpensesByUserAndIdExpenses(long userID, long idExpenses);
+
+    boolean checkExpensesExists(List<Long> idExpenses);
+
+    List<Expenses> findExpensesInDateRangeAndSelectedCategories(long userId, Date startDate, Date endDate, long categoriesId);
 }

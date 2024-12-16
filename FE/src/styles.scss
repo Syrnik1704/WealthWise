@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+@use 'sass:map';
+@use '@angular/material' as mat;
+@import '../m3-theme.scss';
+@import '@angular/cdk/overlay-prebuilt.css';
+
 html,
 body {
   height: 100%;
@@ -14,10 +19,45 @@ body {
   font-style: normal;
 }
 
+html {
+  @include mat.all-component-themes($dark-theme);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: map.get($_palettes, neutral, 90);
+  background-color: map.get($_palettes, neutral, 10);
+}
+
+.mat-mdc-checkbox .mat-internal-form-field {
+  color: map.get($_palettes, neutral, 90) !important;
+}
+
 .mat-mdc-simple-snack-bar {
-  background: rgb(0, 94, 0) !important;
+  color: white;
   border-radius: 5px;
   &.mat-mdc-snack-bar-container {
     margin: 0 !important;
   }
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface.mdc-snackbar__surface {
+  background-color: inherit;
+}
+
+.success-toast {
+  background: rgb(0, 94, 0) !important;
+}
+
+.error-toast {
+  background: rgb(94, 0, 0) !important;
+}
+
+.text-ellipsis {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
 }

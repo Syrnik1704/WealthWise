@@ -13,7 +13,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideStore } from '@ngxs/store';
 import { UserState } from '../shared';
 import { routes } from './app.routes';
-import { TokenInterceptor } from './services/auth/token.interceptor';
+import { TokenInterceptor } from '../auth/services/token.interceptor';
+
 
 export const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, './assets/i18n/', '.json');

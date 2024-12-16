@@ -61,6 +61,11 @@ public class AuthenticationService {
 
             UserEntity principal = (UserEntity) authentication.getPrincipal();
             UserDTO userDTO = userEntityDTOMapper.apply(principal);
+
+            if(!userDTO.active()){
+                return new ResponseEntity<>("User blocked",HttpStatus.UNAUTHORIZED);
+            }
+
             Boolean isTokenExists = jwtTokenAccessRepository.existsByToken(userDTO.email());
             if(isTokenExists){
                 try {
@@ -109,7 +114,7 @@ public class AuthenticationService {
                 jwtUtil.deleteAccessToken(email);
 
                 UserEntity principal = userEntityRepository.findByEmail(email);
-                String newAccessToken = jwtUtil.issueToken(principal.getName(), principal.getActive(),principal.getEmail() ,principal.getRole().toString());
+                String newAccessToken = jwtUtil.issueToken(principal.getName(), principal.getIsActive(),principal.getEmail() ,principal.getRole().toString());
                 String newRefreshToken = jwtUtil.issueRefreshToken(principal.getEmail(), principal.getRole().toString());
                 saveTokenAccess(newAccessToken);
                 saveTokenRefresh(newRefreshToken);

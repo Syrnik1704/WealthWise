@@ -1,0 +1,64 @@
+<div class="login-container">
+  <h5>Logowanie</h5>
+  <form [formGroup]="userForm" class="login-form">
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <mat-icon class="icon" matPrefix>person</mat-icon>
+      <input matInput formControlName="email" placeholder="Email" />
+      <mat-error>
+        @if (this.userForm.get('email')?.hasError('required')) {
+          Email jest wymagane
+        }
+        @if (this.userForm.get('email')?.hasError('email')) {
+          Wprowadź prawidłowy adres email, np. jan.kowalski&#64;email.com.
+        }
+        @if (this.userForm.get('email')?.hasError('serverErrorEmail')) {
+          {{ this.userForm.get('email')?.getError('serverErrorEmail') }}
+        }
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Hasło</mat-label>
+      <mat-icon class="icon" matPrefix>lock</mat-icon>
+      <input
+        matInput
+        formControlName="password"
+        placeholder="Hasło"
+        [type]="hide ? 'password' : 'text'" />
+      <button
+        matSuffix
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>
+          {{ hide ? 'visibility_off' : 'visibility' }}
+        </mat-icon>
+      </button>
+      <mat-error>
+        @if (this.userForm.get('password')?.hasError('required')) {
+          Hasło jest wymagane.
+        }
+        @if (this.userForm.get('password')?.hasError('serverErrorPass')) {
+          {{ this.userForm.get('password')?.getError('serverErrorPass') }}
+        }
+      </mat-error>
+    </mat-form-field>
+    <div class="login-form-options">
+      <mat-checkbox [checked]="rememberMe" (change)="onChangeRememberMe()">
+        Zapamiętaj mnie
+      </mat-checkbox>
+      <button type="submit" mat-flat-button (click)="onSubmit(userForm.value)">Zaloguj</button>
+    </div>
+  </form>
+  <p>
+    Nie masz konta?
+    <!-- <a class="link-primary" (click)="goRegisterPage()">Zarejestruj się</a> -->
+    <button mat-button (click)="goRegisterPage()">Zarejestruj się</button>
+  </p>
+  <p>Testowy login: example12&#64;test.com</p>
+  <p>Testowe hasło: Password1</p>
+  <button mat-button (click)="goToMainPage()">Testowy - Powrót do strony głównej</button>
+</div>

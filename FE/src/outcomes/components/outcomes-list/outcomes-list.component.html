@@ -1,0 +1,41 @@
+<mat-list class="outcomes-list">
+  @for (outcome of outcomes$ | async; track outcome) {
+    <mat-card class="outcomes-list__item" appearance="outlined">
+      <mat-card-content class="content">
+        @if (!outcome.isEdit) {
+          <div class="outcomes-list__content">
+            <div class="first-line h5">
+              <span class="first-line__header"
+                ><div>{{ 'OUTCOMES.TABLE.NAME' | translate }}: {{ outcome.name }}</div>
+                <div>{{ 'OUTCOMES.TABLE.AMOUNT' | translate }}: {{ outcome.amount }}</div>
+              </span>
+              <span
+                >{{ 'OUTCOMES.TABLE.CREATED_DATE' | translate }}
+                {{ outcome.createdDate | date }}</span
+              >
+            </div>
+            <div class="lower-line h6">
+              <span>{{ outcome.category.name }}</span>
+              <span class="description" *ngIf="outcome.description">{{ outcome.description }}</span>
+            </div>
+          </div>
+          <div class="outcomes-list__actions">
+            <button mat-mini-fab (click)="outcome.isEdit = true">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-mini-fab (click)="remove(outcome)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        } @else {
+          <div class="outcome-edit">
+            <ww-outcome-form [outcome]="outcome" (outcomeSaved)="refreshTable()" />
+            <button mat-stroked-button (click)="outcome.isEdit = false">
+              {{ 'COMMON.BUTTONS.CANCEL' | translate }}
+            </button>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</mat-list>

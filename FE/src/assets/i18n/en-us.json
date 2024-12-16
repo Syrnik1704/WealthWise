@@ -8,7 +8,7 @@
     "FEATURES": "Features",
     "UI": "How it looks",
     "SAVING_GOALS": "Saving goals",
-    "OUTCOMES": "Outcomes",
+    "OUTCOMES": "Expenses",
     "INCOMES": "Incomes",
     "SUBSCRIPTION_MANAGMENT": "Subscription managment",
     "LABELS": {
@@ -17,18 +17,35 @@
     },
     "ERRORS": {
       "REQUIRED": "{{value}} is required",
+      "MIN_LENGTH": "Provided value is too short. Minmum length {{minlength}}",
+      "MAX_LENGTH": "Provided value is too long. Maximum length {{maxlength}}",
+      "MIN": "Provided value is too samll. Minmum {{min}}",
+      "MAX": "Provided value is too big. Maximum {{max}}",
       "INVALID_EMAIL": "Please enter a valid email addres",
-      "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password"
+      "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password",
+      "AMOUNT": "Value has incorrect format"
     },
     "GALLERY": {
       "NEXT": "Next",
       "PREV": "Previous"
+    },
+    "BUTTONS": {
+      "EDIT": "Edit",
+      "SAVE": "Save",
+      "REMOVE": "Remove",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Confirm",
+      "REJECT": "Reject",
+      "ADD": "Add"
     }
   },
   "LOGIN_FORM": {
     "SINGUP_MESSAGE": "Create account, if you don't have it yet",
     "LOGIN": "Login",
     "REGISTER": "Register"
+  },
+  "SHARED": {
+    "CATEGORY": "Category"
   },
   "DASHBOARD": {
     "GOAL": "WealthWise is application which You can use for managing your finances. With our app You can learn how to save money based on monitoring your incomes and split outcomes into variouse category.",
@@ -39,6 +56,71 @@
       "SUBSCRIPTION_MANAGMENT": "Manage your subscription",
       "PROGRESS_MONITORING": "Watch your progress through our intuitative graphs",
       "INCOMING_PAYMENT": "Get notification about your cycle payment"
+    }
+  },
+  "SAVING_GOAL": {
+    "INTERVAL": {
+      "DAILY": "Daily",
+      "EVERY_TWO_DAYS": "Every two days",
+      "WEEKLY": "Weekly",
+      "BIWEEKLY": "Every two weeks",
+      "MONTHLY": "Monthly"
+    },
+    "TABLE": {
+      "TITLE": "Name",
+      "CURRENT_AMOUNT": "Current Amount",
+      "DATE": "Date",
+      "AMOUNT": "Amount",
+      "DESCRIPTION": "Description",
+      "CYCLICAL_PAYMENT_AMOUNT": "Cyclical Payment Amount",
+      "CYCLICAL_PAYMENT_INTERVAL": "Cyclical Payment Interval",
+      "TARGET_DATE": "Target date",
+      "CYCLICAL_PAYMENT": "Cyclical Payment",
+      "OCCURS": " occurs "
+    },
+    "TOAST": {
+      "SUCCESS_ADD": "Saving Goal {{name}} created successfully",
+      "SUCCESS_UPDATED": "Saving Goal {{name}} updated successfully",
+      "SUCCESS_REMOVED": "Saving Goal {{name}} removed successfully",
+      "ERROR_REMOVED": "Error occur {{error}}. Cannot remove saving goal {{name}}",
+      "ERROR_ADD": "Error occur {{error}}. Cannot add saving goal {{name}}",
+      "ERROR_UPDATED": "Error occur {{error}}. Cannot update saving goal {{name}}"
+    },
+    "ADD_GOAL": "Add goal",
+    "MODALS": {
+      "REMOVE": {
+        "HEADER": "Remove goal",
+        "MESSAGE": "Are you sure you want to remove saving goal: "
+      }
+    }
+  },
+  "SAVING_GOAL_MODAL": {
+    "HEADER": {
+      "ADD": "Add",
+      "EDIT": "Edit"
+    }
+  },
+  "OUTCOMES": {
+    "TABLE": {
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "CATEGORY": "Category",
+      "CREATED_DATE": "Date",
+      "AMOUNT": "Amount"
+    },
+    "TOAST": {
+      "SUCCESS_ADD": "Expense {{name}} created successfully",
+      "SUCCESS_UPDATED": "Expense {{name}} updated successfully",
+      "SUCCESS_REMOVED": "Expense {{name}} removed successfully",
+      "ERROR_REMOVED": "Error occur {{error}}. Cannot remove expense {{name}}",
+      "ERROR_ADD": "Error occur {{error}}. Cannot add expense {{name}}",
+      "ERROR_UPDATED": "Error occur {{error}}. Cannot update expense {{name}}"
+    },
+    "MODALS": {
+      "REMOVE": {
+        "HEADER": "Remove expense",
+        "MESSAGE": "Are you sure you want to remove expense: "
+      }
     }
   }
 }

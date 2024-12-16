@@ -1,12 +1,21 @@
 package com.example.wealthwise_api.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "incomes")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Incomes {
 
     @Id
@@ -14,53 +23,28 @@ public class Incomes {
     private long idIncomes;
 
     @Column(nullable = false)
-    private double value;
+    private String name;
+
+    @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
+    private Double value;
 
     @Column(nullable = false)
     private Date createdDate;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "idUser",nullable = false)
     private UserEntity userEntity;
 
-    public Incomes(@NotNull double value, @NotNull Date createdDate, @NotNull UserEntity userEntity) {
+    public Incomes(String name, String description, double value, Date createdDate, UserEntity userEntity) {
+        this.name = name;
+        this.description = description;
         this.value = value;
         this.createdDate = createdDate;
         this.userEntity = userEntity;
     }
 
-    public Incomes() {
-    }
-
-    public long getIdIncomes() {
-        return idIncomes;
-    }
-
-    public void setIdIncomes(long idIncomes) {
-        this.idIncomes = idIncomes;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public UserEntity getUserEntity() {
-        return userEntity;
-    }
-
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
 }

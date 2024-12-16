@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from '../auth/services/auth.service';
+
 @Component({
   selector: 'ww-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
