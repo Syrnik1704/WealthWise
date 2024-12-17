@@ -157,6 +157,7 @@ public class ExpensesService {
             expenses.get().setName(expensesRequest.getName());
             expenses.get().setDescription(expensesRequest.getDescription());
             expenses.get().setAmount(expensesRequest.getAmount());
+            expenses.get().setCategory(categoriesDAO.findByName(expensesRequest.getCategoryName()));
 
             expensesDAO.save(expenses.get());
 
