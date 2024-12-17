@@ -1,11 +1,12 @@
 import { inject } from '@angular/core';
-import { CanActivateChildFn } from '@angular/router';
+import { CanActivateChildFn, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { map } from 'rxjs';
 import { User, UserRole, UserSelectors } from '../../shared';
 
-export const userRoleGuard = (userRole: UserRole): CanActivateChildFn => {
+export const adminRoleGuard = (userRole: UserRole): CanActivateChildFn => {
   return () => {
+    const router = inject(Router);
     return inject(Store)
       .select(UserSelectors.user)
       .pipe(
@@ -13,7 +14,7 @@ export const userRoleGuard = (userRole: UserRole): CanActivateChildFn => {
           if (user?.role === userRole) {
             return true;
           }
-          return false;
+          return router.createUrlTree(['/not-found']);
         })
       );
   };

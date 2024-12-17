@@ -1,0 +1,44 @@
+<div class="admin-panel">
+  <h5>Zarządzanie kategoriami</h5>
+  <div class="container">
+    <ng-container *ngIf="categories$ | async as categories; else loading">
+      <mat-form-field appearance="fill">
+        <mat-label>Wybierz kategorię</mat-label>
+        <mat-select [(ngModel)]="selectedCategory">
+          <mat-option *ngFor="let category of categories" [value]="category.name">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button color="warn" (click)="onRemoveCategory()">Remove Category</button>
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>Nowa kategoria</mat-label>
+          <input matInput [(ngModel)]="categoryInput" type="text" placeholder="Enter new category name" />
+        </mat-form-field>
+        <button mat-flat-button color="primary" (click)="onAddCategory()">Add Category</button>
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <p>Loading categories...</p>
+    </ng-template>
+  </div>
+  <h5>Zarządzanie Użytkownikami</h5>
+  <div class="container">
+    <ng-container *ngIf="users$ | async as users; else loading">
+      <mat-form-field appearance="fill">
+        <mat-label>Wybierz użytkownika</mat-label>
+        <mat-select [(ngModel)]="selectedUser">
+            <mat-option *ngFor="let user of users" [value]="user.email" [ngClass]="{'inactive-user': !user.isActive}"> 
+            {{ user.email }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="onBlockUser()">Block User</button>
+      <button mat-flat-button color="primary" (click)="onUnblockUser()">Unblock User</button>
+    </ng-container>
+    <ng-template #loading>
+      <p>Loading users...</p>
+    </ng-template>
+  </div>
+</div>

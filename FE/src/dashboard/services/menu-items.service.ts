@@ -3,8 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store } from '@ngxs/store';
 import { ReplaySubject } from 'rxjs';
-
-import { User, UserSelectors } from '../../shared';
+import { User, UserRole, UserSelectors } from '../../shared';
 import { MenuItem } from '../components/menu/menu-item';
 import { AuthService } from '../../auth/services/auth.service';
 
@@ -26,12 +25,36 @@ export class MenuItemService {
       .select(UserSelectors.user)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((user?: User) => {
-        if (user) {
-          this.setLoggerUserMenuItems();
-        } else {
-          this.setGuestUserMenuItems();
+        switch (user?.role) {
+          case UserRole.USER:
+            this.setLoggerUserMenuItems();
+            break;
+          case UserRole.ADMIN:
+            this.setAdminUserMenuItems();
+            break;
+          default:
+            this.setGuestUserMenuItems();
         }
       });
+  }
+
+  private setAdminUserMenuItems(): void {
+    this._footerMenuItems = [
+      {
+        label: 'COMMON.LOGOUT',
+        action: () => {
+          this.authService.logout();
+          this.sideNav?.close();
+        },
+      },
+    ];
+    this._headerMenuItems = [
+      {
+        route: 'admin-panel',
+        label: 'COMMON.ADMIN_PANEL',
+      },
+    ];
+    this.emitMenuItems();
   }
 
   private setLoggerUserMenuItems(): void {

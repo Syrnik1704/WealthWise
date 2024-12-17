@@ -168,7 +168,7 @@ import { OutcomeApiService } from '../../services/outcomes-api.service';
             <mat-option>-</mat-option>
             @for (category of categories | async; track category) {
               <mat-option [value]="category">
-                {{ category | translate }}
+                {{ category.name | translate }}
               </mat-option>
             }
           </mat-select>

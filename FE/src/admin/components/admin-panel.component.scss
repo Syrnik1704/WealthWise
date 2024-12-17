@@ -1,0 +1,18 @@
+.admin-panel {
+    padding: 20px;
+}
+
+.inactive-user {
+    color: rgb(189, 44, 44);
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+button{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

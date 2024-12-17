@@ -82,13 +82,21 @@ export class LoginFormComponent implements OnInit {
           panelClass: ['success-toast'],
         });
       },
-      error: (err: IErrorAPIModel) => {
-        this.snackBar.open('Wrong email or password provided', '', {
+      error: (err: String) => {
+     
+        if(err == 'User blocked') {
+        this.snackBar.open('Użytkownik zablokowany', '', {
           duration: 5000,
           panelClass: ['error-toast'],
         });
         console.log(this.userForm, err);
-      },
+      }else{
+        this.snackBar.open('Złe hasło lub login', '', {
+          duration: 5000,
+          panelClass: ['error-toast'],
+        });
+      }
+    },
     });
   }
 }
