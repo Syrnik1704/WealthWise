@@ -8,6 +8,10 @@
               ><div>{{ 'SAVING_GOAL.TABLE.TITLE' | translate }}: {{ savingGoal.targetTitle }}</div>
               <div>{{ savingGoal.currentAmount }}/{{ savingGoal.targetAmount }} PLN</div>
             </span>
+            <div class="progress-bar">
+              <mat-progress-bar class="progress-bar__style" mode="determinate" [value]="savingGoal.progress">{{savingGoal.progress}}&#37;</mat-progress-bar>
+              <span class="progress-bar__tooltip">{{savingGoal.progress}}&#37;</span>
+            </div>
             <span
               >{{ 'SAVING_GOAL.TABLE.TARGET_DATE' | translate }}
               {{ savingGoal.targetDate | date }}</span

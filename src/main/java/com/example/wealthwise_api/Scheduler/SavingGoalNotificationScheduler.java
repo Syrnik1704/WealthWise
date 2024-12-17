@@ -23,24 +23,24 @@ public class SavingGoalNotificationScheduler {
         this.emailService = emailService;
     }
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 */5 * * * *") // Uruchamianie co 5 minut
     public void sendScheduledNotifications() {
         List<SavingTarget> savingTargets = savingTargetRepository.findAll();
+        LocalDateTime now = LocalDateTime.now();
         for (SavingTarget target : savingTargets) {
             String cronExpression = target.getCyclicalPaymentCron();
 
-            if (isTimeToSendNotification(cronExpression)) {
+            if (isTimeToSendNotification(cronExpression, now)) {
                 sendSavingGoalNotification(target);
             }
         }
     }
 
-    private boolean isTimeToSendNotification(String cronExpression) {
+    private boolean isTimeToSendNotification(String cronExpression, LocalDateTime now) {
         try {
             CronExpression cron = CronExpression.parse(cronExpression);
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime nextExecution = cron.next(now);
-            return nextExecution != null && nextExecution.isBefore(now.plusHours(1));
+            LocalDateTime nextExecution = cron.next(now.minusMinutes(1));
+            return nextExecution != null && nextExecution.isBefore(now.plusMinutes(5));
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid CRON expression: " + cronExpression);
             return false;
@@ -50,7 +50,12 @@ public class SavingGoalNotificationScheduler {
     private void sendSavingGoalNotification(SavingTarget target) {
         String userEmail = target.getUserEntity().getEmail();
         try {
-            emailService.sendEmail(userEmail, "Saving Goal Summary and Reminder", "static/email_template");
+            emailService.sendSavingGoalNotification(
+                    userEmail,
+                    "Saving Goal Summary and Reminder",
+                    "static/email_saving_goal_notification",
+                    target
+            );
             System.out.println("Powiadomienie o celu oszczędzania wysłane do: " + userEmail);
         } catch (Exception e) {
             System.err.println("Błąd podczas wysyłania powiadomienia o celu oszczędzania do " + userEmail + ": " + e.getMessage());

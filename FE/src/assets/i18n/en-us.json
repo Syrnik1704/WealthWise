@@ -8,7 +8,7 @@
     "FEATURES": "Features",
     "UI": "How it looks",
     "SAVING_GOALS": "Saving goals",
-    "OUTCOMES": "Outcomes",
+    "OUTCOMES": "Expenses",
     "INCOMES": "Incomes",
     "SUBSCRIPTION_MANAGMENT": "Subscription managment",
     "LABELS": {
@@ -22,7 +22,8 @@
       "MIN": "Provided value is too samll. Minmum {{min}}",
       "MAX": "Provided value is too big. Maximum {{max}}",
       "INVALID_EMAIL": "Please enter a valid email addres",
-      "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password"
+      "AUTHENTICATION_ERROR": "Cannot login. Invalid login or password",
+      "AMOUNT": "Value has incorrect format"
     },
     "GALLERY": {
       "NEXT": "Next",
@@ -34,13 +35,17 @@
       "REMOVE": "Remove",
       "CANCEL": "Cancel",
       "CONFIRM": "Confirm",
-      "REJECT": "Reject"
+      "REJECT": "Reject",
+      "ADD": "Add"
     }
   },
   "LOGIN_FORM": {
     "SINGUP_MESSAGE": "Create account, if you don't have it yet",
     "LOGIN": "Login",
     "REGISTER": "Register"
+  },
+  "SHARED": {
+    "CATEGORY": "Category"
   },
   "DASHBOARD": {
     "GOAL": "WealthWise is application which You can use for managing your finances. With our app You can learn how to save money based on monitoring your incomes and split outcomes into variouse category.",
@@ -75,11 +80,11 @@
     },
     "TOAST": {
       "SUCCESS_ADD": "Saving Goal {{name}} created successfully",
-      "SUCCESS_UPDATE": "Saving Goal {{name}} updated successfully",
+      "SUCCESS_UPDATED": "Saving Goal {{name}} updated successfully",
       "SUCCESS_REMOVED": "Saving Goal {{name}} removed successfully",
       "ERROR_REMOVED": "Error occur {{error}}. Cannot remove saving goal {{name}}",
       "ERROR_ADD": "Error occur {{error}}. Cannot add saving goal {{name}}",
-      "ERROR_UPDATE": "Error occur {{error}}. Cannot update saving goal {{name}}"
+      "ERROR_UPDATED": "Error occur {{error}}. Cannot update saving goal {{name}}"
     },
     "ADD_GOAL": "Add goal",
     "MODALS": {
@@ -93,6 +98,29 @@
     "HEADER": {
       "ADD": "Add",
       "EDIT": "Edit"
+    }
+  },
+  "OUTCOMES": {
+    "TABLE": {
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "CATEGORY": "Category",
+      "CREATED_DATE": "Date",
+      "AMOUNT": "Amount"
+    },
+    "TOAST": {
+      "SUCCESS_ADD": "Expense {{name}} created successfully",
+      "SUCCESS_UPDATED": "Expense {{name}} updated successfully",
+      "SUCCESS_REMOVED": "Expense {{name}} removed successfully",
+      "ERROR_REMOVED": "Error occur {{error}}. Cannot remove expense {{name}}",
+      "ERROR_ADD": "Error occur {{error}}. Cannot add expense {{name}}",
+      "ERROR_UPDATED": "Error occur {{error}}. Cannot update expense {{name}}"
+    },
+    "MODALS": {
+      "REMOVE": {
+        "HEADER": "Remove expense",
+        "MESSAGE": "Are you sure you want to remove expense: "
+      }
     }
   }
 }
