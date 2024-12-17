@@ -7,9 +7,9 @@ import { Category } from '../models';
 @Injectable({ providedIn: 'root' })
 export class CategoriesApiService {
   private readonly http = inject(HttpClient);
-  public getCategories(): Observable<string[]> {
+  public getCategories(): Observable<Category[]> {
     return this.http
       .get<Category[]>(`${environment.apiUrl}/categories/getCategories`)
-      .pipe(map(values => values.map(val => val.name)));
+      .pipe(map(values => values));
   }
 }

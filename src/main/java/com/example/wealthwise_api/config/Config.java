@@ -47,6 +47,15 @@ public class Config {
                     true,
                     Role.USER);
 
+            UserEntity userBase2 = new UserEntity(
+                    "user2@example.com",
+                    passwordEncoder.encode("password1234"),
+                    "Hanna",
+                    "Doe",
+                    "14-02-2000",
+                    true,
+                    Role.USER);
+
             UserEntity userAdmin = new UserEntity(
                     "admin@example.com",
                     passwordEncoder.encode("admin123"),
@@ -56,7 +65,7 @@ public class Config {
                     true,
                     Role.ADMIN);
 
-            userEntityRepository.saveAll(List.of(userBase, userAdmin));
+            userEntityRepository.saveAll(List.of(userBase,userBase2, userAdmin));
         };
 
     }

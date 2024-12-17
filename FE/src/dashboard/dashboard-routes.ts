@@ -8,6 +8,8 @@ import { MenuComponent } from './components';
 import { GuestDashboardComponent } from './components/guest-dashboard';
 import { UserDashboardComponent } from './components/user-dashboard';
 import { AdminDashboardComponent } from './components/admin-dashboard';
+import { adminRoleGuard } from '../app/guards/admin.guard';
+import { adminPanelRoute } from '../admin/admin-panel.routes';
 
 export const dashboardRoutes: Routes = [
   {
@@ -27,10 +29,12 @@ export const dashboardRoutes: Routes = [
       {
         path: 'dashboard',
         component: AdminDashboardComponent,
-        canMatch: [userRoleGuard(UserRole.ADMIN)],
+        canMatch: [adminRoleGuard(UserRole.ADMIN)],
       },
+      
       outcomeRoute,
       savingGoalsRoute,
+      adminPanelRoute,
       {
         path: '',
         redirectTo: 'dashboard',

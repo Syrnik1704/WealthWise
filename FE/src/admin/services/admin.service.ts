@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
-import { catchError, map, Observable, switchMap, throwError } from 'rxjs';
-import { UserData, UsersData } from '../models/usersData';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { UserData } from '../models/usersData';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UserEmails } from '../models/userEmails';
 import { AddCategory } from '../models/addCategory';
-
+import { environment } from '../../app/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -13,15 +12,14 @@ import { AddCategory } from '../models/addCategory';
 export class AdminService {
 
   private url = `${environment.apiUrl}/admin`;
+  private readonly httpClient = inject(HttpClient);
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient) {}
-
-  public getUsers(): Observable<UsersData> {
-    return this.http.get<UsersData>(`${this.url}/users`).pipe(
+  public getUsers(): Observable<UserData[]> {
+    return this.http.get<UserData[]>(`${this.url}/getUsers`).pipe(
       map((response) => response),
-      catchError((error) => {
-        console.error('Error fetching users:', error);
-        return throwError(() => new Error('Failed to fetch users'));
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => error);
       })
     );
   }
@@ -44,30 +42,49 @@ export class AdminService {
     );
   }
 
-  public blockUser(email: UserEmails): Observable<void> {
-    return this.http.put<void>(`${this.url}/block`, { email }).pipe(
-      catchError((error) => {
-        console.error('Error blocking user:', error);
-        return throwError(() => new Error('Failed to block user'));
+  public blockUser(email: UserEmails): Observable<boolean> {
+    return this.http.put<boolean>(`${this.url}/block`, email).pipe(
+      map(() => {
+        return true;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log("error: " + error);
+        return of(false);
       })
     );
   }
 
-  public unblockUser(email: UserEmails): Observable<void> {
-    return this.http.put<void>(`${this.url}/unblock`, { email }).pipe(
-      catchError((error) => {
-        console.error('Error unblocking user:', error);
-        return throwError(() => new Error('Failed to unblock user'));
+  public unblockUser(email: UserEmails): Observable<boolean> {
+    return this.http.put<boolean>(`${this.url}/unblock`, email).pipe(
+      map(() => {
+        return true;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log("error: " + error);
+        return of(false);
       })
     );
   }
 
-  public addCategory(category: AddCategory): Observable<void> {
-    return this.http.post<void>(`${this.url}/addCategory`, { name: category }).pipe(
-      catchError((error) => {
-        console.error('Error adding category:', error);
-        return throwError(() => new Error('Failed to add category'));
+  public addCategory(category: AddCategory): Observable<string> {
+    return this.httpClient.post(`${this.url}/addCategory`, category, { responseType: 'text' }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError(() => error);
       })
     );
+  }
+
+  public deleteCategory(category: AddCategory): Observable<boolean> {
+    return this.httpClient
+      .delete(`${this.url}/deleteCategory`, { body: category, responseType: 'text' })
+      .pipe(
+        map(() => {
+          return true;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.log("error: " + error);
+          return of(false);
+        })
+      );
   }
 }
