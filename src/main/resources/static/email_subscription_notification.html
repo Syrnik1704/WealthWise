@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Subscription Payment Reminder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .email-container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+    }
+    .email-header {
+      background-color: #007bff;
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+    .email-body {
+      padding: 30px;
+      text-align: center;
+    }
+    .email-body h1 {
+      color: #333333;
+    }
+    .email-body p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #555555;
+    }
+    .email-button {
+      margin: 20px 0;
+    }
+    .email-button a {
+      background-color: #007bff;
+      color: #ffffff;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .email-footer {
+      background-color: #f4f4f4;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: #888888;
+    }
+  </style>
+</head>
+<body>
+<div class="email-container">
+  <!-- Email Header -->
+  <div class="email-header">
+    <h2>Subscription Payment Reminder</h2>
+  </div>
+
+  <!-- Email Body -->
+  <div class="email-body">
+    <h1>It's time to pay your subscription!</h1>
+    <p>We are reminding you about your subscription. Please review the details below:</p>
+    <br>
+    <h3>Subscription Details:</h3>
+    <h4>Title: <b>SUBSCRIPTION_TITLE</b></h4>
+    <p>Description: SUBSCRIPTION_DESCRIPTION</p>
+    <br>
+    <h4>Payment Summary:</h4>
+    <p>Amount to be paid: <b>SUBSCRIPTION_AMOUNT</b></p>
+    <br>
+    <div class="email-button">
+      <a href="http://localhost:4200/login" target="_blank">Manage Subscription</a>
+    </div>
+
+    <p>If the button above doesn't work, copy and paste the following link into your browser:</p>
+    <p><a href="http://localhost:4200/login" target="_blank">http://localhost:4200/login</a></p>
+
+    <p>If you believe you received this email in error, please ignore it.</p>
+  </div>
+
+  <!-- Email Footer -->
+  <div class="email-footer">
+    <p>&copy; 2024 WealthWise Company. All Rights Reserved.</p>
+  </div>
+</div>
+</body>
+</html>

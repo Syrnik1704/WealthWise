@@ -53,12 +53,12 @@ public class SavingGoalNotificationScheduler {
             emailService.sendSavingGoalNotification(
                     userEmail,
                     "Saving Goal Summary and Reminder",
-                    "static/email_saving_goal_notification",
+                    "static/email_saving_goal_notification.html",
                     target
             );
-            System.out.println("Powiadomienie o celu oszczędzania wysłane do: " + userEmail);
+            System.out.println("Notification about saving goal sent to " + userEmail);
         } catch (Exception e) {
-            System.err.println("Błąd podczas wysyłania powiadomienia o celu oszczędzania do " + userEmail + ": " + e.getMessage());
+            System.err.println("Failed to send notification about saving goal to " + userEmail + ": " + e.getMessage());
         }
     }
 }

@@ -195,4 +195,31 @@ public class ExpensesService {
         }
     }
 
+    public void addExpenseForSubscription(long userId, double amount, String description) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Expense amount must be greater than zero.");
+        }
+        try {
+            UserEntity user = userDAO.findUserById(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found."));
+y
+            Categories subscriptionCategory = categoriesDAO.findByName("Subscriptions");
+            if (subscriptionCategory == null) {
+                subscriptionCategory = new Categories();
+                subscriptionCategory.setName("Subscriptions");
+                categoriesDAO.save(subscriptionCategory);
+                System.out.println("Created new category: Subscriptions");
+            }
+
+            Expenses expense = new Expenses(description, "Subscription expense", amount, new Date(), user, subscriptionCategory);
+
+            expensesDAO.save(expense);
+
+            System.out.println("Expense for subscription added for user ID: " + userId);
+        } catch (Exception e) {
+            System.err.println("Error adding subscription expense: " + e.getMessage());
+            throw new RuntimeException("Failed to add subscription expense.");
+        }
+    }
+
 }

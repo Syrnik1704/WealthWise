@@ -113,4 +113,3 @@ public class SavingTargetService {
                 .orElseThrow(() -> new ResourceNotFoundException("Saving target with the specified ID was not found."));
     }
 }
-
