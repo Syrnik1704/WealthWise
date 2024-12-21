@@ -202,7 +202,7 @@ public class ExpensesService {
         try {
             UserEntity user = userDAO.findUserById(userId)
                     .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found."));
-y
+
             Categories subscriptionCategory = categoriesDAO.findByName("Subscriptions");
             if (subscriptionCategory == null) {
                 subscriptionCategory = new Categories();
