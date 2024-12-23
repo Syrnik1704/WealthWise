@@ -27,7 +27,15 @@ export class OutcomeApiService {
   }
 
   public getOutcomeList(): Observable<Outcome[]> {
-    return this.httpClient.get<Outcome[]>(`${this.baseApiUrl}/getAll`);
+    return this.httpClient
+      .get<Outcome[]>(`${this.baseApiUrl}/getAll`)
+      .pipe(
+        map(response =>
+          response.sort(
+            (a, b) => -(new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime())
+          )
+        )
+      );
   }
 
   public updateOutcome(outcomeId: number, request: OutcomeRequest): Observable<boolean> {

@@ -2,7 +2,7 @@ export interface SavingGoal {
   targetId: number;
   targetTitle: string;
   targetAmount: number;
-  targetDate: Date;
+  targetDate: string;
   currentAmount: number;
   cyclicalPaymentAmount?: number;
   cyclicalPaymentCron?: string;

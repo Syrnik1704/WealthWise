@@ -28,7 +28,16 @@ export class SavingGoalApiService {
   }
 
   public getGoalList(): Observable<SavingGoal[]> {
-    return this.httpClient.get<SavingGoal[]>(`${this.baseApiUrl}`);
+    return this.httpClient.get<SavingGoal[]>(`${this.baseApiUrl}`).pipe(
+      map(savingGoals =>
+        savingGoals
+          .map(goal => ({
+            ...goal,
+            progress: this.calculateProgress(goal),
+          }))
+          .sort((a, b) => new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime())
+      )
+    );
   }
 
   public updateGoal(savingGoalId: number, request: SavingGoalRequest): Observable<boolean> {
@@ -57,6 +66,10 @@ export class SavingGoalApiService {
           return of(false);
         })
       );
+  }
+
+  private calculateProgress(savingGoal: SavingGoal): number {
+    return Math.round((savingGoal.currentAmount / savingGoal.targetAmount) * 10000) / 100;
   }
 
   private openGoalToast(isSuccess: boolean, action: string, name: string, error?: string): void {

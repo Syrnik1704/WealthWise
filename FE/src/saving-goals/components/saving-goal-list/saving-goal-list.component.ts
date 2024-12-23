@@ -15,8 +15,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { map, Observable, of, switchMap } from 'rxjs';
-import { ConfirmDialogComponent, ConfirmDialogContent, IntervalService } from '../../../shared';
+import { Observable, of, switchMap } from 'rxjs';
+import {
+  ConfirmDialogComponent,
+  ConfirmDialogContent,
+  FastIncomeDialogComponent,
+  IntervalService,
+} from '../../../shared';
+import { FastIncome, FastIncomeResult } from '../../../shared/models/fast-income';
 import { SavingGoal, SavingGoalRequest } from '../../models';
 import { SavingGoalApiService } from '../../services/saving-goal-api.service';
 import { GoalAddEditDialogContent } from '../goal-add-edit-modal/goal-add-edit-modal-content.model';
@@ -35,7 +41,7 @@ import { GoalAddEditModalComponent } from '../goal-add-edit-modal/goal-add-edit-
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
-    MatProgressBarModule
+    MatProgressBarModule,
   ],
   templateUrl: './saving-goal-list.component.html',
   styleUrl: './saving-goal-list.component.scss',
@@ -43,14 +49,7 @@ import { GoalAddEditModalComponent } from '../goal-add-edit-modal/goal-add-edit-
 export class SavingGoalListComponent {
   private readonly savingGoalApiService = inject(SavingGoalApiService);
   protected readonly intervalService = inject(IntervalService);
-  protected savingGoalsData$: Observable<SavingGoal[]> = this.savingGoalApiService.getGoalList().pipe(
-    map((savingGoals) =>
-      savingGoals.map((goal) => ({
-        ...goal,
-        progress: this.calculateProgress(goal),
-      }))
-    )
-  );
+  protected savingGoalsData$: Observable<SavingGoal[]> = this.savingGoalApiService.getGoalList();
   private readonly cdRef = inject(ChangeDetectorRef);
   private readonly dialogService = inject(MatDialog);
   private readonly destroyRef = inject(DestroyRef);
@@ -59,6 +58,43 @@ export class SavingGoalListComponent {
   public refreshTable(): void {
     this.savingGoalsData$ = this.savingGoalApiService.getGoalList();
     this.cdRef.detectChanges();
+  }
+
+  protected onAddClick(savingGoal: SavingGoal): void {
+    const dialogRef = this.dialogService.open<
+      FastIncomeDialogComponent,
+      FastIncome,
+      FastIncomeResult
+    >(FastIncomeDialogComponent, {
+      hasBackdrop: true,
+      closeOnNavigation: true,
+      data: {
+        goal: savingGoal.targetTitle,
+        maxIncome: savingGoal.targetAmount - savingGoal.currentAmount,
+      },
+      maxWidth: '80vw',
+      minWidth: '30vw',
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        switchMap(result => {
+          if (!result) {
+            return of(false);
+          }
+          return this.savingGoalApiService.updateGoal(savingGoal.targetId, {
+            ...savingGoal,
+            currentAmount: Number(savingGoal.currentAmount) + Number(result),
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(result => {
+        if (result) {
+          this.refreshTable();
+        }
+      });
   }
 
   protected editGoal(savingGoal: SavingGoal): void {
@@ -129,9 +165,4 @@ export class SavingGoalListComponent {
         }
       });
   }
-
-  protected calculateProgress(savingGoal: SavingGoal): number {
-    return (savingGoal.currentAmount / savingGoal.targetAmount) * 100;
-  }
-
 }
