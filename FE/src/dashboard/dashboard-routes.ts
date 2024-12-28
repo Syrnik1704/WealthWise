@@ -10,6 +10,7 @@ import { UserDashboardComponent } from './components/user-dashboard';
 import { AdminDashboardComponent } from './components/admin-dashboard';
 import { adminRoleGuard } from '../app/guards/admin.guard';
 import { adminPanelRoute } from '../admin/admin-panel.routes';
+import { subscriptionsRoute } from '../subscriptions/subscriptions.routes';
 
 export const dashboardRoutes: Routes = [
   {
@@ -31,9 +32,9 @@ export const dashboardRoutes: Routes = [
         component: AdminDashboardComponent,
         canMatch: [adminRoleGuard(UserRole.ADMIN)],
       },
-      
       outcomeRoute,
       savingGoalsRoute,
+      subscriptionsRoute,
       adminPanelRoute,
       {
         path: '',

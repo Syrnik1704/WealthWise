@@ -81,7 +81,7 @@ export class MenuItemService {
         label: 'COMMON.INCOMES',
       },
       {
-        route: 'subscription',
+        route: 'subscriptions',
         label: 'COMMON.SUBSCRIPTION_MANAGMENT',
       },
     ];

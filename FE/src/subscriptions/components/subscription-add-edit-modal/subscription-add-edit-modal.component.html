@@ -1,0 +1,111 @@
+<h1 mat-dialog-title>
+  {{ 'SUBSCRIPTIONS_MODAL.HEADER.' + (content.isEdit ? 'EDIT' : 'ADD') | translate }}
+</h1>
+<mat-dialog-content>
+  @if (modelForm) {
+    <form class="saving-goal-form" [formGroup]="modelForm">
+      <mat-form-field>
+        <mat-label>{{ 'SUBSCRIPTIONS.TABLE.TITLE' | translate }}</mat-label>
+        <input matInput [formControlName]="SubscriptionAddEditFormKeys.TITLE" />
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.TITLE].hasError('required')) {
+          <mat-error>{{
+            'COMMON.ERRORS.REQUIRED' | translate: { value: 'SUBSCRIPTIONS.TABLE.TITLE' | translate }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.TITLE].hasError('minlength')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MIN_LENGTH'
+              | translate
+                : {
+                    minlength:
+                      modelForm.controls[SubscriptionAddEditFormKeys.TITLE].errors?.['minlength']
+                        .requiredLength,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.TITLE].hasError('maxlength')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MAX_LENGTH'
+              | translate
+                : {
+                    minlength:
+                      modelForm.controls[SubscriptionAddEditFormKeys.TITLE].errors?.['maxlength']
+                        .requiredLength,
+                  }
+          }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SUBSCRIPTIONS.TABLE.AMOUNT' | translate }}</mat-label>
+        <input matInput [formControlName]="SubscriptionAddEditFormKeys.AMOUNT" />
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.AMOUNT].hasError('min')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MIN'
+              | translate
+                : {
+                    min: modelForm.controls[SubscriptionAddEditFormKeys.AMOUNT].errors?.['min'].min,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.AMOUNT].hasError('max')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MAX'
+              | translate
+                : {
+                    max: modelForm.controls[SubscriptionAddEditFormKeys.AMOUNT].errors?.['max'].max,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.AMOUNT].hasError('required')) {
+          <mat-error>{{
+            'COMMON.ERRORS.REQUIRED' | translate: { value: 'SUBSCRIPTIONS.TABLE.AMOUNT' | translate }
+          }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SUBSCRIPTIONS.TABLE.CYCLICAL_PAYMENT_DATE' | translate }}</mat-label>
+        <input matInput [formControlName]="SubscriptionAddEditFormKeys.CYCLICAL_PAYMENT_DATE" />
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.CYCLICAL_PAYMENT_DATE].hasError('min')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MIN'
+              | translate
+                : {
+                    min: modelForm.controls[SubscriptionAddEditFormKeys.CYCLICAL_PAYMENT_DATE].errors?.['min'].min,
+                  }
+          }}</mat-error>
+        }
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.CYCLICAL_PAYMENT_DATE].hasError('required')) {
+          <mat-error>{{
+            'COMMON.ERRORS.REQUIRED' | translate: { value: 'SUBSCRIPTIONS.TABLE.CYCLICAL_PAYMENT_DATE' | translate }
+          }}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>{{ 'SUBSCRIPTIONS.TABLE.DESCRIPTION' | translate }}</mat-label>
+        <textarea matInput [formControlName]="SubscriptionAddEditFormKeys.DESCRIPTION"></textarea>
+        @if (modelForm.controls[SubscriptionAddEditFormKeys.DESCRIPTION].hasError('maxlength')) {
+          <mat-error>{{
+            'COMMON.ERRORS.MAX_LENGTH'
+              | translate
+                : {
+                    maxlength:
+                      modelForm.controls[SubscriptionAddEditFormKeys.DESCRIPTION].errors?.['maxlength']
+                        .requiredLength,
+                  }
+          }}</mat-error>
+        }
+      </mat-form-field>
+    </form>
+  }
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="saving-goal-actions">
+    <button mat-button (click)="onCancel()">{{ 'COMMON.BUTTONS.CANCEL' | translate }}</button>
+    <button
+      mat-raised-button
+      [disabled]="modelForm?.invalid || modelForm?.pristine"
+      (click)="saveForm()">
+      {{ 'COMMON.BUTTONS.SAVE' | translate }}
+    </button>
+  </div>
+</mat-dialog-actions>
