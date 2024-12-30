@@ -1,0 +1,53 @@
+<mat-list class="subscription-list">
+  @for (subscription of subscriptionsData$ | async; track subscription) {
+    <mat-card class="subscription-list__item" appearance="outlined">
+      <mat-card-content class="content">
+        <div class="col-11">
+          <div class="first-line h5">
+            <span class="first-line__header">
+              <div>
+                {{ 'SUBSCRIPTIONS.TABLE.TITLE' | translate }}:
+                {{ subscription.subscriptionTitle }}
+              </div>
+              <div>
+                {{ 'SUBSCRIPTIONS.TABLE.AMOUNT' | translate }}:
+                {{ subscription.amount | currency }}
+              </div>
+            </span>
+            <span>
+              {{ 'SUBSCRIPTIONS.TABLE.CYCLICAL_PAYMENT_DATE' | translate }}:
+              {{ subscription.cyclicalPaymentDate | subscriptionCyclicalPaymentDate }}
+            </span>
+          </div>
+          <div class="lower-line h6">
+            @if (subscription.description) {
+              <span>{{ subscription.description }}</span>
+            }
+            <span class="lower-line__creation-date">
+              {{ 'SUBSCRIPTIONS.TABLE.DATE' | translate }}
+              {{ subscription.creationDate | date }}
+            </span>
+          </div>
+        </div>
+        <div class="col-1 subscription-list__actions">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editSubscription(subscription)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'COMMON.BUTTONS.EDIT' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="removeSubscription(subscription)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'COMMON.BUTTONS.REMOVE' | translate }}</span>
+            </button>
+          </mat-menu>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</mat-list>

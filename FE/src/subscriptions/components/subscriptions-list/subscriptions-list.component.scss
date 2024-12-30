@@ -1,0 +1,56 @@
+.subscription-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__item {
+    border-width: 2px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+
+    .content {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .first-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      gap: 8px;
+      flex-direction: column;
+
+      &__header {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+      }
+    }
+
+    .lower-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 4px;
+      flex-direction: column;
+
+      &__creation-date {
+        text-align: left;
+        font-size: 0.8rem;
+        color: grey;
+        margin-left: 0;
+      }
+    }
+
+    .subscription-list__actions {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+}

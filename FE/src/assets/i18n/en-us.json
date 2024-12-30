@@ -126,5 +126,35 @@
         "MESSAGE": "Are you sure you want to remove expense: "
       }
     }
+  },
+  "SUBSCRIPTIONS": {
+    "ADD_SUBSCRIPTION": "Add subscription",
+    "TABLE": {
+      "TITLE": "Name",
+      "AMOUNT": "Amount",
+      "DESCRIPTION": "Description",
+      "CYCLICAL_PAYMENT_DATE": "Cyclical Payment Date",
+      "DATE": "Creation Date"
+    },
+    "TOAST": {
+      "SUCCESS_ADD": "Subscription {{name}} created successfully",
+      "SUCCESS_UPDATED": "Subscription {{name}} updated successfully",
+      "SUCCESS_REMOVED": "Subscription {{name}} removed successfully",
+      "ERROR_REMOVED": "Error occur {{error}}. Cannot remove subscription {{name}}",
+      "ERROR_ADD": "Error occur {{error}}. Cannot add subscription {{name}}",
+      "ERROR_UPDATED": "Error occur {{error}}. Cannot update subscription {{name}}"
+    },
+    "MODALS": {
+      "REMOVE": {
+        "HEADER": "Remove subscription",
+        "MESSAGE": "Are you sure you want to remove subscription: "
+      }
+    }
+  },
+  "SUBSCRIPTIONS_MODAL": {
+    "HEADER": {
+      "ADD": "Add",
+      "EDIT": "Edit"
+    }
   }
 }
