@@ -131,6 +131,28 @@
       }
     }
   },
+  "INCOMES": {
+    "TABLE": {
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "CREATED_DATE": "Date",
+      "AMOUNT": "Amount"
+    },
+    "TOAST": {
+      "SUCCESS_ADD": "Income {{name}} created successfully",
+      "SUCCESS_UPDATED": "Income {{name}} updated successfully",
+      "SUCCESS_REMOVED": "Income {{name}} removed successfully",
+      "ERROR_REMOVED": "Error occur {{error}}. Cannot remove income {{name}}",
+      "ERROR_ADD": "Error occur {{error}}. Cannot add income {{name}}",
+      "ERROR_UPDATED": "Error occur {{error}}. Cannot update income {{name}}"
+    },
+    "MODALS": {
+      "REMOVE": {
+        "HEADER": "Remove income",
+        "MESSAGE": "Are you sure you want to remove income: "
+      }
+    }
+  },
   "SUBSCRIPTIONS": {
     "ADD_SUBSCRIPTION": "Add subscription",
     "TABLE": {

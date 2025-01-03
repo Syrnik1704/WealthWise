@@ -4,6 +4,7 @@ import { userRoleGuard } from '../app/guards';
 import { adminRoleGuard } from '../app/guards/admin.guard';
 import { guestGuard } from '../app/guards/guest.guard';
 import { calenderRoute } from '../calender';
+import { incomesRoute } from '../incomes/incomes.routes';
 import { outcomeRoute } from '../outcomes/outcomes.routes';
 import { savingGoalsRoute } from '../saving-goals/saving-goals.routes';
 import { UserRole } from '../shared';
@@ -34,6 +35,7 @@ export const dashboardRoutes: Routes = [
         canMatch: [adminRoleGuard(UserRole.ADMIN)],
       },
       outcomeRoute,
+      incomesRoute,
       savingGoalsRoute,
       subscriptionsRoute,
       calenderRoute,

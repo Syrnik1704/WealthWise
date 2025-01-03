@@ -173,7 +173,7 @@ import { OutcomeApiService } from '../../services/outcomes-api.service';
               </mat-option>
             }
           </mat-select>
-          @if (modelForm.controls[OutcomeFormKeys.DESCRIPTION].hasError('required')) {
+          @if (modelForm.controls[OutcomeFormKeys.CATEGORY].hasError('required')) {
             <mat-error
               [matTooltip]="
                 'COMMON.ERRORS.REQUIRED'
@@ -256,7 +256,11 @@ export class OutcomeFormComponent implements OnInit {
         nonNullable: true,
       }),
       [OutcomeFormKeys.AMOUNT]: new FormControl<number>(outcome?.amount ?? 1, {
-        validators: [Validators.required, Validators.min(0.01), Validators.pattern(/\d*.?\d{1,2}/)],
+        validators: [
+          Validators.required,
+          Validators.min(0.01),
+          Validators.pattern(/^\d*\.?\d{1,2}$/),
+        ],
         nonNullable: true,
       }),
       [OutcomeFormKeys.CATEGORY]: new FormControl<Category | null>(outcome?.category ?? null, {

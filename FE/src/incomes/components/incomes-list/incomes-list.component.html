@@ -1,0 +1,40 @@
+<mat-list class="incomes-list">
+  @for (income of incomes$ | async; track income) {
+    <mat-card class="incomes-list__item" appearance="outlined">
+      <mat-card-content class="content">
+        @if (!income.isEdit) {
+          <div class="incomes-list__content">
+            <div class="first-line h5">
+              <span class="first-line__header"
+                ><div>{{ 'INCOMES.TABLE.NAME' | translate }}: {{ income.name }}</div>
+                <div>{{ 'INCOMES.TABLE.AMOUNT' | translate }}: {{ income.value }}</div>
+              </span>
+              <span
+                >{{ 'INCOMES.TABLE.CREATED_DATE' | translate }}
+                {{ income.createdDate | date }}</span
+              >
+            </div>
+            <div class="lower-line h6">
+              <span class="description" *ngIf="income.description">{{ income.description }}</span>
+            </div>
+          </div>
+          <div class="incomes-list__actions">
+            <button mat-mini-fab (click)="income.isEdit = true">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-mini-fab (click)="remove(income)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        } @else {
+          <div class="income-edit">
+            <ww-income-form [income]="income" (incomeSaved)="refreshTable()" />
+            <button mat-stroked-button (click)="income.isEdit = false">
+              {{ 'COMMON.BUTTONS.CANCEL' | translate }}
+            </button>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</mat-list>
