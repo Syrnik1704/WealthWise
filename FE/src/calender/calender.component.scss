@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  padding: 12px 4px;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}

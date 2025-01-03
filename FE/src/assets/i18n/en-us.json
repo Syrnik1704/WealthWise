@@ -11,6 +11,7 @@
     "OUTCOMES": "Expenses",
     "INCOMES": "Incomes",
     "SUBSCRIPTION_MANAGMENT": "Subscription managment",
+    "CALENDER": "Calender",
     "LABELS": {
       "EMAIL": "Email",
       "PASSWORD": "Password"
@@ -36,7 +37,10 @@
       "CANCEL": "Cancel",
       "CONFIRM": "Confirm",
       "REJECT": "Reject",
-      "ADD": "Add"
+      "ADD": "Add",
+      "PREVIOUS": "Previous",
+      "TODAY": "Today",
+      "NEXT": "Next"
     }
   },
   "LOGIN_FORM": {

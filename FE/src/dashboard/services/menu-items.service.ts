@@ -3,9 +3,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Store } from '@ngxs/store';
 import { ReplaySubject } from 'rxjs';
+import { AuthService } from '../../auth/services/auth.service';
 import { User, UserRole, UserSelectors } from '../../shared';
 import { MenuItem } from '../components/menu/menu-item';
-import { AuthService } from '../../auth/services/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class MenuItemService {
@@ -83,6 +83,10 @@ export class MenuItemService {
       {
         route: 'subscriptions',
         label: 'COMMON.SUBSCRIPTION_MANAGMENT',
+      },
+      {
+        route: 'calender',
+        label: 'COMMON.CALENDER',
       },
     ];
     this.emitMenuItems();
