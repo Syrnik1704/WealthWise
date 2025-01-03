@@ -1,0 +1,28 @@
+<div class="header-buttons">
+  <button
+    mat-raised-button
+    mwlCalendarPreviousView
+    [view]="view"
+    [(viewDate)]="viewDate"
+    (viewDateChange)="closeOpenMonthViewDay()">
+    {{ 'COMMON.BUTTONS.PREVIOUS' | translate }}
+  </button>
+  <button mat-stroked-button mwlCalendarToday [(viewDate)]="viewDate">
+    {{ 'COMMON.BUTTONS.TODAY' | translate }}
+  </button>
+  <button
+    mat-raised-button
+    mwlCalendarNextView
+    [view]="view"
+    [(viewDate)]="viewDate"
+    (viewDateChange)="closeOpenMonthViewDay()">
+    {{ 'COMMON.BUTTONS.NEXT' | translate }}
+  </button>
+</div>
+<ng-container *ngIf="events | async as events">
+  <mwl-calendar-month-view
+    [viewDate]="viewDate"
+    [activeDayIsOpen]="activeDayIsOpen"
+    [events]="events"
+    [weekStartsOn]="1" />
+</ng-container>

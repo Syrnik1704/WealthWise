@@ -112,14 +112,16 @@
     </form>
   }
 </mat-dialog-content>
-<mat-dialog-actions>
-  <div class="saving-goal-actions">
-    <button mat-button (click)="onCancel()">{{ 'COMMON.BUTTONS.CANCEL' | translate }}</button>
-    <button
-      mat-raised-button
-      [disabled]="modelForm?.invalid || modelForm?.pristine"
-      (click)="saveForm()">
-      {{ 'COMMON.BUTTONS.SAVE' | translate }}
-    </button>
-  </div>
-</mat-dialog-actions>
+<div class="actions">
+  <mat-dialog-actions>
+    <div class="saving-goal-actions">
+      <button mat-button (click)="onCancel()">{{ 'COMMON.BUTTONS.CANCEL' | translate }}</button>
+      <button
+        mat-raised-button
+        [disabled]="modelForm?.invalid || modelForm?.pristine"
+        (click)="saveForm()">
+        {{ 'COMMON.BUTTONS.SAVE' | translate }}
+      </button>
+    </div>
+  </mat-dialog-actions>
+</div>

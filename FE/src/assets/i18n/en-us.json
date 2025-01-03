@@ -11,6 +11,7 @@
     "OUTCOMES": "Expenses",
     "INCOMES": "Incomes",
     "SUBSCRIPTION_MANAGMENT": "Subscription managment",
+    "CALENDER": "Calender",
     "LABELS": {
       "EMAIL": "Email",
       "PASSWORD": "Password"
@@ -36,7 +37,10 @@
       "CANCEL": "Cancel",
       "CONFIRM": "Confirm",
       "REJECT": "Reject",
-      "ADD": "Add"
+      "ADD": "Add",
+      "PREVIOUS": "Previous",
+      "TODAY": "Today",
+      "NEXT": "Next"
     }
   },
   "LOGIN_FORM": {
@@ -45,7 +49,11 @@
     "REGISTER": "Register"
   },
   "SHARED": {
-    "CATEGORY": "Category"
+    "CATEGORY": "Category",
+    "FAST_INCOME_MODAL": {
+      "HEADER": "Top up {{goal}}",
+      "AMOUNT": "Amount"
+    }
   },
   "DASHBOARD": {
     "GOAL": "WealthWise is application which You can use for managing your finances. With our app You can learn how to save money based on monitoring your incomes and split outcomes into variouse category.",

@@ -2,12 +2,13 @@ export interface SavingGoal {
   targetId: number;
   targetTitle: string;
   targetAmount: number;
-  targetDate: Date;
+  targetDate: string;
   currentAmount: number;
+  creationDate: string;
   cyclicalPaymentAmount?: number;
   cyclicalPaymentCron?: string;
   description?: string;
   progress?: number;
 }
 
-export type SavingGoalRequest = Omit<SavingGoal, 'targetId'>;
+export type SavingGoalRequest = Omit<SavingGoal, 'targetId' | 'creationDate'>;

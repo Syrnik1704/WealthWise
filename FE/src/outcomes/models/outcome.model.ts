@@ -6,7 +6,7 @@ export interface Outcome {
   name: string;
   description: string;
   idExpenses: number;
-  createdDate: Date;
+  createdDate: string;
   isEdit?: boolean;
 }
 

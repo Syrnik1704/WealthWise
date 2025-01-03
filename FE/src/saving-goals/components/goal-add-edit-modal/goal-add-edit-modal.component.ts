@@ -99,6 +99,7 @@ export class GoalAddEditModalComponent implements OnInit {
     }
     return {
       ...formValue,
+      targetDate: formValue[GoalAddEditFormKeys.DATE].toISOString(), //TODO: zero time
       cyclicalPaymentCron: formValue[GoalAddEditFormKeys.CYCLICAL_PAYMENT_INTERVAL]?.value,
     };
   }
@@ -120,7 +121,9 @@ export class GoalAddEditModalComponent implements OnInit {
         }
       ),
       [GoalAddEditFormKeys.DATE]: new FormControl<Date>(
-        this.content.savingGoal?.targetDate ?? new Date(),
+        this.content.savingGoal?.targetDate
+          ? new Date(this.content.savingGoal.targetDate)
+          : new Date(),
         { validators: [Validators.required], nonNullable: true }
       ),
       [GoalAddEditFormKeys.DESCRIPTION]: new FormControl<string | undefined>(

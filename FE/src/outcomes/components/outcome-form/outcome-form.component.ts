@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { Category } from '../../../shared';
 import { CategoriesApiService } from '../../../shared/services/categories-service';
 import { Outcome, OutcomeRequest } from '../../models';
 import { OutcomeForm, OutcomeFormKeys } from '../../models/outcome-form.model';
@@ -234,6 +235,7 @@ export class OutcomeFormComponent implements OnInit {
     }
     const request: OutcomeRequest = {
       ...this.modelForm.getRawValue(),
+      categoryName: this.modelForm.controls[OutcomeFormKeys.CATEGORY].value?.name ?? '',
     };
     const requestMethod =
       this.isEdit && this.outcome
@@ -257,7 +259,7 @@ export class OutcomeFormComponent implements OnInit {
         validators: [Validators.required, Validators.min(0.01), Validators.pattern(/\d*.?\d{1,2}/)],
         nonNullable: true,
       }),
-      [OutcomeFormKeys.CATEGORY]: new FormControl<string>(outcome?.category.name ?? '', {
+      [OutcomeFormKeys.CATEGORY]: new FormControl<Category | null>(outcome?.category ?? null, {
         validators: [Validators.required],
         nonNullable: true,
       }),
