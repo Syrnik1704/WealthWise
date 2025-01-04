@@ -41,7 +41,8 @@
       "PREVIOUS": "Previous",
       "TODAY": "Today",
       "NEXT": "Next"
-    }
+    },
+    "WELCOME": "Welcome "
   },
   "LOGIN_FORM": {
     "SINGUP_MESSAGE": "Create account, if you don't have it yet",
@@ -64,7 +65,10 @@
       "SUBSCRIPTION_MANAGMENT": "Manage your subscription",
       "PROGRESS_MONITORING": "Watch your progress through our intuitative graphs",
       "INCOMING_PAYMENT": "Get notification about your cycle payment"
-    }
+    },
+    "BALANCE": "Balance: ",
+    "INCOMING_TARGETS": "Saving goals closest to target date",
+    "FULFILLED_TARGETS": "Most fulfilled saving goals"
   },
   "SAVING_GOAL": {
     "INTERVAL": {

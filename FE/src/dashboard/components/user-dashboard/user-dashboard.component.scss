@@ -1,0 +1,43 @@
+:host {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-bar {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__tooltip {
+    text-align: right;
+    font-size: 0.8rem;
+  }
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.saving-goal-preview {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px;
+}

@@ -1,1 +1,48 @@
-<p>user-dashboard works!</p>
+@if (user) {
+  <div class="dashboard-header">
+    <h4>{{ 'COMMON.WELCOME' | translate }}{{ user.name }}</h4>
+
+    <div class="preview-section">
+      <h6>{{ 'DASHBOARD.BALANCE' | translate }}</h6>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    @if (incomingTargets.length) {
+      <div class="preview-section">
+        <h6>{{ 'DASHBOARD.INCOMING_TARGETS' | translate }}</h6>
+        @for (goal of incomingTargets; track $index) {
+          <ng-container
+            [ngTemplateOutlet]="goalPreview"
+            [ngTemplateOutletContext]="{ $implicit: goal }"></ng-container>
+        }
+      </div>
+    }
+    @if (mostFulfilledTargets.length) {
+      <div class="preview-section">
+        <h6>{{ 'DASHBOARD.FULFILLED_TARGETS' | translate }}</h6>
+        @for (goal of mostFulfilledTargets; track $index) {
+          <ng-container
+            [ngTemplateOutlet]="goalPreview"
+            [ngTemplateOutletContext]="{ $implicit: goal }"></ng-container>
+        }
+      </div>
+    }
+  </div>
+}
+
+<ng-template #goalPreview let-goal>
+  <mat-card appearance="outlined">
+    <mat-card-content class="saving-goal-preview">
+      <mat-icon>track_changes</mat-icon>
+      <div>{{ goal.targetTitle }}</div>
+      <div class="progress-bar">
+        <mat-progress-bar class="progress-bar__style" mode="determinate" [value]="goal.progress"
+          >{{ goal.progress }}&#37;</mat-progress-bar
+        >
+        <span class="progress-bar__tooltip">{{ goal.progress }}&#37;</span>
+      </div>
+      <div>{{ goal.targetDate | date }}</div>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
