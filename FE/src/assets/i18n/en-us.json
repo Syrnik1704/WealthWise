@@ -42,7 +42,8 @@
       "TODAY": "Today",
       "NEXT": "Next"
     },
-    "WELCOME": "Welcome "
+    "WELCOME": "Welcome ",
+    "NO_RESULT": "No result"
   },
   "LOGIN_FORM": {
     "SINGUP_MESSAGE": "Create account, if you don't have it yet",
@@ -68,7 +69,12 @@
     },
     "BALANCE": "Balance: ",
     "INCOMING_TARGETS": "Saving goals closest to target date",
-    "FULFILLED_TARGETS": "Most fulfilled saving goals"
+    "FULFILLED_TARGETS": "Most fulfilled saving goals",
+    "EXPENSES_BY_CATEGORY": "Expenses by category",
+    "EXPENSES": {
+      "START_DATE": "Start Date",
+      "END_DATE": "End Date"
+    }
   },
   "SAVING_GOAL": {
     "INTERVAL": {
