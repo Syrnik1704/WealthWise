@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Your Monthly Financial Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+        }
+        .email-header {
+            background-color: #188afd;
+            padding: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        .email-body {
+            padding: 30px;
+        }
+        .email-body h1 {
+            color: #333333;
+        }
+        .email-body p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555555;
+        }
+        .report-section {
+            margin-bottom: 20px;
+        }
+        .report-section h3 {
+            color: #188afd;
+            margin-bottom: 10px;
+        }
+        .report-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .report-section ul li {
+            margin-bottom: 5px;
+        }
+        .email-footer {
+            background-color: #f4f4f4;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="email-header">
+        <h2>Your Monthly Financial Report</h2>
+    </div>
+    <div class="email-body">
+        <h1>Hello, USER_NAME!</h1>
+        <p>Here is a summary of your financial activity for the past month:</p>
+
+        <!-- Incomes -->
+        <div class="report-section">
+            <h3>Incomes:</h3>
+            <p>Total Incomes: <b>TOTAL_INCOMES</b></p>
+            <ul>
+                <li>INCOME_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- Expenses -->
+        <div class="report-section">
+            <h3>Expenses:</h3>
+            <p>Total Expenses: <b>TOTAL_EXPENSES</b></p>
+            <ul>
+                <li>EXPENSE_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- New Saving Targets -->
+        <div class="report-section">
+            <h3>New Saving Targets:</h3>
+            <ul>
+                <li>CREATED_TARGET_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- Active Saving Targets -->
+        <div class="report-section">
+            <h3>Active Saving Targets:</h3>
+            <ul>
+                <li>ACTIVE_TARGET_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- Completed Saving Targets -->
+        <div class="report-section">
+            <h3>Completed Saving Targets:</h3>
+            <ul>
+                <li>COMPLETED_TARGET_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- Failed Saving Targets -->
+        <div class="report-section">
+            <h3>Failed Saving Targets:</h3>
+            <ul>
+                <li>FAILED_TARGET_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- New Subscriptions -->
+        <div class="report-section">
+            <h3>New Subscriptions:</h3>
+            <ul>
+                <li>CREATED_SUBSCRIPTION_DETAILS</li>
+            </ul>
+        </div>
+
+        <!-- Active Subscriptions -->
+        <div class="report-section">
+            <h3>Active Subscriptions:</h3>
+            <ul>
+                <li>ACTIVE_SUBSCRIPTION_DETAILS</li>
+            </ul>
+        </div>
+
+        <br><br>
+        <p>Keep up the great work in managing your finances!</p>
+    </div>
+    <div class="email-footer">
+        <p>&copy; 2025 WealthWise Company. All Rights Reserved.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -4,10 +4,11 @@ import com.example.wealthwise_api.Entity.Subscription;
 import com.example.wealthwise_api.Repository.SubscriptionRepository;
 import com.example.wealthwise_api.Services.EmailService;
 import com.example.wealthwise_api.Services.ExpensesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Component
 public class SubscriptionNotificationScheduler {
 
+    Logger logger = LoggerFactory.getLogger(SubscriptionNotificationScheduler.class);
     private final SubscriptionRepository subscriptionRepository;
     private final EmailService emailService;
     private final ExpensesService expensesService;
@@ -68,9 +70,9 @@ public class SubscriptionNotificationScheduler {
                     subscription
             );
 
-            System.out.println("Subscription payment processed and notification sent to: " + userEmail);
+            logger.info("Subscription payment processed and notification sent to: " + userEmail);
         } catch (Exception e) {
-            System.err.println("Error processing subscription: " + subscription.getSubscriptionTitle() + ": " + e.getMessage());
+            logger.error("Error processing subscription: " + subscription.getSubscriptionTitle() + ": " + e.getMessage());
         }
     }
 }
