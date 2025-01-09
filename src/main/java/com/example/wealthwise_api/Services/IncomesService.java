@@ -1,6 +1,7 @@
 package com.example.wealthwise_api.Services;
 
 
+import com.example.wealthwise_api.DAO.ExpensesDAO;
 import com.example.wealthwise_api.DAO.IncomesDAO;
 import com.example.wealthwise_api.DAO.UserDAO;
 import com.example.wealthwise_api.DTO.IncomesRequest;
@@ -29,12 +30,15 @@ public class IncomesService {
     private final UserDAO userDAO;
     private final JWTUtil jwtUtil;
     private final IncomesDAO incomesDAO;
+    private final ExpensesDAO expensesDAO;
 
 
-    public IncomesService(@Qualifier("jpa") UserDAO userDAO, JWTUtil jwtUtil, @Qualifier("incomesJPA") IncomesDAO incomesDAO) {
+    public IncomesService(@Qualifier("jpa") UserDAO userDAO, JWTUtil jwtUtil, @Qualifier("incomesJPA") IncomesDAO incomesDAO,
+                          @Qualifier("expensesJPA") ExpensesDAO expensesDAO) {
         this.userDAO = userDAO;
         this.jwtUtil = jwtUtil;
         this.incomesDAO = incomesDAO;
+        this.expensesDAO = expensesDAO;
     }
 
     private String getUserEmailFromToken(HttpServletRequest request) throws HttpClientErrorException.BadRequest {
@@ -153,6 +157,28 @@ public class IncomesService {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    public ResponseEntity<?> getUserBalance(HttpServletRequest request) {
+        try {
+            Optional<UserEntity> userEntity = Optional.ofNullable(userDAO.findUserByEmail(getUserEmailFromToken(request)));
+
+            if (userEntity.isEmpty()) return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+
+            List<Double> incomes = incomesDAO.findIncomesByUser(userEntity.get().getIdUser())
+                    .stream().map(income -> income.getValue()).toList();
+            List<Double> expenses = expensesDAO.findExpensesByUser(userEntity.get().getIdUser())
+                    .stream().map(expense -> expense.getAmount()).toList();
+
+            double totalIncome = incomes.stream().mapToDouble(Double::doubleValue).sum();
+            double totalExpenses = expenses.stream().mapToDouble(Double::doubleValue).sum();
+
+            double balance = totalIncome - totalExpenses;
+
+            return new ResponseEntity<>(balance, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
