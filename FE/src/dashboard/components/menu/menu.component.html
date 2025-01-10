@@ -1,9 +1,10 @@
 <mat-toolbar class="toolbar dashboard-header">
   <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
   <img
-    class="dashboard-header__logo"
+    class="dashboard-header__logo pointer"
     [src]="'/assets/imgs/wealthwise.webp'"
-    [alt]="'COMMON.APP_NAME' | translate" />
+    [alt]="'COMMON.APP_NAME' | translate"
+    [routerLink]="['']" />
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">

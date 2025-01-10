@@ -1,0 +1,75 @@
+:host {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.goal-name {
+  max-width: 125px;
+}
+
+.subscription {
+  display: flex;
+  justify-content: space-between;
+  &__payment {
+    display: inline-flex;
+    gap: 8px;
+  }
+}
+
+.progress-bar {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__tooltip {
+    text-align: right;
+    font-size: 0.8rem;
+  }
+}
+
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.saving-goal-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  &__first-line {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 4px;
+  }
+}
+
+.previev-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.accordion-icon {
+  transition: transform 0.15s ease-in-out;
+}
+
+.accordion-icon--expanded {
+  transform: rotate(180deg);
+}

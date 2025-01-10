@@ -1,1 +1,195 @@
-<p>user-dashboard works!</p>
+@if (user) {
+  <div class="dashboard-header">
+    <h4>{{ 'COMMON.WELCOME' | translate }}{{ user.name }}</h4>
+
+    <div class="preview-section">
+      <h6>{{ 'DASHBOARD.BALANCE' | translate }}</h6>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    @if (incomingTargets.length) {
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <cdk-accordion>
+            <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+              <div class="previev-header">
+                <h6>{{ 'DASHBOARD.INCOMING_TARGETS' | translate }}</h6>
+                <button
+                  mat-icon-button
+                  (click)="accordionItem.toggle()"
+                  [attr.aria-expanded]="accordionItem.expanded">
+                  <mat-icon
+                    class="accordion-icon"
+                    [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                    >keyboard_arrow_down</mat-icon
+                  >
+                </button>
+              </div>
+              @if (accordionItem.expanded) {
+                @for (goal of incomingTargets; track $index) {
+                  <ng-container
+                    [ngTemplateOutlet]="goalPreview"
+                    [ngTemplateOutletContext]="{ $implicit: goal }"></ng-container>
+                }
+              }
+            </cdk-accordion-item>
+          </cdk-accordion>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    @if (mostFulfilledTargets.length) {
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <cdk-accordion>
+            <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+              <div class="previev-header">
+                <h6>{{ 'DASHBOARD.INCOMING_TARGETS' | translate }}</h6>
+                <button
+                  mat-icon-button
+                  (click)="accordionItem.toggle()"
+                  [attr.aria-expanded]="accordionItem.expanded">
+                  <mat-icon
+                    class="accordion-icon"
+                    [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                    >keyboard_arrow_down</mat-icon
+                  >
+                </button>
+              </div>
+              @if (accordionItem.expanded) {
+                @for (goal of incomingTargets; track $index) {
+                  <ng-container
+                    [ngTemplateOutlet]="goalPreview"
+                    [ngTemplateOutletContext]="{ $implicit: goal }"></ng-container>
+                }
+              }
+            </cdk-accordion-item>
+          </cdk-accordion>
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <cdk-accordion>
+          <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+            <div class="previev-header">
+              <h6>{{ 'DASHBOARD.INCOMING_SUBSCRIPTION_PAYMENT' | translate }}</h6>
+              <button
+                mat-icon-button
+                (click)="accordionItem.toggle()"
+                [attr.aria-expanded]="accordionItem.expanded">
+                <mat-icon
+                  class="accordion-icon"
+                  [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                  >keyboard_arrow_down</mat-icon
+                >
+              </button>
+            </div>
+            @if (accordionItem.expanded) {
+              @if (incominSubscriptionPayment.length) {
+                @for (subscription of incominSubscriptionPayment; track $index) {
+                  <mat-card appearance="outlined">
+                    <mat-card-content>
+                      <div class="subscription">
+                        {{ subscription.subscriptionTitle }}
+                        <div class="subscription__payment">
+                          <span>{{ subscription.amount }}$</span>
+                          <span>{{ 'COMMON.IN' | translate }}</span>
+                          <span>{{ subscription.paymentIn }}</span>
+                          <span>{{
+                            'COMMON.DAY' + (subscription.paymentIn > 1 ? 'S' : '') | translate
+                          }}</span>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                }
+              } @else {
+                {{ 'COMMON.NO_RESULT' | translate }}
+              }
+            }
+          </cdk-accordion-item>
+        </cdk-accordion>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <cdk-accordion>
+          <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+            <div class="previev-header">
+              <h6>{{ 'DASHBOARD.EXPENSES_BY_CATEGORY' | translate }}</h6>
+              <button
+                mat-icon-button
+                (click)="accordionItem.toggle()"
+                [attr.aria-expanded]="accordionItem.expanded">
+                <mat-icon
+                  class="accordion-icon"
+                  [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                  >keyboard_arrow_down</mat-icon
+                >
+              </button>
+            </div>
+            @if (accordionItem.expanded) {
+              <mat-form-field class="example-form-field">
+                <mat-label>{{ 'DASHBOARD.EXPENSES.RANGE' | translate }}</mat-label>
+                <mat-date-range-input [rangePicker]="campaignOnePicker">
+                  <input
+                    matStartDate
+                    placeholder="Start date"
+                    [(ngModel)]="outcomeRange.startDate"
+                    (ngModelChange)="this.preparePieData()" />
+                  <input
+                    matEndDate
+                    placeholder="End date"
+                    [(ngModel)]="outcomeRange.endDate"
+                    (ngModelChange)="this.preparePieData()" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="campaignOnePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+              </mat-form-field>
+              @if (pieChartDatasets[0].data.length) {
+                {{ 'DASHBOARD.EXPENSES.SUM' | translate }}{{ totalExpenses }}
+                <canvas
+                  baseChart
+                  [type]="'pie'"
+                  [datasets]="pieChartDatasets"
+                  [labels]="pieChartLabels"
+                  [options]="pieChartOptions"
+                  [plugins]="[]"
+                  [legend]="true">
+                </canvas>
+              } @else {
+                {{ 'COMMON.NO_RESULT' | translate }}
+              }
+            }
+          </cdk-accordion-item>
+        </cdk-accordion>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}
+
+<ng-template #goalPreview let-goal>
+  <mat-card appearance="outlined">
+    <mat-card-content class="saving-goal-preview">
+      <div class="saving-goal-preview__first-line">
+        <mat-icon>track_changes</mat-icon>
+        <div [matTooltip]="goal.targetTitle" class="text-ellipsis goal-name">
+          {{ goal.targetTitle }}
+        </div>
+        <div class="progress-bar">
+          <mat-progress-bar class="progress-bar__style" mode="determinate" [value]="goal.progress"
+            >{{ goal.progress }}&#37;</mat-progress-bar
+          >
+          <span class="progress-bar__tooltip">{{ goal.progress }}&#37;</span>
+        </div>
+      </div>
+      <div>{{ goal.targetDate | date }}</div>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

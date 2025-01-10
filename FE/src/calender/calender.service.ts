@@ -34,24 +34,30 @@ export class CalenderService {
   }
 
   private getEventsFromSavingGoal(savingGoal: SavingGoal): CalendarEvent[] {
-    return this.getRunDates(savingGoal.creationDate, savingGoal.cyclicalPaymentCron).map(date => {
+    return this.getRunDates(
+      savingGoal.creationDate,
+      savingGoal.targetDate,
+      savingGoal.cyclicalPaymentCron
+    ).map(date => {
       return {
         start: date,
         color:
           savingGoal.currentAmount === savingGoal.targetAmount ? colors['green'] : colors['yellow'],
-        title: `${savingGoal.targetTitle}: +${savingGoal.cyclicalPaymentAmount ?? savingGoal.currentAmount}`,
+        title: `${savingGoal.targetTitle}: income ${savingGoal.cyclicalPaymentAmount ?? savingGoal.currentAmount}`,
       };
     });
   }
 
-  private getRunDates(creationDate: string, interval?: string): Date[] {
+  private getRunDates(creationDate: string, targetDate: string, interval?: string): Date[] {
     const dates: Date[] = [];
     if (!interval) {
       return [new Date(creationDate)];
     }
+    const endDate =
+      new Date().getTime() < new Date(targetDate).getTime() ? new Date() : new Date(targetDate);
     const intervals = cronParser.parseExpression(interval, {
       currentDate: new Date(creationDate),
-      endDate: new Date(),
+      endDate,
     });
     while (intervals.hasNext()) {
       dates.push(intervals.next().toDate());

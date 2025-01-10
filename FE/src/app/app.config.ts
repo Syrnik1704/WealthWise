@@ -13,6 +13,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideStore } from '@ngxs/store';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { TokenInterceptor } from '../auth/services/token.interceptor';
 import { UserState } from '../shared';
 import { routes } from './app.routes';
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
       useClass: TokenInterceptor,
       multi: true,
     },
+    provideCharts(withDefaultRegisterables()),
     importProvidersFrom([
       TranslateModule.forRoot({
         loader: {
@@ -46,5 +48,6 @@ export const appConfig: ApplicationConfig = {
         useFactory: adapterFactory,
       }),
     ]),
+    provideCharts(withDefaultRegisterables()),
   ],
 };
