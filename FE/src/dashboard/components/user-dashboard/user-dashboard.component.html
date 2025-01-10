@@ -45,7 +45,7 @@
           <cdk-accordion>
             <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
               <div class="previev-header">
-                <h6>{{ 'DASHBOARD.INCOMING_TARGETS' | translate }}</h6>
+                <h6>{{ 'DASHBOARD.FULFILLED_TARGETS' | translate }}</h6>
                 <button
                   mat-icon-button
                   (click)="accordionItem.toggle()"
@@ -58,7 +58,7 @@
                 </button>
               </div>
               @if (accordionItem.expanded) {
-                @for (goal of incomingTargets; track $index) {
+                @for (goal of mostFulfilledTargets; track $index) {
                   <ng-container
                     [ngTemplateOutlet]="goalPreview"
                     [ngTemplateOutletContext]="{ $implicit: goal }"></ng-container>
