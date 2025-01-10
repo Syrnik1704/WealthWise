@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -23,12 +23,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { Outcome } from '../../../outcomes/models';
 import { OutcomeApiService } from '../../../outcomes/services/outcomes-api.service';
 import { SavingGoal } from '../../../saving-goals/models';
 import { SavingGoalApiService } from '../../../saving-goals/services';
 import { UserSelectors } from '../../../shared';
+import { SubscriptionsApiService } from '../../../subscriptions/services';
 @Component({
   selector: 'ww-user-dashboard',
   standalone: true,
@@ -45,7 +46,8 @@ import { UserSelectors } from '../../../shared';
     BaseChartDirective,
     MatDatepickerModule,
     FormsModule,
-    MatFormField,
+    MatFormFieldModule,
+    MatIconModule,
     MatInput,
     MatLabel,
   ],
@@ -57,6 +59,7 @@ export class UserDashboardComponent implements OnInit {
   private readonly store = inject(Store);
   private readonly savingGoalApiService = inject(SavingGoalApiService);
   private readonly outcomesApiService = inject(OutcomeApiService);
+  private readonly subscriptionApiService = inject(SubscriptionsApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdRef = inject(ChangeDetectorRef);
   protected user = this.store.selectSnapshot(UserSelectors.user);
@@ -68,6 +71,13 @@ export class UserDashboardComponent implements OnInit {
   };
   protected pieChartLabels: string[] = [];
   protected pieChartDatasets: ChartDataset<'pie', number[]>[] = [{ data: [] }];
+  protected incominSubscriptionPayment: {
+    subscriptionTitle: string;
+    amount: number;
+    cyclicalPaymentDate: number;
+    paymentIn: number;
+  }[] = [];
+  protected totalExpenses?: number;
   private outcomes: Outcome[] = [];
 
   public ngOnInit(): void {
@@ -100,6 +110,27 @@ export class UserDashboardComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe();
+    this.subscriptionApiService
+      .getSubscriptionsList()
+      .pipe(
+        map(subscriptions => {
+          const todayDay = new Date().getDate();
+          return subscriptions.map(sub => ({
+            subscriptionTitle: sub.subscriptionTitle,
+            amount: sub.amount,
+            cyclicalPaymentDate: sub.cyclicalPaymentDate,
+            paymentIn: sub.cyclicalPaymentDate - todayDay,
+          }));
+        }),
+        tap(subs => {
+          this.incominSubscriptionPayment = subs.filter(
+            sub => sub.paymentIn < 7 && sub.paymentIn > 0
+          );
+          this.cdRef.detectChanges();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
   }
 
   protected preparePieData(): void {
@@ -118,6 +149,7 @@ export class UserDashboardComponent implements OnInit {
       },
       {} as Record<string, number>
     );
+    this.totalExpenses = Object.values(outcomesMap).reduce((acc, curr) => acc + curr, 0);
     this.pieChartLabels = Object.keys(outcomesMap);
     this.pieChartDatasets = [{ data: Object.values(outcomesMap) }];
     this.cdRef.detectChanges();

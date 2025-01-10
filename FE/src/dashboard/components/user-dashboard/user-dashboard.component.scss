@@ -21,6 +21,15 @@
   max-width: 125px;
 }
 
+.subscription {
+  display: flex;
+  justify-content: space-between;
+  &__payment {
+    display: inline-flex;
+    gap: 8px;
+  }
+}
+
 .progress-bar {
   flex: 1;
   display: flex;

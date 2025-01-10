@@ -43,7 +43,10 @@
       "NEXT": "Next"
     },
     "WELCOME": "Welcome ",
-    "NO_RESULT": "No result"
+    "NO_RESULT": "No result",
+    "DAY": "day",
+    "DAYS": "days",
+    "IN": "in"
   },
   "LOGIN_FORM": {
     "SINGUP_MESSAGE": "Create account, if you don't have it yet",
@@ -72,9 +75,10 @@
     "FULFILLED_TARGETS": "Most fulfilled saving goals",
     "EXPENSES_BY_CATEGORY": "Expenses by category",
     "EXPENSES": {
-      "START_DATE": "Start Date",
-      "END_DATE": "End Date"
-    }
+      "RANGE": "Expenses date range",
+      "SUM": "Expenses sum: "
+    },
+    "INCOMING_SUBSCRIPTION_PAYMENT": "Incoming subscription payments"
   },
   "SAVING_GOAL": {
     "INTERVAL": {

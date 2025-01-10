@@ -38,13 +38,14 @@
         </mat-card-content>
       </mat-card>
     }
+
     @if (mostFulfilledTargets.length) {
       <mat-card appearance="outlined">
         <mat-card-content>
           <cdk-accordion>
             <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
               <div class="previev-header">
-                <h6>{{ 'DASHBOARD.FULFILLED_TARGETS' | translate }}</h6>
+                <h6>{{ 'DASHBOARD.INCOMING_TARGETS' | translate }}</h6>
                 <button
                   mat-icon-button
                   (click)="accordionItem.toggle()"
@@ -57,7 +58,7 @@
                 </button>
               </div>
               @if (accordionItem.expanded) {
-                @for (goal of mostFulfilledTargets; track $index) {
+                @for (goal of incomingTargets; track $index) {
                   <ng-container
                     [ngTemplateOutlet]="goalPreview"
                     [ngTemplateOutletContext]="{ $implicit: goal }"></ng-container>
@@ -68,6 +69,51 @@
         </mat-card-content>
       </mat-card>
     }
+
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <cdk-accordion>
+          <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+            <div class="previev-header">
+              <h6>{{ 'DASHBOARD.INCOMING_SUBSCRIPTION_PAYMENT' | translate }}</h6>
+              <button
+                mat-icon-button
+                (click)="accordionItem.toggle()"
+                [attr.aria-expanded]="accordionItem.expanded">
+                <mat-icon
+                  class="accordion-icon"
+                  [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                  >keyboard_arrow_down</mat-icon
+                >
+              </button>
+            </div>
+            @if (accordionItem.expanded) {
+              @if (incominSubscriptionPayment.length) {
+                @for (subscription of incominSubscriptionPayment; track $index) {
+                  <mat-card appearance="outlined">
+                    <mat-card-content>
+                      <div class="subscription">
+                        {{ subscription.subscriptionTitle }}
+                        <div class="subscription__payment">
+                          <span>{{ subscription.amount }}$</span>
+                          <span>{{ 'COMMON.IN' | translate }}</span>
+                          <span>{{ subscription.paymentIn }}</span>
+                          <span>{{
+                            'COMMON.DAY' + (subscription.paymentIn > 1 ? 'S' : '') | translate
+                          }}</span>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                }
+              } @else {
+                {{ 'COMMON.NO_RESULT' | translate }}
+              }
+            }
+          </cdk-accordion-item>
+        </cdk-accordion>
+      </mat-card-content>
+    </mat-card>
 
     <mat-card appearance="outlined">
       <mat-card-content>
@@ -87,25 +133,27 @@
               </button>
             </div>
             @if (accordionItem.expanded) {
-              <mat-form-field>
-                <mat-label>{{ 'DASHBOARD.EXPENSES.START_DATE' | translate }}</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="outcomeRange.startDate"
-                  (ngModelChange)="this.preparePieData()" />
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>{{ 'DASHBOARD.EXPENSES.END_DATE' | translate }}</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="outcomeRange.endDate"
-                  (ngModelChange)="this.preparePieData()" />
-                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+              <mat-form-field class="example-form-field">
+                <mat-label>{{ 'DASHBOARD.EXPENSES.RANGE' | translate }}</mat-label>
+                <mat-date-range-input [rangePicker]="campaignOnePicker">
+                  <input
+                    matStartDate
+                    placeholder="Start date"
+                    [(ngModel)]="outcomeRange.startDate"
+                    (ngModelChange)="this.preparePieData()" />
+                  <input
+                    matEndDate
+                    placeholder="End date"
+                    [(ngModel)]="outcomeRange.endDate"
+                    (ngModelChange)="this.preparePieData()" />
+                </mat-date-range-input>
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="campaignOnePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
               </mat-form-field>
               @if (pieChartDatasets[0].data.length) {
+                {{ 'DASHBOARD.EXPENSES.SUM' | translate }}{{ totalExpenses }}
                 <canvas
                   baseChart
                   [type]="'pie'"
