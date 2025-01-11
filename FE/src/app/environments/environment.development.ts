@@ -1,4 +1,4 @@
 export const environment = {
-  apiUrl: 'http://localhost:8080',
+  apiUrl: 'https://wealthwise-mmj2.onrender.com',
   production: false,
 };
