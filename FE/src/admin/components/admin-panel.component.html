@@ -10,8 +10,8 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-flat-button color="warn" (click)="onRemoveCategory()">Remove Category</button>
-      <div>
+      <button mat-flat-button class="removeBtn" color="warn" (click)="onRemoveCategory()">Remove Category</button>
+      <div class="removeCategory">
         <mat-form-field appearance="fill">
           <mat-label>Nowa kategoria</mat-label>
           <input matInput [(ngModel)]="categoryInput" type="text" placeholder="Enter new category name" />

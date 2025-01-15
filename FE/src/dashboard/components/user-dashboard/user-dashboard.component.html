@@ -3,7 +3,7 @@
     <h4>{{ 'COMMON.WELCOME' | translate }}{{ user.name }}</h4>
 
     <div class="preview-section">
-      <h6>{{ 'DASHBOARD.BALANCE' | translate }}</h6>
+      <h6>{{ 'DASHBOARD.BALANCE' | translate }} {{userBalance}}</h6>
     </div>
   </div>
 
@@ -12,21 +12,21 @@
       <mat-card appearance="outlined">
         <mat-card-content>
           <cdk-accordion>
-            <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+            <cdk-accordion-item #accordionItem1="cdkAccordionItem" class="preview-section">
               <div class="previev-header">
                 <h6>{{ 'DASHBOARD.INCOMING_TARGETS' | translate }}</h6>
                 <button
                   mat-icon-button
-                  (click)="accordionItem.toggle()"
-                  [attr.aria-expanded]="accordionItem.expanded">
+                  (click)="accordionItem1.toggle()"
+                  [attr.aria-expanded]="accordionItem1.expanded">
                   <mat-icon
                     class="accordion-icon"
-                    [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                    [ngClass]="{ 'accordion-icon--expanded': accordionItem1.expanded }"
                     >keyboard_arrow_down</mat-icon
                   >
                 </button>
               </div>
-              @if (accordionItem.expanded) {
+              @if (accordionItem1.expanded) {
                 @for (goal of incomingTargets; track $index) {
                   <ng-container
                     [ngTemplateOutlet]="goalPreview"
@@ -43,21 +43,21 @@
       <mat-card appearance="outlined">
         <mat-card-content>
           <cdk-accordion>
-            <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+            <cdk-accordion-item #accordionItem2="cdkAccordionItem" class="preview-section">
               <div class="previev-header">
                 <h6>{{ 'DASHBOARD.FULFILLED_TARGETS' | translate }}</h6>
                 <button
                   mat-icon-button
-                  (click)="accordionItem.toggle()"
-                  [attr.aria-expanded]="accordionItem.expanded">
+                  (click)="accordionItem2.toggle()"
+                  [attr.aria-expanded]="accordionItem2.expanded">
                   <mat-icon
                     class="accordion-icon"
-                    [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                    [ngClass]="{ 'accordion-icon--expanded': accordionItem2.expanded }"
                     >keyboard_arrow_down</mat-icon
                   >
                 </button>
               </div>
-              @if (accordionItem.expanded) {
+              @if (accordionItem2.expanded) {
                 @for (goal of mostFulfilledTargets; track $index) {
                   <ng-container
                     [ngTemplateOutlet]="goalPreview"
@@ -73,21 +73,21 @@
     <mat-card appearance="outlined">
       <mat-card-content>
         <cdk-accordion>
-          <cdk-accordion-item #accordionItem="cdkAccordionItem" class="preview-section">
+          <cdk-accordion-item #accordionItem3="cdkAccordionItem" class="preview-section">
             <div class="previev-header">
               <h6>{{ 'DASHBOARD.INCOMING_SUBSCRIPTION_PAYMENT' | translate }}</h6>
               <button
                 mat-icon-button
-                (click)="accordionItem.toggle()"
-                [attr.aria-expanded]="accordionItem.expanded">
+                (click)="accordionItem3.toggle()"
+                [attr.aria-expanded]="accordionItem3.expanded">
                 <mat-icon
                   class="accordion-icon"
-                  [ngClass]="{ 'accordion-icon--expanded': accordionItem.expanded }"
+                  [ngClass]="{ 'accordion-icon--expanded': accordionItem3.expanded }"
                   >keyboard_arrow_down</mat-icon
                 >
               </button>
             </div>
-            @if (accordionItem.expanded) {
+            @if (accordionItem3.expanded) {
               @if (incominSubscriptionPayment.length) {
                 @for (subscription of incominSubscriptionPayment; track $index) {
                   <mat-card appearance="outlined">

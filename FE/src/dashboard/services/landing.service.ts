@@ -22,16 +22,8 @@ export class LandingService {
       alt: 'DASHBOARD.GALLERY.SECOND',
     },
     {
-      url: 'assets/imgs/ui/3.webp',
+      url: 'assets/imgs/ui/3.jpg',
       alt: 'DASHBOARD.GALLERY.THIRD',
-    },
-    {
-      url: 'assets/imgs/ui/4.png',
-      alt: 'DASHBOARD.GALLERY.FOUR',
-    },
-    {
-      url: 'assets/imgs/ui/5.webp',
-      alt: 'DASHBOARD.GALLERY.FIVE',
     },
   ];
   private readonly translate = inject(TranslateService);

@@ -10,9 +10,9 @@ import { savingGoalsRoute } from '../saving-goals/saving-goals.routes';
 import { UserRole } from '../shared';
 import { subscriptionsRoute } from '../subscriptions/subscriptions.routes';
 import { MenuComponent } from './components';
-import { AdminDashboardComponent } from './components/admin-dashboard';
 import { GuestDashboardComponent } from './components/guest-dashboard';
 import { UserDashboardComponent } from './components/user-dashboard';
+import { AdminPanelComponent } from '../admin/components/admin-panel.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -31,7 +31,7 @@ export const dashboardRoutes: Routes = [
       },
       {
         path: 'dashboard',
-        component: AdminDashboardComponent,
+        component: AdminPanelComponent,
         canMatch: [adminRoleGuard(UserRole.ADMIN)],
       },
       outcomeRoute,

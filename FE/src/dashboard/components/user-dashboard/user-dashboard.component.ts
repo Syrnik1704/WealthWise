@@ -30,6 +30,7 @@ import { SavingGoal } from '../../../saving-goals/models';
 import { SavingGoalApiService } from '../../../saving-goals/services';
 import { UserSelectors } from '../../../shared';
 import { SubscriptionsApiService } from '../../../subscriptions/services';
+import { UserApiService } from '../../services/user.service';
 @Component({
   selector: 'ww-user-dashboard',
   standalone: true,
@@ -60,6 +61,7 @@ export class UserDashboardComponent implements OnInit {
   private readonly savingGoalApiService = inject(SavingGoalApiService);
   private readonly outcomesApiService = inject(OutcomeApiService);
   private readonly subscriptionApiService = inject(SubscriptionsApiService);
+  private readonly userApiService = inject(UserApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdRef = inject(ChangeDetectorRef);
   protected user = this.store.selectSnapshot(UserSelectors.user);
@@ -78,6 +80,7 @@ export class UserDashboardComponent implements OnInit {
     paymentIn: number;
   }[] = [];
   protected totalExpenses?: number;
+  protected userBalance: number = 0;
   private outcomes: Outcome[] = [];
 
   public ngOnInit(): void {
@@ -131,6 +134,11 @@ export class UserDashboardComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe();
+
+    this.userApiService.loadBalance().pipe(
+      tap(balance => this.userBalance = balance),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 
   protected preparePieData(): void {
